@@ -2,14 +2,22 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <PackageLicenseExpression>https://licenses.nuget.org/MIT</PackageLicenseExpression>
+    <PackageLicenseExpression></PackageLicenseExpression>
     <Authors>Arthur Mattos</Authors>
     <Company>Softmake - Software &amp; Automação</Company>
     <PackageId>SoftmakeAll.SDK.NetReflector</PackageId>
     <Product>SoftmakeAll.SDK.NetReflector</Product>
-    <PackageTags>SoftmakeAll SDK Net Reflector</PackageTags>
+    <PackageTags>SoftmakeAll SDK Net Reflector Compiler</PackageTags>
     <NeutralLanguage>English (United States)</NeutralLanguage>
-    <RepositoryUrl>https://github.com/softmake-sources/softmakeall.sdk</RepositoryUrl>
+    <RepositoryUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</RepositoryUrl>
+    <PackageIcon>Cubes.png</PackageIcon>
+    <RepositoryType>Public C# Repository</RepositoryType>
+    <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2020</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Este pacote é parte do pacote SoftmakeAll.SDK
+
+Este pacote fornece apoio para Reflection e compilação de código dinâmico de bibliotecas .NET Standard.</Description>
+    <PackageLicenseFile>License.txt</PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -62,6 +70,14 @@
     </None>
     <None Update="DefaultAssemblies\System.Text.Json.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\..\Arthur\Softmake\Marca\Logotipos\Cubes.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="License.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
     </None>
   </ItemGroup>
 

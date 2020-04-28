@@ -2,17 +2,32 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <PackageLicenseFile></PackageLicenseFile>
     <PackageId>SoftmakeAll.SDK</PackageId>
     <Product>SoftmakeAll.SDK</Product>
     <Company>Softmake - Software &amp; Automação</Company>
     <Authors>Arthur Mattos</Authors>
-    <Description></Description>
+    <Description>SDK do Softmake All (pacote principal).
+
+Este pacote contém algumas funcionalidades de apoio ao desenvolvimento de módulos para o Softmake All.
+Principais funcionalidades implementadas:
+- Consumo de serviços REST
+- Compressão de arquivos em memória
+- Escrita e Leitura de arquivos com tamanho de colunas delimitados
+- Helpers para as bibliotecas, como System.Text.Json
+
+Não deixe de consultar os pacotes adicionais.</Description>
     <PackageTags>SoftmakeAll SDK REST File Compression JSON Reflection</PackageTags>
     <NeutralLanguage>English (United States)</NeutralLanguage>
     <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
     <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
-    <PackageLicenseExpression>https://licenses.nuget.org/MIT</PackageLicenseExpression>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</RepositoryUrl>
+    <RepositoryType>Public C# Repository</RepositoryType>
+    <PackageIcon>Cubes.png</PackageIcon>
+    <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2020</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseFile>License.txt</PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -28,6 +43,17 @@
 
   <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="4.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\..\..\Arthur\Softmake\Marca\Logotipos\Cubes.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="License.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
