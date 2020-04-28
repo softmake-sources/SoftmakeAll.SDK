@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <PackageLicenseExpression>https://licenses.nuget.org/MIT</PackageLicenseExpression>
+    <Authors>Arthur Mattos</Authors>
+    <Company>Softmake - Software &amp; Automação</Company>
+    <PackageId>SoftmakeAll.SDK.CloudStorage.Azure</PackageId>
+    <PackageTags>SoftmakeAll SDK Azure Storage</PackageTags>
+    <NeutralLanguage>English (United States)</NeutralLanguage>
+    <Product>SoftmakeAll.SDK.CloudStorage.Azure</Product>
+    <RepositoryUrl>https://github.com/softmake-sources/softmakeall.sdk</RepositoryUrl>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SDK\SDK.csproj" />
+  </ItemGroup>
+
+</Project>

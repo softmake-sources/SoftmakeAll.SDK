@@ -1,0 +1,1 @@
+Softmake All SDK - Solution

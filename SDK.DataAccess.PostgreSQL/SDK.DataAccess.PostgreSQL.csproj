@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <PackageLicenseExpression>https://licenses.nuget.org/MIT</PackageLicenseExpression>
+    <Authors>Arthur Mattos</Authors>
+    <Company>Softmake - Software &amp; Automação</Company>
+    <PackageId>SoftmakeAll.SDK.DataAccess.PostgreSQL</PackageId>
+    <Product>SoftmakeAll.SDK.DataAccess.PostgreSQL</Product>
+    <PackageTags>SoftmakeAll SDK DataAccess PostgreSQL</PackageTags>
+    <NeutralLanguage>English (United States)</NeutralLanguage>
+    <RepositoryUrl>https://github.com/softmake-sources/softmakeall.sdk</RepositoryUrl>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Npgsql" Version="4.1.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SDK\SDK.csproj" />
+  </ItemGroup>
+
+</Project>
