@@ -56,7 +56,7 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
       #endregion
 
       #region Fields
-      private const System.String Summaries = "SELECT NULL AS [ID], NULL AS [Message], 0 AS [ExitCode]";
+      private const System.String Summaries = "SELECT NULL AS \"ID\", NULL AS \"Message\", 0 AS \"ExitCode\" FROM DUAL";
       protected override System.String SummariesSQL => Summaries + ";";
       protected override System.String SummariesSQLAsJSON => SummariesSQL;
       #endregion
@@ -73,18 +73,18 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
       if ((!(base.IntegratedSecurity)) && ((System.String.IsNullOrWhiteSpace(base.UserID)) || (System.String.IsNullOrWhiteSpace(base.Password))))
         return "";
 
-      return $"Data Source={base.Server}; {(base.IntegratedSecurity ? "Integrated Security=yes;" : $"User Id={base.UserID}; Password={base.Password}; Integrated Security=no;")}";
+      return $"Data Source={base.Server}; {(base.IntegratedSecurity ? "Integrated Security=yes;" : $"User Id={base.UserID}; Password={base.Password}; ")}";
     }
     #endregion
 
     #region Parameters
-    public override System.Data.Common.DbParameter CreateInputParameter(System.String Name, System.Int32 Type, System.Int32 Size, System.Object Value)
+    protected override System.Data.Common.DbParameter CreateParameter(System.String Name, System.Int32 Type, System.Int32 Size, System.Object Value, System.Data.ParameterDirection Direction)
     {
       return new global::Oracle.ManagedDataAccess.Client.OracleParameter
       {
         ParameterName = Name,
         OracleDbType = (global::Oracle.ManagedDataAccess.Client.OracleDbType)Type,
-        Direction = System.Data.ParameterDirection.Input,
+        Direction = Direction,
         Size = Size,
         Value = Value
       };
@@ -353,8 +353,8 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
         default: { return; }
       }
 
-      System.String SystemEventWriteProcedureName = "[system].[Write{0}{1}Event]";
-      SystemEventWriteProcedureName = System.String.Format(SystemEventWriteProcedureName, Source, Type);
+      System.String SystemEventWriteProcedureName = "{0}Write{1}{2}Event";
+      SystemEventWriteProcedureName = System.String.Format(SystemEventWriteProcedureName, System.String.IsNullOrWhiteSpace(base.SystemEventsProcedureSchemaName) ? "" : $"{base.SystemEventsProcedureSchemaName}.", Source, Type);
 
       SoftmakeAll.SDK.OperationResult Result = new SoftmakeAll.SDK.OperationResult();
 
@@ -449,8 +449,8 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
         default: { return; }
       }
 
-      System.String SystemEventWriteProcedureName = "[system].[Write{0}{1}Event]";
-      SystemEventWriteProcedureName = System.String.Format(SystemEventWriteProcedureName, Source, Type);
+      System.String SystemEventWriteProcedureName = "{0}Write{1}{2}Event";
+      SystemEventWriteProcedureName = System.String.Format(SystemEventWriteProcedureName, System.String.IsNullOrWhiteSpace(base.SystemEventsProcedureSchemaName) ? "" : $"{base.SystemEventsProcedureSchemaName}.", Source, Type);
 
       SoftmakeAll.SDK.OperationResult Result = new SoftmakeAll.SDK.OperationResult();
 

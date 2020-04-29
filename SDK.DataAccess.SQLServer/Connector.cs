@@ -200,13 +200,13 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
     #endregion
 
     #region Parameters
-    public override System.Data.Common.DbParameter CreateInputParameter(System.String Name, System.Int32 Type, System.Int32 Size, System.Object Value)
+    protected override System.Data.Common.DbParameter CreateParameter(System.String Name, System.Int32 Type, System.Int32 Size, System.Object Value, System.Data.ParameterDirection Direction)
     {
       return new System.Data.SqlClient.SqlParameter
       {
         ParameterName = Name,
         SqlDbType = (System.Data.SqlDbType)Type,
-        Direction = System.Data.ParameterDirection.Input,
+        Direction = Direction,
         Size = Size,
         Value = Value
       };

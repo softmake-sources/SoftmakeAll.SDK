@@ -83,13 +83,13 @@ namespace SoftmakeAll.SDK.DataAccess.PostgreSQL
     #endregion
 
     #region Parameters
-    public override System.Data.Common.DbParameter CreateInputParameter(System.String Name, System.Int32 Type, System.Int32 Size, System.Object Value)
+    protected override System.Data.Common.DbParameter CreateParameter(System.String Name, System.Int32 Type, System.Int32 Size, System.Object Value, System.Data.ParameterDirection Direction)
     {
       return new Npgsql.NpgsqlParameter
       {
         ParameterName = Name,
         NpgsqlDbType = (NpgsqlTypes.NpgsqlDbType)Type,
-        Direction = System.Data.ParameterDirection.Input,
+        Direction = Direction,
         Size = Size,
         Value = Value
       };

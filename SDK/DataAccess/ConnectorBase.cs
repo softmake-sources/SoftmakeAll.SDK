@@ -137,7 +137,13 @@ namespace SoftmakeAll.SDK.DataAccess
 
     #region Parameters
     public System.Data.Common.DbParameter CreateInputParameter(System.String Name, System.Int32 Type, System.Object Value) { return this.CreateInputParameter(Name, Type, 0, Value); }
-    public abstract System.Data.Common.DbParameter CreateInputParameter(System.String Name, System.Int32 Type, System.Int32 Size, System.Object Value);
+    public System.Data.Common.DbParameter CreateInputParameter(System.String Name, System.Int32 Type, System.Int32 Size, System.Object Value) { return this.CreateParameter(Name, Type, Size, Value, System.Data.ParameterDirection.Input); }
+
+    public System.Data.Common.DbParameter CreateOutputParameter(System.String Name, System.Int32 Type) { return this.CreateOutputParameter(Name, Type, null); }
+    public System.Data.Common.DbParameter CreateOutputParameter(System.String Name, System.Int32 Type, System.Object Value) { return this.CreateOutputParameter(Name, Type, 0, Value); }
+    public System.Data.Common.DbParameter CreateOutputParameter(System.String Name, System.Int32 Type, System.Int32 Size, System.Object Value) { return this.CreateParameter(Name, Type, Size, Value, System.Data.ParameterDirection.Output); }
+
+    protected abstract System.Data.Common.DbParameter CreateParameter(System.String Name, System.Int32 Type, System.Int32 Size, System.Object Value, System.Data.ParameterDirection Direction);
     #endregion
 
     #region Command Execution
