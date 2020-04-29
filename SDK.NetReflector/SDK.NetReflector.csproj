@@ -11,7 +11,7 @@
     <NeutralLanguage>English (United States)</NeutralLanguage>
     <RepositoryUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</RepositoryUrl>
     <PackageIcon>Cubes.png</PackageIcon>
-    <RepositoryType>Public C# Repository</RepositoryType>
+    <RepositoryType>Public C# (.NET Standard) Repository</RepositoryType>
     <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2020</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Este pacote é parte do pacote SoftmakeAll.SDK
