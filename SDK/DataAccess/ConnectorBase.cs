@@ -86,7 +86,7 @@ namespace SoftmakeAll.SDK.DataAccess
     public System.String UserID { get; set; }
     public System.String Password { get; set; }
     public System.Boolean IntegratedSecurity { get; set; }
-    public System.String Catalog { get; set; }
+    public System.String Database { get; set; }
     public System.String ConnectionString { get; set; }
     public System.Boolean ShowPlan { get; set; }
 
@@ -100,6 +100,19 @@ namespace SoftmakeAll.SDK.DataAccess
       set
       {
         this._ReadSummaries = value;
+      }
+    }
+
+    private System.String _SystemEventsProcedureSchemaName = null;
+    public System.String SystemEventsProcedureSchemaName
+    {
+      get
+      {
+        return System.String.IsNullOrWhiteSpace(this._SystemEventsProcedureSchemaName) ? SoftmakeAll.SDK.DataAccess.Environment.SystemEventsProcedureSchemaName : "";
+      }
+      set
+      {
+        this._SystemEventsProcedureSchemaName = value;
       }
     }
     #endregion

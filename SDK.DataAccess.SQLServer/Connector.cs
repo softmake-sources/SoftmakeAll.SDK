@@ -73,13 +73,13 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
       if (System.String.IsNullOrWhiteSpace(base.Server))
         return "";
 
-      if (System.String.IsNullOrWhiteSpace(base.Catalog))
+      if (System.String.IsNullOrWhiteSpace(base.Database))
         return "";
 
       if ((!(base.IntegratedSecurity)) && ((System.String.IsNullOrWhiteSpace(base.UserID)) || (System.String.IsNullOrWhiteSpace(base.Password))))
         return "";
 
-      return $"Server={base.Server},{base.Port}; Initial Catalog={base.Catalog}; {(base.IntegratedSecurity ? "Integrated Security=SSPI;" : $"User Id={base.UserID}; Password={base.Password};")}";
+      return $"Server={base.Server},{base.Port}; Initial Catalog={base.Database}; {(base.IntegratedSecurity ? "Integrated Security=SSPI;" : $"User Id={base.UserID}; Password={base.Password};")}";
     }
     private System.Collections.Generic.List<System.String> ReadBlocks(System.String CommandText)
     {
@@ -826,8 +826,8 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
         default: { return; }
       }
 
-      System.String SystemEventWriteProcedureName = "[system].[Write{0}{1}Event]";
-      SystemEventWriteProcedureName = System.String.Format(SystemEventWriteProcedureName, Source, Type);
+      System.String SystemEventWriteProcedureName = "{0}[Write{1}{2}Event]";
+      SystemEventWriteProcedureName = System.String.Format(SystemEventWriteProcedureName, System.String.IsNullOrWhiteSpace(base.SystemEventsProcedureSchemaName) ? "" : $"[{base.SystemEventsProcedureSchemaName}].", Source, Type);
 
       SoftmakeAll.SDK.OperationResult Result = new SoftmakeAll.SDK.OperationResult();
 
@@ -936,8 +936,8 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
         default: { return; }
       }
 
-      System.String SystemEventWriteProcedureName = "[system].[Write{0}{1}Event]";
-      SystemEventWriteProcedureName = System.String.Format(SystemEventWriteProcedureName, Source, Type);
+      System.String SystemEventWriteProcedureName = "{0}[Write{1}{2}Event]";
+      SystemEventWriteProcedureName = System.String.Format(SystemEventWriteProcedureName, System.String.IsNullOrWhiteSpace(base.SystemEventsProcedureSchemaName) ? "" : $"[{base.SystemEventsProcedureSchemaName}].", Source, Type);
 
       SoftmakeAll.SDK.OperationResult Result = new SoftmakeAll.SDK.OperationResult();
 

@@ -56,7 +56,7 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
       #endregion
 
       #region Fields
-      private const System.String Summaries = "SELECT NULL AS [ID], NULL AS [Message], 0 AS [ExitCode]";
+      private const System.String Summaries = "SELECT NULL AS `ID`, NULL AS `Message`, 0 AS `ExitCode`";
       protected override System.String SummariesSQL => Summaries + ";";
       protected override System.String SummariesSQLAsJSON => SummariesSQL;
       #endregion
@@ -72,13 +72,13 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
       if (System.String.IsNullOrWhiteSpace(base.Server))
         return "";
 
-      if (System.String.IsNullOrWhiteSpace(base.Catalog))
+      if (System.String.IsNullOrWhiteSpace(base.Database))
         return "";
 
       if ((!(base.IntegratedSecurity)) && ((System.String.IsNullOrWhiteSpace(base.UserID)) || (System.String.IsNullOrWhiteSpace(base.Password))))
         return "";
 
-      return $"Server={base.Server}; Port={base.Port}; Database={base.Catalog}; {(base.IntegratedSecurity ? "IntegratedSecurity=yes; Uid=auth_windows;" : $"Uid={base.UserID}; Pwd={base.Password};")}";
+      return $"Server={base.Server}; Port={base.Port}; Database={base.Database}; {(base.IntegratedSecurity ? "IntegratedSecurity=yes; Uid=auth_windows;" : $"Uid={base.UserID}; Pwd={base.Password};")}";
     }
     #endregion
 
@@ -104,38 +104,6 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
 
       const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.MySQL.MySQL.ExecutePreCommands";
 
-
-      //MySql.Data.MySqlClient.MySqlCommand OptionsCommand = new MySql.Data.MySqlClient.MySqlCommand("SET ARITHABORT ON; SET XACT_ABORT OFF; SET NOCOUNT ON;", ConnectorObjects.SqlConnection);
-      //try
-      //{
-      //  OptionsCommand.ExecuteNonQuery();
-      //}
-      //catch (System.Exception ex)
-      //{
-      //  base.WriteApplicationWarningEvent(ThisProcedureName, System.String.Format(SoftmakeAll.SDK.DataAccess.Database.ErrorOnSetBaseCommands, ex.Message));
-      //}
-      //OptionsCommand.Dispose();
-      //
-      //
-      //if (base.SessionContextVariables.Any())
-      //{
-      //  System.Text.StringBuilder SetSessionContextVariables = new System.Text.StringBuilder();
-      //  foreach (System.Collections.Generic.KeyValuePair<System.String, System.String> SessionContextVariable in base.SessionContextVariables)
-      //    if (!(System.String.IsNullOrWhiteSpace(SessionContextVariable.Key)))
-      //      SetSessionContextVariables.AppendFormat("EXECUTE SP_SET_SESSION_CONTEXT N'{0}', {1}; ", SessionContextVariable.Key.Replace("'", "''"), SessionContextVariable.Value == null ? "NULL" : $"'{SessionContextVariable.Value.Replace("'", "''")}'");
-      //
-      //  MySql.Data.MySqlClient.MySqlCommand SessionContextCommand = new MySql.Data.MySqlClient.MySqlCommand(SetSessionContextVariables.ToString(), ConnectorObjects.SqlConnection);
-      //  try
-      //  {
-      //    SessionContextCommand.ExecuteNonQuery();
-      //  }
-      //  catch (System.Exception ex)
-      //  {
-      //    base.WriteApplicationWarningEvent(ThisProcedureName, System.String.Concat(SoftmakeAll.SDK.DataAccess.Database.ErrorOnSetSessionContext, ex.Message));
-      //  }
-      //  SessionContextCommand.Dispose();
-      //}
-
       if (!(System.String.IsNullOrWhiteSpace(SoftmakeAll.SDK.DataAccess.Environment.DefineSessionContextProcedureName)))
       {
         MySql.Data.MySqlClient.MySqlCommand SessionContextCommand = new MySql.Data.MySqlClient.MySqlCommand(SoftmakeAll.SDK.DataAccess.Environment.DefineSessionContextProcedureName, ConnectorObjects.Connection);
@@ -156,38 +124,6 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
         return;
 
       const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.MySQL.MySQL.ExecutePreCommandsAsync";
-
-
-      //MySql.Data.MySqlClient.MySqlCommand OptionsCommand = new MySql.Data.MySqlClient.MySqlCommand("SET ARITHABORT ON; SET XACT_ABORT OFF; SET NOCOUNT ON;", ConnectorObjects.SqlConnection);
-      //try
-      //{
-      //  await OptionsCommand.ExecuteNonQueryAsync();
-      //}
-      //catch (System.Exception ex)
-      //{
-      //  await base.WriteApplicationWarningEventAsync(ThisProcedureName, System.String.Format(SoftmakeAll.SDK.DataAccess.Database.ErrorOnSetBaseCommands, ex.Message));
-      //}
-      //await OptionsCommand.DisposeAsync();
-      //
-      //
-      //if (base.SessionContextVariables.Any())
-      //{
-      //  System.Text.StringBuilder SetSessionContextVariables = new System.Text.StringBuilder();
-      //  foreach (System.Collections.Generic.KeyValuePair<System.String, System.String> SessionContextVariable in base.SessionContextVariables)
-      //    if (!(System.String.IsNullOrWhiteSpace(SessionContextVariable.Key)))
-      //      SetSessionContextVariables.AppendFormat("EXECUTE SP_SET_SESSION_CONTEXT N'{0}', {1}; ", SessionContextVariable.Key.Replace("'", "''"), SessionContextVariable.Value == null ? "NULL" : $"'{SessionContextVariable.Value.Replace("'", "''")}'");
-      //
-      //  MySql.Data.MySqlClient.MySqlCommand SessionContextCommand = new MySql.Data.MySqlClient.MySqlCommand(SetSessionContextVariables.ToString(), ConnectorObjects.SqlConnection);
-      //  try
-      //  {
-      //    await SessionContextCommand.ExecuteNonQueryAsync();
-      //  }
-      //  catch (System.Exception ex)
-      //  {
-      //    await base.WriteApplicationWarningEventAsync(ThisProcedureName, System.String.Concat(SoftmakeAll.SDK.DataAccess.Database.ErrorOnSetSessionContext, ex.Message));
-      //  }
-      //  await SessionContextCommand.DisposeAsync();
-      //}
 
       if (!(System.String.IsNullOrWhiteSpace(SoftmakeAll.SDK.DataAccess.Environment.DefineSessionContextProcedureName)))
       {
@@ -422,7 +358,7 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
         default: { return; }
       }
 
-      System.String SystemEventWriteProcedureName = "[system].[Write{0}{1}Event]";
+      System.String SystemEventWriteProcedureName = "`Write{0}{1}Event`";
       SystemEventWriteProcedureName = System.String.Format(SystemEventWriteProcedureName, Source, Type);
 
       SoftmakeAll.SDK.OperationResult Result = new SoftmakeAll.SDK.OperationResult();
@@ -443,20 +379,6 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
       try
       {
         ConnectorObjects.Connection.Open();
-
-        //MySql.Data.MySqlClient.MySqlCommand OptionsCommand = new MySql.Data.MySqlClient.MySqlCommand("SET ARITHABORT ON; SET XACT_ABORT OFF; SET NOCOUNT ON;", ConnectorObjects.Connection);
-        //try
-        //{
-        //  OptionsCommand.ExecuteNonQuery();
-        //}
-        //catch (System.Exception ex)
-        //{
-        //  Result.ID = null;
-        //  Result.Message = System.String.Concat(ThisProcedureName, " -> ", System.String.Format(SoftmakeAll.SDK.DataAccess.Database.ErrorOnSetBaseCommands, ex.Message));
-        //  Result.ExitCode = -5;
-        //  base.WriteErrorFile(Result);
-        //}
-        //OptionsCommand.Dispose();
 
         MySql.Data.MySqlClient.MySqlDataAdapter Adapter = null;
 
@@ -532,7 +454,7 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
         default: { return; }
       }
 
-      System.String SystemEventWriteProcedureName = "[system].[Write{0}{1}Event]";
+      System.String SystemEventWriteProcedureName = "`Write{0}{1}Event`";
       SystemEventWriteProcedureName = System.String.Format(SystemEventWriteProcedureName, Source, Type);
 
       SoftmakeAll.SDK.OperationResult Result = new SoftmakeAll.SDK.OperationResult();
@@ -553,20 +475,6 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
       try
       {
         await ConnectorObjects.Connection.OpenAsync();
-
-        //MySql.Data.MySqlClient.MySqlCommand OptionsCommand = new MySql.Data.MySqlClient.MySqlCommand("SET ARITHABORT ON; SET XACT_ABORT OFF; SET NOCOUNT ON;", ConnectorObjects.Connection);
-        //try
-        //{
-        //  await OptionsCommand.ExecuteNonQueryAsync();
-        //}
-        //catch (System.Exception ex)
-        //{
-        //  Result.ID = null;
-        //  Result.Message = System.String.Concat(ThisProcedureName, " -> ", System.String.Format(SoftmakeAll.SDK.DataAccess.Database.ErrorOnSetBaseCommands, ex.Message));
-        //  Result.ExitCode = -5;
-        //  await base.WriteErrorFileAsync(Result);
-        //}
-        //await OptionsCommand.DisposeAsync();
 
         MySql.Data.MySqlClient.MySqlDataAdapter Adapter = null;
 

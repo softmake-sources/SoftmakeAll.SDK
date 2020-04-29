@@ -11,6 +11,7 @@
     public static System.Boolean WriteWarningSystemEvents { get; set; }
     public static System.Boolean WriteErrorSystemEvents { get; set; }
     public static System.Boolean ReadSummaries { get; set; }
+    public static System.String SystemEventsProcedureSchemaName { get; set; }
     #endregion
   }
 }

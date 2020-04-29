@@ -99,38 +99,6 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
 
       const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.Oracle.Oracle.ExecutePreCommands";
 
-
-      //global::Oracle.ManagedDataAccess.Client.OracleCommand OptionsCommand = new global::Oracle.ManagedDataAccess.Client.OracleCommand("SET ARITHABORT ON; SET XACT_ABORT OFF; SET NOCOUNT ON;", ConnectorObjects.SqlConnection);
-      //try
-      //{
-      //  OptionsCommand.ExecuteNonQuery();
-      //}
-      //catch (System.Exception ex)
-      //{
-      //  base.WriteApplicationWarningEvent(ThisProcedureName, System.String.Format(SoftmakeAll.SDK.DataAccess.Database.ErrorOnSetBaseCommands, ex.Message));
-      //}
-      //OptionsCommand.Dispose();
-      //
-      //
-      //if (base.SessionContextVariables.Any())
-      //{
-      //  System.Text.StringBuilder SetSessionContextVariables = new System.Text.StringBuilder();
-      //  foreach (System.Collections.Generic.KeyValuePair<System.String, System.String> SessionContextVariable in base.SessionContextVariables)
-      //    if (!(System.String.IsNullOrWhiteSpace(SessionContextVariable.Key)))
-      //      SetSessionContextVariables.AppendFormat("EXECUTE SP_SET_SESSION_CONTEXT N'{0}', {1}; ", SessionContextVariable.Key.Replace("'", "''"), SessionContextVariable.Value == null ? "NULL" : $"'{SessionContextVariable.Value.Replace("'", "''")}'");
-      //
-      //  global::Oracle.ManagedDataAccess.Client.OracleCommand SessionContextCommand = new global::Oracle.ManagedDataAccess.Client.OracleCommand(SetSessionContextVariables.ToString(), ConnectorObjects.SqlConnection);
-      //  try
-      //  {
-      //    SessionContextCommand.ExecuteNonQuery();
-      //  }
-      //  catch (System.Exception ex)
-      //  {
-      //    base.WriteApplicationWarningEvent(ThisProcedureName, System.String.Concat(SoftmakeAll.SDK.DataAccess.Database.ErrorOnSetSessionContext, ex.Message));
-      //  }
-      //  SessionContextCommand.Dispose();
-      //}
-
       if (!(System.String.IsNullOrWhiteSpace(SoftmakeAll.SDK.DataAccess.Environment.DefineSessionContextProcedureName)))
       {
         global::Oracle.ManagedDataAccess.Client.OracleCommand SessionContextCommand = new global::Oracle.ManagedDataAccess.Client.OracleCommand(SoftmakeAll.SDK.DataAccess.Environment.DefineSessionContextProcedureName, ConnectorObjects.Connection);
@@ -151,38 +119,6 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
         return;
 
       const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.Oracle.Oracle.ExecutePreCommandsAsync";
-
-
-      //global::Oracle.ManagedDataAccess.Client.OracleCommand OptionsCommand = new global::Oracle.ManagedDataAccess.Client.OracleCommand("SET ARITHABORT ON; SET XACT_ABORT OFF; SET NOCOUNT ON;", ConnectorObjects.SqlConnection);
-      //try
-      //{
-      //  await OptionsCommand.ExecuteNonQueryAsync();
-      //}
-      //catch (System.Exception ex)
-      //{
-      //  await base.WriteApplicationWarningEventAsync(ThisProcedureName, System.String.Format(SoftmakeAll.SDK.DataAccess.Database.ErrorOnSetBaseCommands, ex.Message));
-      //}
-      //await OptionsCommand.DisposeAsync();
-      //
-      //
-      //if (base.SessionContextVariables.Any())
-      //{
-      //  System.Text.StringBuilder SetSessionContextVariables = new System.Text.StringBuilder();
-      //  foreach (System.Collections.Generic.KeyValuePair<System.String, System.String> SessionContextVariable in base.SessionContextVariables)
-      //    if (!(System.String.IsNullOrWhiteSpace(SessionContextVariable.Key)))
-      //      SetSessionContextVariables.AppendFormat("EXECUTE SP_SET_SESSION_CONTEXT N'{0}', {1}; ", SessionContextVariable.Key.Replace("'", "''"), SessionContextVariable.Value == null ? "NULL" : $"'{SessionContextVariable.Value.Replace("'", "''")}'");
-      //
-      //  global::Oracle.ManagedDataAccess.Client.OracleCommand SessionContextCommand = new global::Oracle.ManagedDataAccess.Client.OracleCommand(SetSessionContextVariables.ToString(), ConnectorObjects.SqlConnection);
-      //  try
-      //  {
-      //    await SessionContextCommand.ExecuteNonQueryAsync();
-      //  }
-      //  catch (System.Exception ex)
-      //  {
-      //    await base.WriteApplicationWarningEventAsync(ThisProcedureName, System.String.Concat(SoftmakeAll.SDK.DataAccess.Database.ErrorOnSetSessionContext, ex.Message));
-      //  }
-      //  await SessionContextCommand.DisposeAsync();
-      //}
 
       if (!(System.String.IsNullOrWhiteSpace(SoftmakeAll.SDK.DataAccess.Environment.DefineSessionContextProcedureName)))
       {
@@ -439,20 +375,6 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
       {
         ConnectorObjects.Connection.Open();
 
-        //global::Oracle.ManagedDataAccess.Client.OracleCommand OptionsCommand = new global::Oracle.ManagedDataAccess.Client.OracleCommand("SET ARITHABORT ON; SET XACT_ABORT OFF; SET NOCOUNT ON;", ConnectorObjects.Connection);
-        //try
-        //{
-        //  OptionsCommand.ExecuteNonQuery();
-        //}
-        //catch (System.Exception ex)
-        //{
-        //  Result.ID = null;
-        //  Result.Message = System.String.Concat(ThisProcedureName, " -> ", System.String.Format(SoftmakeAll.SDK.DataAccess.Database.ErrorOnSetBaseCommands, ex.Message));
-        //  Result.ExitCode = -5;
-        //  base.WriteErrorFile(Result);
-        //}
-        //OptionsCommand.Dispose();
-
         global::Oracle.ManagedDataAccess.Client.OracleDataAdapter Adapter = null;
 
         try
@@ -548,20 +470,6 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
       try
       {
         await ConnectorObjects.Connection.OpenAsync();
-
-        //global::Oracle.ManagedDataAccess.Client.OracleCommand OptionsCommand = new global::Oracle.ManagedDataAccess.Client.OracleCommand("SET ARITHABORT ON; SET XACT_ABORT OFF; SET NOCOUNT ON;", ConnectorObjects.Connection);
-        //try
-        //{
-        //  await OptionsCommand.ExecuteNonQueryAsync();
-        //}
-        //catch (System.Exception ex)
-        //{
-        //  Result.ID = null;
-        //  Result.Message = System.String.Concat(ThisProcedureName, " -> ", System.String.Format(SoftmakeAll.SDK.DataAccess.Database.ErrorOnSetBaseCommands, ex.Message));
-        //  Result.ExitCode = -5;
-        //  await base.WriteErrorFileAsync(Result);
-        //}
-        //await OptionsCommand.DisposeAsync();
 
         global::Oracle.ManagedDataAccess.Client.OracleDataAdapter Adapter = null;
 
