@@ -19,6 +19,7 @@
 
 Este pacote fornece apoio para administração de BLOBS no Azure Storage.</Description>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

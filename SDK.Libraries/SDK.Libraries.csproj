@@ -18,6 +18,7 @@
 
 Este pacote fornece apoio para a construção de bibliotecas instaláveis no Softmake All.</Description>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
