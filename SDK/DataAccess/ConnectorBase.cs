@@ -144,6 +144,9 @@ namespace SoftmakeAll.SDK.DataAccess
       SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> Result = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
 
       SoftmakeAll.SDK.OperationResult<System.Data.DataSet> DatabaseOperationResult = this.ExecuteCommand(ProcedureNameOrCommandText, Parameters, CommandType);
+      Result.ExitCode = DatabaseOperationResult.ExitCode;
+      Result.Message = DatabaseOperationResult.Message;
+      Result.ID = DatabaseOperationResult.ID;
       if (DatabaseOperationResult.ExitCode != 0)
         return Result;
 
@@ -169,6 +172,9 @@ namespace SoftmakeAll.SDK.DataAccess
       SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> Result = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
 
       SoftmakeAll.SDK.OperationResult<System.Data.DataSet> DatabaseOperationResult = await this.ExecuteCommandAsync(ProcedureNameOrCommandText, Parameters, CommandType);
+      Result.ExitCode = DatabaseOperationResult.ExitCode;
+      Result.Message = DatabaseOperationResult.Message;
+      Result.ID = DatabaseOperationResult.ID;
       if (DatabaseOperationResult.ExitCode != 0)
         return Result;
 

@@ -18,6 +18,8 @@
 
 Este pacote fornece apoio para acesso à dados quando o banco de dados é MySQL ou MariaDB.</Description>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -32,7 +34,7 @@ Este pacote fornece apoio para acesso à dados quando o banco de dados é MySQL 
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MySql.Data" Version="8.0.19" />
+    <PackageReference Include="MySql.Data" Version="8.0.20" />
   </ItemGroup>
 
   <ItemGroup>
