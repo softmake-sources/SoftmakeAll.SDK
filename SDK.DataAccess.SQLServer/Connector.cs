@@ -663,7 +663,10 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
               }
               else
               {
-                Result.Data = AllResults.ToJsonElement();
+                if (AllResults.Count == 1)
+                  Result.Data = AllResults[0];
+                else
+                  Result.Data = AllResults.ToJsonElement();
               }
             }
           }
@@ -769,7 +772,10 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
               }
               else
               {
-                Result.Data = AllResults.ToJsonElement();
+                if (AllResults.Count == 1)
+                  Result.Data = AllResults[0];
+                else
+                  Result.Data = AllResults.ToJsonElement();
               }
             }
           }
@@ -794,6 +800,79 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
       await ConnectorObjects.Connection.DisposeAsync();
 
       return Result;
+    }
+
+    public SoftmakeAll.SDK.OperationResult ImportData(System.Data.DataTable DataTable) { return this.ImportData(DataTable, 0); }
+    public SoftmakeAll.SDK.OperationResult ImportData(System.Data.DataTable DataTable, System.Int32 BatchSize)
+    {
+      System.String ConnectionString = SoftmakeAll.SDK.DataAccess.SQLServer.Environment._ConnectionString;
+      if (!(System.String.IsNullOrEmpty(base.ConnectionString)))
+        ConnectionString = base.ConnectionString;
+
+      if (System.String.IsNullOrWhiteSpace(ConnectionString))
+        throw new System.Exception(SoftmakeAll.SDK.Environment.NullConnectionString);
+
+      SoftmakeAll.SDK.OperationResult OperationResult = new SoftmakeAll.SDK.OperationResult();
+
+      System.Diagnostics.Stopwatch Stopwatch = new System.Diagnostics.Stopwatch();
+
+      try
+      {
+        using (System.Data.SqlClient.SqlBulkCopy SqlBulkCopy = new System.Data.SqlClient.SqlBulkCopy(ConnectionString, System.Data.SqlClient.SqlBulkCopyOptions.TableLock | System.Data.SqlClient.SqlBulkCopyOptions.UseInternalTransaction))
+        {
+          SqlBulkCopy.DestinationTableName = DataTable.TableName;
+          if (BatchSize > 0) SqlBulkCopy.BatchSize = BatchSize;
+          Stopwatch.Start();
+          SqlBulkCopy.WriteToServer(DataTable);
+          Stopwatch.Stop();
+        }
+
+        OperationResult.ExitCode = 0;
+        OperationResult.Message = $"{DataTable.Rows.Count} records imported in {Stopwatch.ElapsedMilliseconds} milliseconds.";
+      }
+      catch (System.Exception ex)
+      {
+        Stopwatch.Stop();
+        OperationResult.Message = ex.Message;
+      }
+
+      return OperationResult;
+    }
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> ImportDataAsync(System.Data.DataTable DataTable) { return await this.ImportDataAsync(DataTable, 0); }
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> ImportDataAsync(System.Data.DataTable DataTable, System.Int32 BatchSize)
+    {
+      System.String ConnectionString = SoftmakeAll.SDK.DataAccess.SQLServer.Environment._ConnectionString;
+      if (!(System.String.IsNullOrEmpty(base.ConnectionString)))
+        ConnectionString = base.ConnectionString;
+
+      if (System.String.IsNullOrWhiteSpace(ConnectionString))
+        throw new System.Exception(SoftmakeAll.SDK.Environment.NullConnectionString);
+
+      SoftmakeAll.SDK.OperationResult OperationResult = new SoftmakeAll.SDK.OperationResult();
+
+      System.Diagnostics.Stopwatch Stopwatch = new System.Diagnostics.Stopwatch();
+
+      try
+      {
+        using (System.Data.SqlClient.SqlBulkCopy SqlBulkCopy = new System.Data.SqlClient.SqlBulkCopy(ConnectionString, System.Data.SqlClient.SqlBulkCopyOptions.TableLock | System.Data.SqlClient.SqlBulkCopyOptions.UseInternalTransaction))
+        {
+          SqlBulkCopy.DestinationTableName = DataTable.TableName;
+          if (BatchSize > 0) SqlBulkCopy.BatchSize = BatchSize;
+          Stopwatch.Start();
+          await SqlBulkCopy.WriteToServerAsync(DataTable);
+          Stopwatch.Stop();
+        }
+
+        OperationResult.ExitCode = 0;
+        OperationResult.Message = $"{DataTable.Rows.Count} records imported in {Stopwatch.ElapsedMilliseconds} milliseconds.";
+      }
+      catch (System.Exception ex)
+      {
+        Stopwatch.Stop();
+        OperationResult.Message = ex.Message;
+      }
+
+      return OperationResult;
     }
     #endregion
 
