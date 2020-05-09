@@ -663,7 +663,10 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
               }
               else
               {
-                Result.Data = AllResults.ToJsonElement();
+                if (AllResults.Count == 1)
+                  Result.Data = AllResults[0];
+                else
+                  Result.Data = AllResults.ToJsonElement();
               }
             }
           }
@@ -769,7 +772,10 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
               }
               else
               {
-                Result.Data = AllResults.ToJsonElement();
+                if (AllResults.Count == 1)
+                  Result.Data = AllResults[0];
+                else
+                  Result.Data = AllResults.ToJsonElement();
               }
             }
           }
