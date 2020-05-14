@@ -1,5 +1,7 @@
 ﻿namespace SoftmakeAll.SDK.WebAPI
 {
+  [Microsoft.AspNetCore.Mvc.ApiController]
+  [Microsoft.AspNetCore.Authorization.Authorize]
   public abstract class ControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
   {
     #region Methods
@@ -34,27 +36,22 @@
         case -4:
         case -3:
         case -2:
-          { return Microsoft.AspNetCore.Http.StatusCodes.Status500InternalServerError; }
+          return Microsoft.AspNetCore.Http.StatusCodes.Status500InternalServerError;
 
         case -1:
-          { return Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest; }
+          return Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest;
 
         case 0:
-          { return Microsoft.AspNetCore.Http.StatusCodes.Status200OK; }
-
-        case 1:
-          { return Microsoft.AspNetCore.Http.StatusCodes.Status409Conflict; }
-
-        default:
-          { return Microsoft.AspNetCore.Http.StatusCodes.Status206PartialContent; }
+          return Microsoft.AspNetCore.Http.StatusCodes.Status200OK;
       }
+      return ExitCode;
     }
     private async System.Threading.Tasks.Task WriteEventByStatusCodeAsync(System.Int32 StatusCode, System.String Message)
     {
       if (this.HttpContext != null)
         return;
 
-      const System.String ProcedureName = "SoftmakeAll.SDK.API.ControllerBase.StatusCodeResult";
+      const System.String ProcedureName = "SoftmakeAll.SDK.WebAPI.ControllerBase.WriteEventByStatusCodeAsync";
 
       if (!(System.String.IsNullOrEmpty(Message)))
         Message = System.String.Concat(": ", Message);
