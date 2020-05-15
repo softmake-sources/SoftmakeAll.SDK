@@ -19,7 +19,8 @@
 Este pacote fornece apoio para a construção de bibliotecas instaláveis no Softmake All.</Description>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
+    <PackageReleaseNotes></PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -38,7 +39,6 @@ Este pacote fornece apoio para a construção de bibliotecas instaláveis no Sof
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SDK.DataAccess.SQLServer\SDK.DataAccess.SQLServer.csproj" />
     <ProjectReference Include="..\SDK\SDK.csproj" />
   </ItemGroup>
 

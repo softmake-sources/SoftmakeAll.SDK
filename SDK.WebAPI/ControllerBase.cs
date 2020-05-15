@@ -4,6 +4,17 @@
   [Microsoft.AspNetCore.Authorization.Authorize]
   public abstract class ControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
   {
+    #region Fields
+    private readonly SoftmakeAll.SDK.DataAccess.ConnectorBase DatabaseInstance;
+    #endregion
+
+    #region Constructor
+    public ControllerBase(SoftmakeAll.SDK.DataAccess.ConnectorBase DatabaseInstanceContext)
+    {
+      this.DatabaseInstance = DatabaseInstanceContext;
+    }
+    #endregion
+
     #region Methods
     protected virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> StatusCodeAsync()
     {
@@ -48,7 +59,7 @@
     }
     private async System.Threading.Tasks.Task WriteEventByStatusCodeAsync(System.Int32 StatusCode, System.String Message)
     {
-      if (this.HttpContext != null)
+      if (this.DatabaseInstance == null)
         return;
 
       const System.String ProcedureName = "SoftmakeAll.SDK.WebAPI.ControllerBase.WriteEventByStatusCodeAsync";
@@ -56,32 +67,30 @@
       if (!(System.String.IsNullOrEmpty(Message)))
         Message = System.String.Concat(": ", Message);
 
-      SoftmakeAll.SDK.DataAccess.ConnectorBase Database = new SoftmakeAll.SDK.DataAccess.SQLServer.Connector();
-
       switch (StatusCode)
       {
         case Microsoft.AspNetCore.Http.StatusCodes.Status200OK:
-          await Database.WriteApplicationDebugEventAsync(ProcedureName, System.String.Concat("200 - OK", Message));
+          await this.DatabaseInstance.WriteApplicationDebugEventAsync(ProcedureName, System.String.Concat("200 - OK", Message));
           break;
 
         case Microsoft.AspNetCore.Http.StatusCodes.Status206PartialContent:
-          await Database.WriteApplicationWarningEventAsync(ProcedureName, System.String.Concat("206 - PartialContent", Message));
+          await this.DatabaseInstance.WriteApplicationWarningEventAsync(ProcedureName, System.String.Concat("206 - PartialContent", Message));
           break;
 
         case Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest:
-          await Database.WriteApplicationErrorEventAsync(ProcedureName, System.String.Concat("400 - BadRequest", Message));
+          await this.DatabaseInstance.WriteApplicationErrorEventAsync(ProcedureName, System.String.Concat("400 - BadRequest", Message));
           break;
 
         case Microsoft.AspNetCore.Http.StatusCodes.Status409Conflict:
-          await Database.WriteApplicationWarningEventAsync(ProcedureName, System.String.Concat("409 - Conflict", Message));
+          await this.DatabaseInstance.WriteApplicationWarningEventAsync(ProcedureName, System.String.Concat("409 - Conflict", Message));
           break;
 
         case Microsoft.AspNetCore.Http.StatusCodes.Status500InternalServerError:
-          await Database.WriteApplicationErrorEventAsync(ProcedureName, System.String.Concat("500 - InternalServerError", Message));
+          await this.DatabaseInstance.WriteApplicationErrorEventAsync(ProcedureName, System.String.Concat("500 - InternalServerError", Message));
           break;
 
         default:
-          await Database.WriteApplicationWarningEventAsync(ProcedureName, System.String.Concat(StatusCode, Message));
+          await this.DatabaseInstance.WriteApplicationWarningEventAsync(ProcedureName, System.String.Concat(StatusCode, Message));
           break;
       }
     }

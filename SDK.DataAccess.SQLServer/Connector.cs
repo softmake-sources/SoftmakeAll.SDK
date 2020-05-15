@@ -96,30 +96,34 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
             continue;
           }
 
-          if (Line.Trim().ToLower().Contains("rowcount"))
+          System.String TrimmedLine = Line.Trim();
+          System.String TrimmedAndLoweredLine = TrimmedLine.ToLower();
+          if (TrimmedAndLoweredLine.StartsWith("use "))
+            continue;
+
+          if ((TrimmedAndLoweredLine.Contains("rowcount")) && (!(TrimmedAndLoweredLine.Contains("@@rowcount"))))
           {
             if (IsRowCountDefined)
               continue;
             IsRowCountDefined = true;
           }
 
-          if (Line.Trim() == "/*")
+          if (TrimmedLine.StartsWith("/*"))
           {
-            do
-              Line = StringReader.ReadLine();
-            while (Line.Trim() != "*/");
-            Line = StringReader.ReadLine();
+            while ((StringReader.Peek() > -1) && (!(StringReader.ReadLine().Trim().EndsWith("*/")))) ;
+            TrimmedLine = StringReader.ReadLine().Trim();
+            TrimmedAndLoweredLine = TrimmedLine.ToLower();
           }
-          if (System.String.IsNullOrWhiteSpace(Line))
+          if (System.String.IsNullOrWhiteSpace(TrimmedLine))
           {
             Buffer.AppendLine();
             continue;
           }
 
-          if (Line.StartsWith("--")) // To ignore inline comments
+          if (TrimmedLine.StartsWith("--")) // To ignore inline comments
             continue;
 
-          if (Line.Trim().ToUpper() == "GO")
+          if (TrimmedAndLoweredLine == "go")
           {
             if (Buffer.Length > 0)
               Result.Add(Buffer.ToString());
@@ -127,7 +131,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
           }
           else
           {
-            if (!(System.String.IsNullOrWhiteSpace(Line)))
+            if (!(System.String.IsNullOrWhiteSpace(TrimmedLine)))
               Buffer.AppendLine(Line);
           }
         }
@@ -154,30 +158,34 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
             continue;
           }
 
-          if (Line.Trim().ToLower().Contains("rowcount"))
+          System.String TrimmedLine = Line.Trim();
+          System.String TrimmedAndLoweredLine = TrimmedLine.ToLower();
+          if (TrimmedAndLoweredLine.StartsWith("use "))
+            continue;
+
+          if ((TrimmedAndLoweredLine.Contains("rowcount")) && (!(TrimmedAndLoweredLine.Contains("@@rowcount"))))
           {
             if (IsRowCountDefined)
               continue;
             IsRowCountDefined = true;
           }
 
-          if (Line.Trim() == "/*")
+          if (TrimmedLine.StartsWith("/*"))
           {
-            do
-              Line = await StringReader.ReadLineAsync();
-            while (Line.Trim() != "*/");
-            Line = await StringReader.ReadLineAsync();
+            while ((StringReader.Peek() > -1) && (!((await StringReader.ReadLineAsync()).Trim().EndsWith("*/")))) ;
+            TrimmedLine = (await StringReader.ReadLineAsync()).Trim();
+            TrimmedAndLoweredLine = TrimmedLine.ToLower();
           }
-          if (System.String.IsNullOrWhiteSpace(Line))
+          if (System.String.IsNullOrWhiteSpace(TrimmedLine))
           {
             Buffer.AppendLine();
             continue;
           }
 
-          if (Line.StartsWith("--")) // To ignore inline comments
+          if (TrimmedLine.StartsWith("--")) // To ignore inline comments
             continue;
 
-          if (Line.Trim().ToUpper() == "GO")
+          if (TrimmedAndLoweredLine == "go")
           {
             if (Buffer.Length > 0)
               Result.Add(Buffer.ToString());
@@ -185,7 +193,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
           }
           else
           {
-            if (!(System.String.IsNullOrWhiteSpace(Line)))
+            if (!(System.String.IsNullOrWhiteSpace(TrimmedLine)))
               Buffer.AppendLine(Line);
           }
         }
