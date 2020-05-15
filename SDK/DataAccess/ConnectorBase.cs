@@ -27,9 +27,7 @@ namespace SoftmakeAll.SDK.DataAccess
       this.SessionContextVariables = SoftmakeAll.SDK.DataAccess.Environment.ApplicationSessionContextVariables;
       if (this.SessionContextVariables == null)
         this.SessionContextVariables = new System.Collections.Generic.Dictionary<System.String, System.String>();
-
-      if (ApplicationUser != null)
-        this.FillSessionContextVariables(SoftmakeAll.SDK.DataAccess.Environment.ClaimsToSessionContextVariables);
+      this.FillSessionContextVariables(SoftmakeAll.SDK.DataAccess.Environment.ClaimsToSessionContextVariables);
     }
     #endregion
 
@@ -123,7 +121,7 @@ namespace SoftmakeAll.SDK.DataAccess
     private void FillSessionContextVariables(System.Collections.Generic.List<System.String> ClaimsToSessionContextVariables)
     {
       this.SessionContextVariables.Clear();
-      if ((this.ApplicationUser == null) || (ClaimsToSessionContextVariables == null) || (!(ClaimsToSessionContextVariables.Any())))
+      if ((this.ApplicationUser == null) || (!(this.ApplicationUser.Claims.Any())) || (ClaimsToSessionContextVariables == null) || (!(ClaimsToSessionContextVariables.Any())))
         return;
 
       foreach (System.String ClaimsToSessionContextVariable in ClaimsToSessionContextVariables)
