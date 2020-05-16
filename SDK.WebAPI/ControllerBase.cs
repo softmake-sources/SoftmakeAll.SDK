@@ -1,7 +1,6 @@
 ﻿namespace SoftmakeAll.SDK.WebAPI
 {
   [Microsoft.AspNetCore.Mvc.ApiController]
-  [Microsoft.AspNetCore.Authorization.Authorize]
   public abstract class ControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
   {
     #region Fields
@@ -12,6 +11,120 @@
     public ControllerBase(SoftmakeAll.SDK.DataAccess.ConnectorBase DatabaseInstanceContext)
     {
       this.DatabaseInstance = DatabaseInstanceContext;
+    }
+    #endregion
+
+    #region Endpoints
+    [Microsoft.AspNetCore.Mvc.HttpOptions()]
+    public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> OptionsAsync
+      (
+      )
+    {
+      base.HttpContext.Response.Headers["Allow"] = "OPTIONS, POST, GET, HEAD, PATCH, PUT, DELETE";
+      return await this.StatusCodeAsync();
+    }
+
+    [Microsoft.AspNetCore.Mvc.HttpPost()]
+    public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> PostAsync
+      (
+      [Microsoft.AspNetCore.Mvc.FromBody()]System.Text.Json.JsonElement Object
+      )
+    {
+      return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
+    }
+
+    [Microsoft.AspNetCore.Mvc.HttpPost()]
+    public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> PostAsync
+      (
+      System.Collections.Generic.List<Microsoft.AspNetCore.Http.IFormFile> Files
+      )
+    {
+      return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
+    }
+
+    [Microsoft.AspNetCore.Mvc.HttpGet("{ID:long?}")]
+    public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> GetAsync
+      (
+      [Microsoft.AspNetCore.Mvc.FromRoute()]System.Int64 ID
+      )
+    {
+      return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
+    }
+
+    [Microsoft.AspNetCore.Mvc.HttpHead("{ID:long?}")]
+    public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> HeadAsync
+      (
+      [Microsoft.AspNetCore.Mvc.FromRoute()]System.Int64 ID
+      )
+    {
+      await this.GetAsync(ID);
+      return await this.StatusCodeAsync(200);
+    }
+
+    [Microsoft.AspNetCore.Mvc.HttpGet()]
+    public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> GetAsync
+      (
+      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Fields")]System.String Fields,
+      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Filter")]System.String Filter,
+      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Sort")]System.String Sort,
+      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Skip")]System.Int32 Skip,
+      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Take")]System.Int32 Take
+      )
+    {
+      return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
+    }
+
+    [Microsoft.AspNetCore.Mvc.HttpHead()]
+    public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> HeadAsync
+      (
+      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Fields")]System.String Fields,
+      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Filter")]System.String Filter,
+      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Sort")]System.String Sort,
+      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Skip")]System.Int32 Skip,
+      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Take")]System.Int32 Take
+      )
+    {
+      await this.GetAsync(Fields, Filter, Sort, Skip, Take);
+      return await this.StatusCodeAsync(200);
+    }
+
+    [Microsoft.AspNetCore.Mvc.HttpPatch("{ID:long}")]
+    public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> PatchAsync
+      (
+      [Microsoft.AspNetCore.Mvc.FromRoute()]System.Int64 ID,
+      [Microsoft.AspNetCore.Mvc.FromBody()]System.Text.Json.JsonElement Object
+      )
+    {
+      return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
+    }
+
+    [Microsoft.AspNetCore.Mvc.HttpPut("{ID:long}")]
+    public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> PutAsync
+      (
+      [Microsoft.AspNetCore.Mvc.FromRoute()]System.Int64 ID,
+      [Microsoft.AspNetCore.Mvc.FromBody()]System.Text.Json.JsonElement Object
+      )
+    {
+      return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
+    }
+
+    [Microsoft.AspNetCore.Mvc.HttpPut("{ID:long}")]
+    public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> PutAsync
+      (
+      [Microsoft.AspNetCore.Mvc.FromRoute()]System.Int64 ID,
+      System.Collections.Generic.List<Microsoft.AspNetCore.Http.IFormFile> Files
+      )
+    {
+      return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
+    }
+
+    [Microsoft.AspNetCore.Mvc.HttpDelete("{ID:long}")]
+    public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> DeleteAsync
+      (
+      [Microsoft.AspNetCore.Mvc.FromRoute()]System.Int64 ID
+      )
+    {
+      return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
     }
     #endregion
 
@@ -36,6 +149,12 @@
         return await this.StatusCodeAsync();
 
       return await this.StatusCodeAsync(new SoftmakeAll.SDK.OperationResult() { Message = Exception.Message });
+    }
+    protected virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> StatusCodeAsync(System.Int32 StatusCode) { return await this.StatusCodeAsync(StatusCode, null); }
+    protected virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> StatusCodeAsync(System.Int32 StatusCode, System.String Message)
+    {
+      await this.WriteEventByStatusCodeAsync(StatusCode, Message);
+      return this.StatusCode(StatusCode, null);
     }
 
     private System.Int32 DefineHTTPStatusCode(System.Int32 ExitCode)
@@ -64,35 +183,26 @@
 
       const System.String ProcedureName = "SoftmakeAll.SDK.WebAPI.ControllerBase.WriteEventByStatusCodeAsync";
 
-      if (!(System.String.IsNullOrEmpty(Message)))
-        Message = System.String.Concat(": ", Message);
+      System.String Description = $"{StatusCode}{(System.String.IsNullOrWhiteSpace(Message) ? Message : $": {Message}")}";
 
       switch (StatusCode)
       {
         case Microsoft.AspNetCore.Http.StatusCodes.Status200OK:
-          await this.DatabaseInstance.WriteApplicationDebugEventAsync(ProcedureName, System.String.Concat("200 - OK", Message));
-          break;
+          await this.DatabaseInstance.WriteApplicationDebugEventAsync(ProcedureName, Description);
+          return;
 
         case Microsoft.AspNetCore.Http.StatusCodes.Status206PartialContent:
-          await this.DatabaseInstance.WriteApplicationWarningEventAsync(ProcedureName, System.String.Concat("206 - PartialContent", Message));
-          break;
+        case Microsoft.AspNetCore.Http.StatusCodes.Status409Conflict:
+          await this.DatabaseInstance.WriteApplicationWarningEventAsync(ProcedureName, Description);
+          return;
 
         case Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest:
-          await this.DatabaseInstance.WriteApplicationErrorEventAsync(ProcedureName, System.String.Concat("400 - BadRequest", Message));
-          break;
-
-        case Microsoft.AspNetCore.Http.StatusCodes.Status409Conflict:
-          await this.DatabaseInstance.WriteApplicationWarningEventAsync(ProcedureName, System.String.Concat("409 - Conflict", Message));
-          break;
-
         case Microsoft.AspNetCore.Http.StatusCodes.Status500InternalServerError:
-          await this.DatabaseInstance.WriteApplicationErrorEventAsync(ProcedureName, System.String.Concat("500 - InternalServerError", Message));
-          break;
-
-        default:
-          await this.DatabaseInstance.WriteApplicationWarningEventAsync(ProcedureName, System.String.Concat(StatusCode, Message));
-          break;
+          await this.DatabaseInstance.WriteApplicationErrorEventAsync(ProcedureName, Description);
+          return;
       }
+
+      await this.DatabaseInstance.WriteApplicationInformationEventAsync(ProcedureName, Description);
     }
     #endregion
   }
