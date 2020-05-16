@@ -8,6 +8,7 @@
     #endregion
 
     #region Constructor
+    public ControllerBase() { }
     public ControllerBase(SoftmakeAll.SDK.DataAccess.ConnectorBase DatabaseInstanceContext)
     {
       this.DatabaseInstance = DatabaseInstanceContext;
