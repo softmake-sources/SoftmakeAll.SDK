@@ -35,7 +35,7 @@
     }
 
     [Microsoft.AspNetCore.Mvc.HttpPost()]
-    public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> PostAsync
+    public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> PostAsync
       (
       System.Collections.Generic.List<Microsoft.AspNetCore.Http.IFormFile> Files
       )
@@ -110,7 +110,7 @@
     }
 
     [Microsoft.AspNetCore.Mvc.HttpPut("{ID:long}")]
-    public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> PutAsync
+    public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> PutAsync
       (
       [Microsoft.AspNetCore.Mvc.FromRoute()]System.Int64 ID,
       System.Collections.Generic.List<Microsoft.AspNetCore.Http.IFormFile> Files

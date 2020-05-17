@@ -10,31 +10,44 @@
     #endregion
 
     #region Methods
-    private static System.Text.Json.JsonSerializerOptions CreateJsonSerializerOptions(System.Boolean IgnoreNullValues)
+    private static System.Text.Json.JsonSerializerOptions CreateJsonSerializerOptions(System.Boolean UseCamelCase, System.Boolean IgnoreNullValues)
     {
       System.Text.Json.JsonSerializerOptions JsonSerializerOptions = new System.Text.Json.JsonSerializerOptions();
-      JsonSerializerOptions.IgnoreNullValues = IgnoreNullValues;
-      JsonSerializerOptions.PropertyNamingPolicy = null;
-      JsonSerializerOptions.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
+      if (UseCamelCase)
+      {
+        JsonSerializerOptions.DictionaryKeyPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+        JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+        JsonSerializerOptions.PropertyNameCaseInsensitive = false;
+      }
+      else
+      {
+        JsonSerializerOptions.DictionaryKeyPolicy = null;
+        JsonSerializerOptions.PropertyNamingPolicy = null;
+        JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+      }
       JsonSerializerOptions.Converters.Add(new SoftmakeAll.SDK.Helpers.JSON.JsonElementSerializationConverter());
+      JsonSerializerOptions.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
+      JsonSerializerOptions.IgnoreNullValues = IgnoreNullValues;
       return JsonSerializerOptions;
     }
 
-    public static System.String Serialize<T>(this T Object) { return SoftmakeAll.SDK.Helpers.JSON.Extensions.JSONExtensions.Serialize(Object, true); }
-    public static System.String Serialize<T>(this T Object, System.Boolean IgnoreNullValues)
+    public static System.String Serialize<T>(this T Object) { return SoftmakeAll.SDK.Helpers.JSON.Extensions.JSONExtensions.Serialize(Object, false, true); }
+    public static System.String Serialize<T>(this T Object, System.Boolean UseCamelCase) { return SoftmakeAll.SDK.Helpers.JSON.Extensions.JSONExtensions.Serialize(Object, UseCamelCase, true); }
+    public static System.String Serialize<T>(this T Object, System.Boolean UseCamelCase, System.Boolean IgnoreNullValues)
     {
       if (Object == null)
         return null;
 
-      return System.Text.Json.JsonSerializer.Serialize(Object, SoftmakeAll.SDK.Helpers.JSON.Extensions.JSONExtensions.CreateJsonSerializerOptions(IgnoreNullValues));
+      return System.Text.Json.JsonSerializer.Serialize(Object, SoftmakeAll.SDK.Helpers.JSON.Extensions.JSONExtensions.CreateJsonSerializerOptions(UseCamelCase, IgnoreNullValues));
     }
-    public static T Deserialize<T>(this System.String String) { return SoftmakeAll.SDK.Helpers.JSON.Extensions.JSONExtensions.Deserialize<T>(String, true); }
-    public static T Deserialize<T>(this System.String String, System.Boolean IgnoreNullValues)
+    public static T Deserialize<T>(this System.String String) { return SoftmakeAll.SDK.Helpers.JSON.Extensions.JSONExtensions.Deserialize<T>(String, false, true); }
+    public static T Deserialize<T>(this System.String String, System.Boolean UseCamelCase) { return SoftmakeAll.SDK.Helpers.JSON.Extensions.JSONExtensions.Deserialize<T>(String, UseCamelCase, true); }
+    public static T Deserialize<T>(this System.String String, System.Boolean UseCamelCase, System.Boolean IgnoreNullValues)
     {
       if (System.String.IsNullOrEmpty(String))
         return default(T);
 
-      return System.Text.Json.JsonSerializer.Deserialize<T>(String, SoftmakeAll.SDK.Helpers.JSON.Extensions.JSONExtensions.CreateJsonSerializerOptions(IgnoreNullValues));
+      return System.Text.Json.JsonSerializer.Deserialize<T>(String, SoftmakeAll.SDK.Helpers.JSON.Extensions.JSONExtensions.CreateJsonSerializerOptions(UseCamelCase, IgnoreNullValues));
     }
     public static System.Text.Json.JsonElement ToJsonElement(this System.Object Object) { return Object.ToJsonElement(false); }
     public static System.Text.Json.JsonElement ToJsonElement(this System.Object Object, System.Boolean ThrowOnError)
