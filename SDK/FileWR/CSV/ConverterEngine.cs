@@ -71,11 +71,16 @@ namespace SoftmakeAll.SDK.FileWR.CSV
           if (System.String.IsNullOrWhiteSpace(CurrentLine))
             continue;
 
+          if (CurrentLine.Count(c => c == '"') % 2 != 0)
+            continue;
+
           System.String[] Columns = System.Text.RegularExpressions.Regex.Split(CurrentLine, RegexSplit).Where((c, i) => i % 2 == 1).ToArray();
-          System.Int32 MaxColumns = System.Math.Min(FileColumns.Count, Columns.Length);
-          for (System.Int32 i = 0; i < MaxColumns; i++)
+          if (FileColumns.Count != Columns.Length)
+            continue;
+
+          for (System.Int32 i = 0; i < Columns.Length; i++)
           {
-            if ((Columns[i].StartsWith('\"')) && (Columns[i].EndsWith('\"')))
+            if ((Columns[i].StartsWith('"')) && (Columns[i].EndsWith('"')))
               Columns[i] = Columns[i][1..^1];
 
             FileColumns[i].AllowNulls = System.String.IsNullOrEmpty(Columns[i]);
@@ -84,10 +89,11 @@ namespace SoftmakeAll.SDK.FileWR.CSV
             else
               continue;
 
-            if ((this.CultureInfo == null) && (this.SpecificColumnsCultureInfo.Count == 0))
+            System.Globalization.CultureInfo ConverterCultureInfo = this.GetConverterCultureInfo(FileColumns[i].Index);
+            if (ConverterCultureInfo == null)
               continue;
 
-            this.DefineFileColumnProperties(FileColumns[i], Columns[i]);
+            this.DefineFileColumnProperties(FileColumns[i], Columns[i], ConverterCultureInfo);
           }
         }
 
@@ -110,25 +116,33 @@ namespace SoftmakeAll.SDK.FileWR.CSV
           if (System.String.IsNullOrWhiteSpace(CurrentLine))
             continue;
 
-          System.Data.DataRow DataRow = Result.Rows.Add();
+          if (CurrentLine.Count(c => c == '"') % 2 != 0)
+            continue;
+
           System.String[] Columns = System.Text.RegularExpressions.Regex.Split(CurrentLine, RegexSplit).Where((c, i) => i % 2 == 1).ToArray();
-          System.Int32 MaxColumns = System.Math.Min(FileColumns.Count, Columns.Length);
-          for (System.Int32 i = 0; i < MaxColumns; i++)
+          if (FileColumns.Count != Columns.Length)
+            continue;
+
+          System.Data.DataRow DataRow = Result.Rows.Add();
+
+          for (System.Int32 i = 0; i < Columns.Length; i++)
             if (System.String.IsNullOrEmpty(Columns[i]))
               DataRow[i] = System.Convert.DBNull;
             else
             {
-              if ((Columns[i].StartsWith('\"')) && (Columns[i].EndsWith('\"')))
-                Columns[i] = Columns[i][1..^1];
+              if (Columns[i].StartsWith('"'))
+                Columns[i] = Columns[i][1..^0];
+              if (Columns[i].EndsWith('"'))
+                Columns[i] = Columns[i][0..^1];
 
-              if ((this.CultureInfo == null) && (this.SpecificColumnsCultureInfo.Count == 0))
+              System.Globalization.CultureInfo ConverterCultureInfo = this.GetConverterCultureInfo(i);
+              if (ConverterCultureInfo == null)
               {
                 DataRow[i] = System.Net.WebUtility.HtmlDecode(Columns[i]);
                 continue;
               }
-
-              System.Globalization.CultureInfo ConverterFormatProvider = this.GetConverterFormatProvider(i);
-              System.String NumberGroupSeparator = ConverterFormatProvider.NumberFormat.NumberGroupSeparator;
+              
+              System.String NumberGroupSeparator = ConverterCultureInfo.NumberFormat.NumberGroupSeparator;
 
               switch (FileColumns[i].DataTypeName)
               {
@@ -136,19 +150,19 @@ namespace SoftmakeAll.SDK.FileWR.CSV
                   DataRow[i] = System.Int32.Parse(Columns[i].Replace("true", "1").Replace("false", "0"));
                   break;
                 case "DateTime":
-                  DataRow[i] = System.Convert.ToDateTime(Columns[i], ConverterFormatProvider);
+                  DataRow[i] = System.Convert.ToDateTime(Columns[i], ConverterCultureInfo);
                   break;
                 case "Int32":
-                  DataRow[i] = System.Convert.ToInt32(System.Text.RegularExpressions.Regex.Replace(Columns[i], @$"[\-\+\{NumberGroupSeparator}]", ""), ConverterFormatProvider);
+                  DataRow[i] = System.Convert.ToInt32(System.Text.RegularExpressions.Regex.Replace(Columns[i], @$"[\-\+\{NumberGroupSeparator}]", ""), ConverterCultureInfo);
                   break;
                 case "Int64":
-                  DataRow[i] = System.Convert.ToInt64(System.Text.RegularExpressions.Regex.Replace(Columns[i], @$"[\-\+\{NumberGroupSeparator}]", ""), ConverterFormatProvider);
+                  DataRow[i] = System.Convert.ToInt64(System.Text.RegularExpressions.Regex.Replace(Columns[i], @$"[\-\+\{NumberGroupSeparator}]", ""), ConverterCultureInfo);
                   break;
                 case "Single":
-                  DataRow[i] = System.Convert.ToSingle(Columns[i], ConverterFormatProvider);
+                  DataRow[i] = System.Convert.ToSingle(Columns[i], ConverterCultureInfo);
                   break;
                 case "Double":
-                  DataRow[i] = System.Convert.ToDouble(Columns[i], ConverterFormatProvider);
+                  DataRow[i] = System.Convert.ToDouble(Columns[i], ConverterCultureInfo);
                   break;
                 default:
                   DataRow[i] = System.Net.WebUtility.HtmlDecode(Columns[i]);
@@ -163,7 +177,7 @@ namespace SoftmakeAll.SDK.FileWR.CSV
 
       return Result;
     }
-    private void DefineFileColumnProperties(SoftmakeAll.SDK.FileWR.CSV.FileColumn FileColumn, System.String Value)
+    private void DefineFileColumnProperties(SoftmakeAll.SDK.FileWR.CSV.FileColumn FileColumn, System.String Value, System.Globalization.CultureInfo CultureInfo)
     {
       Value = Value.ToLower();
 
@@ -172,8 +186,6 @@ namespace SoftmakeAll.SDK.FileWR.CSV
         FileColumn.DataTypeName = "Boolean";
         return;
       }
-
-      System.Globalization.CultureInfo ConverterFormatProvider = this.GetConverterFormatProvider(FileColumn.Index);
 
       if ((Value.Length == 10) && (Value.Count(c => ((c == '/') || (c == '-'))) == 2))
       {
@@ -193,11 +205,11 @@ namespace SoftmakeAll.SDK.FileWR.CSV
         return;
       }
 
-      System.String NumberGroupSeparator = ConverterFormatProvider.NumberFormat.NumberGroupSeparator;
+      System.String NumberGroupSeparator = CultureInfo.NumberFormat.NumberGroupSeparator;
       if (System.Text.RegularExpressions.Regex.Replace(Value, @$"[\-\+\{NumberGroupSeparator}]", "").All(c => System.Char.IsNumber(c)))
       {
         System.Int64 Parsed = 0;
-        if (!(System.Int64.TryParse(Value, System.Globalization.NumberStyles.Any, ConverterFormatProvider, out Parsed)))
+        if (!(System.Int64.TryParse(Value, System.Globalization.NumberStyles.Any, CultureInfo, out Parsed)))
         {
           FileColumn.DataTypeName = "String";
           return;
@@ -212,7 +224,7 @@ namespace SoftmakeAll.SDK.FileWR.CSV
       if ((System.Text.RegularExpressions.Regex.Replace(Value, @"[\-\+\.\,]", "").All(c => System.Char.IsNumber(c))))
       {
         System.Double Parsed = 0;
-        if (!(System.Double.TryParse(Value, System.Globalization.NumberStyles.Any, ConverterFormatProvider, out Parsed)))
+        if (!(System.Double.TryParse(Value, System.Globalization.NumberStyles.Any, CultureInfo, out Parsed)))
         {
           FileColumn.DataTypeName = "String";
           return;
@@ -226,7 +238,7 @@ namespace SoftmakeAll.SDK.FileWR.CSV
 
       FileColumn.DataTypeName = "String";
     }
-    private System.Globalization.CultureInfo GetConverterFormatProvider(System.Int32 ColumnIndex)
+    private System.Globalization.CultureInfo GetConverterCultureInfo(System.Int32 ColumnIndex)
     {
       return this.SpecificColumnsCultureInfo.FirstOrDefault(c => c.ColumnIndex == ColumnIndex)?.CultureInfo ?? this.CultureInfo;
     }
