@@ -227,7 +227,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
       if (ConnectorObjects == null)
         return;
 
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.SQLServer.SQLServer.ExecutePreCommands";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.SQLServer.Connector.ExecutePreCommands";
 
 
       System.Data.SqlClient.SqlCommand OptionsCommand = new System.Data.SqlClient.SqlCommand();
@@ -297,7 +297,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
       if (ConnectorObjects == null)
         return;
 
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.SQLServer.SQLServer.ExecutePreCommandsAsync";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.SQLServer.Connector.ExecutePreCommandsAsync";
 
 
       System.Data.SqlClient.SqlCommand OptionsCommand = new System.Data.SqlClient.SqlCommand();
@@ -367,7 +367,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
     #region Command Execution
     protected override SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteCommand(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
     {
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.SQLServer.SQLServer.ExecuteCommand";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.SQLServer.Connector.ExecuteCommand";
 
       SoftmakeAll.SDK.OperationResult<System.Data.DataSet> Result = new SoftmakeAll.SDK.OperationResult<System.Data.DataSet>();
 
@@ -479,7 +479,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
     }
     protected override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteCommandAsync(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
     {
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.SQLServer.SQLServer.ExecuteCommandAsync";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.SQLServer.Connector.ExecuteCommandAsync";
 
       SoftmakeAll.SDK.OperationResult<System.Data.DataSet> Result = new SoftmakeAll.SDK.OperationResult<System.Data.DataSet>();
 
@@ -594,7 +594,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
 
     protected override SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ExecuteCommandForJSON(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
     {
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.SQLServer.SQLServer.ExecuteCommandForJSON";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.SQLServer.Connector.ExecuteCommandForJSON";
 
       SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> Result = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
       if (base.ShowPlan)
@@ -702,7 +702,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
     }
     protected override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> ExecuteCommandForJSONAsync(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
     {
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.SQLServer.SQLServer.ExecuteCommandForJSONAsync";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.SQLServer.Connector.ExecuteCommandForJSONAsync";
 
       SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> Result = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
       if (base.ShowPlan)
@@ -929,7 +929,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
       SoftmakeAll.SDK.DataAccess.SQLServer.Connector.ConnectorObjects ConnectorObjects = new SoftmakeAll.SDK.DataAccess.SQLServer.Connector.ConnectorObjects(ConnectionString, SystemEventWriteProcedureName, Parameters, System.Data.CommandType.StoredProcedure, false, false, base.ReadSummaries.Value);
 
 
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.SQLServer.SQLServer.WriteEvent";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.SQLServer.Connector.WriteEvent";
 
       try
       {
@@ -1039,7 +1039,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
       SoftmakeAll.SDK.DataAccess.SQLServer.Connector.ConnectorObjects ConnectorObjects = new SoftmakeAll.SDK.DataAccess.SQLServer.Connector.ConnectorObjects(ConnectionString, SystemEventWriteProcedureName, Parameters, System.Data.CommandType.StoredProcedure, false, false, base.ReadSummaries.Value);
 
 
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.SQLServer.SQLServer.WriteEventAsync";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.SQLServer.Connector.WriteEventAsync";
 
       try
       {
