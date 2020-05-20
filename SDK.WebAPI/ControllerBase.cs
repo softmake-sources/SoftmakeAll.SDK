@@ -43,26 +43,18 @@
       return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
     }
 
-    [Microsoft.AspNetCore.Mvc.HttpGet("{ID:long?}")]
+    [Microsoft.AspNetCore.Mvc.HttpGet("{ID:long}")]
+    [Microsoft.AspNetCore.Mvc.HttpHead("{ID:long}")]
     public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> GetAsync
       (
       [Microsoft.AspNetCore.Mvc.FromRoute()]System.Int64 ID
       )
     {
       return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
-    }
-
-    [Microsoft.AspNetCore.Mvc.HttpHead("{ID:long?}")]
-    public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> HeadAsync
-      (
-      [Microsoft.AspNetCore.Mvc.FromRoute()]System.Int64 ID
-      )
-    {
-      await this.GetAsync(ID);
-      return await this.StatusCodeAsync(200);
     }
 
     [Microsoft.AspNetCore.Mvc.HttpGet()]
+    [Microsoft.AspNetCore.Mvc.HttpHead()]
     public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> GetAsync
       (
       [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Fields")]System.String Fields,
@@ -73,20 +65,6 @@
       )
     {
       return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
-    }
-
-    [Microsoft.AspNetCore.Mvc.HttpHead()]
-    public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> HeadAsync
-      (
-      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Fields")]System.String Fields,
-      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Filter")]System.String Filter,
-      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Sort")]System.String Sort,
-      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Skip")]System.Int32 Skip,
-      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Take")]System.Int32 Take
-      )
-    {
-      await this.GetAsync(Fields, Filter, Sort, Skip, Take);
-      return await this.StatusCodeAsync(200);
     }
 
     [Microsoft.AspNetCore.Mvc.HttpPatch("{ID:long}")]

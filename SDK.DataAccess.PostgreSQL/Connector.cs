@@ -102,7 +102,7 @@ namespace SoftmakeAll.SDK.DataAccess.PostgreSQL
       if (ConnectorObjects == null)
         return;
 
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.PostgreSQL.PostgreSQL.ExecutePreCommands";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.PostgreSQL.Connector.ExecutePreCommands";
 
 
       if (!(System.String.IsNullOrWhiteSpace(SoftmakeAll.SDK.DataAccess.Environment.DefineSessionContextProcedureName)))
@@ -124,7 +124,7 @@ namespace SoftmakeAll.SDK.DataAccess.PostgreSQL
       if (ConnectorObjects == null)
         return;
 
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.PostgreSQL.PostgreSQL.ExecutePreCommandsAsync";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.PostgreSQL.Connector.ExecutePreCommandsAsync";
 
 
       if (!(System.String.IsNullOrWhiteSpace(SoftmakeAll.SDK.DataAccess.Environment.DefineSessionContextProcedureName)))
@@ -146,7 +146,7 @@ namespace SoftmakeAll.SDK.DataAccess.PostgreSQL
     #region Command Execution
     protected override SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteCommand(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
     {
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.PostgreSQL.PostgreSQL.ExecuteCommand";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.PostgreSQL.Connector.ExecuteCommand";
 
       SoftmakeAll.SDK.OperationResult<System.Data.DataSet> Result = new SoftmakeAll.SDK.OperationResult<System.Data.DataSet>();
 
@@ -238,7 +238,7 @@ namespace SoftmakeAll.SDK.DataAccess.PostgreSQL
     }
     protected override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteCommandAsync(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
     {
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.PostgreSQL.PostgreSQL.ExecuteCommandAsync";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.PostgreSQL.Connector.ExecuteCommandAsync";
 
       SoftmakeAll.SDK.OperationResult<System.Data.DataSet> Result = new SoftmakeAll.SDK.OperationResult<System.Data.DataSet>();
 
@@ -376,7 +376,7 @@ namespace SoftmakeAll.SDK.DataAccess.PostgreSQL
       SoftmakeAll.SDK.DataAccess.PostgreSQL.Connector.ConnectorObjects ConnectorObjects = new SoftmakeAll.SDK.DataAccess.PostgreSQL.Connector.ConnectorObjects(ConnectionString, SystemEventWriteProcedureName, Parameters, System.Data.CommandType.StoredProcedure, false, false, base.ReadSummaries.Value);
 
 
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.PostgreSQL.PostgreSQL.WriteEvent";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.PostgreSQL.Connector.WriteEvent";
 
       try
       {
@@ -472,7 +472,7 @@ namespace SoftmakeAll.SDK.DataAccess.PostgreSQL
       SoftmakeAll.SDK.DataAccess.PostgreSQL.Connector.ConnectorObjects ConnectorObjects = new SoftmakeAll.SDK.DataAccess.PostgreSQL.Connector.ConnectorObjects(ConnectionString, SystemEventWriteProcedureName, Parameters, System.Data.CommandType.StoredProcedure, false, false, base.ReadSummaries.Value);
 
 
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.PostgreSQL.PostgreSQL.WriteEventAsync";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.PostgreSQL.Connector.WriteEventAsync";
 
       try
       {

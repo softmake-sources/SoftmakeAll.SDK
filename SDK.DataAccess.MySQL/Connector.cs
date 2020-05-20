@@ -102,7 +102,7 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
       if (ConnectorObjects == null)
         return;
 
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.MySQL.MySQL.ExecutePreCommands";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.MySQL.Connector.ExecutePreCommands";
 
       if (!(System.String.IsNullOrWhiteSpace(SoftmakeAll.SDK.DataAccess.Environment.DefineSessionContextProcedureName)))
       {
@@ -123,7 +123,7 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
       if (ConnectorObjects == null)
         return;
 
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.MySQL.MySQL.ExecutePreCommandsAsync";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.MySQL.Connector.ExecutePreCommandsAsync";
 
       if (!(System.String.IsNullOrWhiteSpace(SoftmakeAll.SDK.DataAccess.Environment.DefineSessionContextProcedureName)))
       {
@@ -144,7 +144,7 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
     #region Command Execution
     protected override SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteCommand(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
     {
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.MySQL.MySQL.ExecuteCommand";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.MySQL.Connector.ExecuteCommand";
 
       SoftmakeAll.SDK.OperationResult<System.Data.DataSet> Result = new SoftmakeAll.SDK.OperationResult<System.Data.DataSet>();
 
@@ -236,7 +236,7 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
     }
     protected override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteCommandAsync(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
     {
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.MySQL.MySQL.ExecuteCommandAsync";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.MySQL.Connector.ExecuteCommandAsync";
 
       SoftmakeAll.SDK.OperationResult<System.Data.DataSet> Result = new SoftmakeAll.SDK.OperationResult<System.Data.DataSet>();
 
@@ -374,7 +374,7 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
       SoftmakeAll.SDK.DataAccess.MySQL.Connector.ConnectorObjects ConnectorObjects = new SoftmakeAll.SDK.DataAccess.MySQL.Connector.ConnectorObjects(ConnectionString, SystemEventWriteProcedureName, Parameters, System.Data.CommandType.StoredProcedure, false, false, base.ReadSummaries.Value);
 
 
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.MySQL.MySQL.WriteEvent";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.MySQL.Connector.WriteEvent";
 
       try
       {
@@ -470,7 +470,7 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
       SoftmakeAll.SDK.DataAccess.MySQL.Connector.ConnectorObjects ConnectorObjects = new SoftmakeAll.SDK.DataAccess.MySQL.Connector.ConnectorObjects(ConnectionString, SystemEventWriteProcedureName, Parameters, System.Data.CommandType.StoredProcedure, false, false, base.ReadSummaries.Value);
 
 
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.MySQL.MySQL.WriteEventAsync";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.MySQL.Connector.WriteEventAsync";
 
       try
       {

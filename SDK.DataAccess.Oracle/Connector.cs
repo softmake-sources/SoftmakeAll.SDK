@@ -97,7 +97,7 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
       if (ConnectorObjects == null)
         return;
 
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.Oracle.Oracle.ExecutePreCommands";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.Oracle.Connector.ExecutePreCommands";
 
       if (!(System.String.IsNullOrWhiteSpace(SoftmakeAll.SDK.DataAccess.Environment.DefineSessionContextProcedureName)))
       {
@@ -118,7 +118,7 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
       if (ConnectorObjects == null)
         return;
 
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.Oracle.Oracle.ExecutePreCommandsAsync";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.Oracle.Connector.ExecutePreCommandsAsync";
 
       if (!(System.String.IsNullOrWhiteSpace(SoftmakeAll.SDK.DataAccess.Environment.DefineSessionContextProcedureName)))
       {
@@ -139,7 +139,7 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
     #region Command Execution
     protected override SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteCommand(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
     {
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.Oracle.Oracle.ExecuteCommand";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.Oracle.Connector.ExecuteCommand";
 
       SoftmakeAll.SDK.OperationResult<System.Data.DataSet> Result = new SoftmakeAll.SDK.OperationResult<System.Data.DataSet>();
 
@@ -231,7 +231,7 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
     }
     protected override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteCommandAsync(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
     {
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.Oracle.Oracle.ExecuteCommandAsync";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.Oracle.Connector.ExecuteCommandAsync";
 
       SoftmakeAll.SDK.OperationResult<System.Data.DataSet> Result = new SoftmakeAll.SDK.OperationResult<System.Data.DataSet>();
 
@@ -369,7 +369,7 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
       SoftmakeAll.SDK.DataAccess.Oracle.Connector.ConnectorObjects ConnectorObjects = new SoftmakeAll.SDK.DataAccess.Oracle.Connector.ConnectorObjects(ConnectionString, SystemEventWriteProcedureName, Parameters, System.Data.CommandType.StoredProcedure, false, false, base.ReadSummaries.Value);
 
 
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.Oracle.Oracle.WriteEvent";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.Oracle.Connector.WriteEvent";
 
       try
       {
@@ -465,7 +465,7 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
       SoftmakeAll.SDK.DataAccess.Oracle.Connector.ConnectorObjects ConnectorObjects = new SoftmakeAll.SDK.DataAccess.Oracle.Connector.ConnectorObjects(ConnectionString, SystemEventWriteProcedureName, Parameters, System.Data.CommandType.StoredProcedure, false, false, base.ReadSummaries.Value);
 
 
-      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.Oracle.Oracle.WriteEventAsync";
+      const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.Oracle.Connector.WriteEventAsync";
 
       try
       {
