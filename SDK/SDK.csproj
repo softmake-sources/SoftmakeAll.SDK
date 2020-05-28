@@ -16,7 +16,7 @@ Principais funcionalidades implementadas:
 - Helpers para as bibliotecas, como System.Text.Json
 
 Não deixe de consultar os pacotes adicionais.</Description>
-    <PackageTags>SoftmakeAll SDK REST File Compression JSON</PackageTags>
+    <PackageTags>SoftmakeAll SDK REST File Compression JSON CSV</PackageTags>
     <NeutralLanguage>English (United States)</NeutralLanguage>
     <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
     <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
@@ -28,9 +28,9 @@ Não deixe de consultar os pacotes adicionais.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <AssemblyVersion>1.0.3.0</AssemblyVersion>
-    <FileVersion>1.0.3.0</FileVersion>
-    <Version>1.0.3</Version>
+    <AssemblyVersion>1.0.4.0</AssemblyVersion>
+    <FileVersion>1.0.4.0</FileVersion>
+    <Version>1.0.4</Version>
     <PackageReleaseNotes></PackageReleaseNotes>
   </PropertyGroup>
 

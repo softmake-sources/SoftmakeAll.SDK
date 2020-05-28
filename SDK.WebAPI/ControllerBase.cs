@@ -34,20 +34,21 @@
       return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
     }
 
-    [Microsoft.AspNetCore.Mvc.HttpPost()]
+    [Microsoft.AspNetCore.Mvc.HttpPost("{ID}")]
     public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> PostAsync
       (
+      [Microsoft.AspNetCore.Mvc.FromRoute()]System.String ID,
       System.Collections.Generic.List<Microsoft.AspNetCore.Http.IFormFile> Files
       )
     {
       return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
     }
 
-    [Microsoft.AspNetCore.Mvc.HttpGet("{ID:long}")]
-    [Microsoft.AspNetCore.Mvc.HttpHead("{ID:long}")]
+    [Microsoft.AspNetCore.Mvc.HttpGet("{ID}")]
+    [Microsoft.AspNetCore.Mvc.HttpHead("{ID}")]
     public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> GetAsync
       (
-      [Microsoft.AspNetCore.Mvc.FromRoute()]System.Int64 ID
+      [Microsoft.AspNetCore.Mvc.FromRoute()]System.String ID
       )
     {
       return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
@@ -67,40 +68,30 @@
       return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
     }
 
-    [Microsoft.AspNetCore.Mvc.HttpPatch("{ID:long}")]
+    [Microsoft.AspNetCore.Mvc.HttpPatch("{ID}")]
     public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> PatchAsync
       (
-      [Microsoft.AspNetCore.Mvc.FromRoute()]System.Int64 ID,
+      [Microsoft.AspNetCore.Mvc.FromRoute()]System.String ID,
       [Microsoft.AspNetCore.Mvc.FromBody()]System.Text.Json.JsonElement Object
       )
     {
       return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
     }
 
-    [Microsoft.AspNetCore.Mvc.HttpPut("{ID:long}")]
+    [Microsoft.AspNetCore.Mvc.HttpPut("{ID}")]
     public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> PutAsync
       (
-      [Microsoft.AspNetCore.Mvc.FromRoute()]System.Int64 ID,
+      [Microsoft.AspNetCore.Mvc.FromRoute()]System.String ID,
       [Microsoft.AspNetCore.Mvc.FromBody()]System.Text.Json.JsonElement Object
       )
     {
       return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
     }
 
-    [Microsoft.AspNetCore.Mvc.HttpPut("{ID:long}")]
-    public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> PutAsync
-      (
-      [Microsoft.AspNetCore.Mvc.FromRoute()]System.Int64 ID,
-      System.Collections.Generic.List<Microsoft.AspNetCore.Http.IFormFile> Files
-      )
-    {
-      return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
-    }
-
-    [Microsoft.AspNetCore.Mvc.HttpDelete("{ID:long}")]
+    [Microsoft.AspNetCore.Mvc.HttpDelete("{ID}")]
     public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> DeleteAsync
       (
-      [Microsoft.AspNetCore.Mvc.FromRoute()]System.Int64 ID
+      [Microsoft.AspNetCore.Mvc.FromRoute()]System.String ID
       )
     {
       return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);

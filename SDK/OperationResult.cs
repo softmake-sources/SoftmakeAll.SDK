@@ -8,6 +8,7 @@
     #endregion
 
     #region Properties
+    public System.Nullable<System.Int32> Count { get; set; }
     public System.Nullable<System.Int64> ID { get; set; }
     public System.String Message { get; set; }
     public System.Int16 ExitCode { get; set; }
