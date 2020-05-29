@@ -93,13 +93,6 @@ namespace SoftmakeAll.SDK.DataAccess
 
       return $"N'{String.Replace("'", "''")}'";
     }
-    public static System.Object GetCorrectParameterValue(System.Object OriginalValue)
-    {
-      if (OriginalValue == null)
-        return System.Convert.DBNull;
-      else
-        return OriginalValue;
-    }
     public static System.String GetCorrectColumnValue(System.Text.Json.JsonElement JsonElement)
     {
       switch (JsonElement.ValueKind)
@@ -151,7 +144,6 @@ namespace SoftmakeAll.SDK.DataAccess
       }
       return Rows;
     }
-
     public static System.Text.Json.JsonElement DataSetToJSON(System.Data.DataSet DataSet) { return SoftmakeAll.SDK.DataAccess.DatabaseValues.DataSetToJSON(DataSet, false); }
     public static System.Text.Json.JsonElement DataSetToJSON(System.Data.DataSet DataSet, System.Boolean IncludeNullValues)
     {

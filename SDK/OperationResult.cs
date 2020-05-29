@@ -4,18 +4,20 @@
   {
     #region Constructor
     public OperationResult() { this.ClearObjects(); }
-    public OperationResult(System.Boolean ConfigureForSuccess) { this.ClearObjects(ConfigureForSuccess); }
     #endregion
 
     #region Properties
-    public System.Nullable<System.Int64> ID { get; set; }
+    public System.Int32 ExitCode { get; set; }
     public System.String Message { get; set; }
-    public System.Int16 ExitCode { get; set; }
+    public System.String ID { get; set; }
+    public System.Nullable<System.Int32> Count { get; set; }
+
+    [System.Text.Json.Serialization.JsonIgnore]
+    public System.Boolean Success => ((this.ExitCode == 0) || (this.ExitCode == 200) || (this.ExitCode == 204));
     #endregion
 
     #region Methods
-    public virtual void ClearObjects(System.Boolean ConfigureForSuccess) { this.ID = null; this.Message = null; this.ExitCode = ConfigureForSuccess ? (short)0 : (short)-1; }
-    public virtual void ClearObjects() { this.ClearObjects(false); }
+    public virtual void ClearObjects() { this.Count = null; this.ID = null; this.Message = null; this.ExitCode = 0; }
     #endregion
   }
 
@@ -23,7 +25,6 @@
   {
     #region Constructor
     public OperationResult() : base() { }
-    public OperationResult(System.Boolean ConfigureForSuccess) : base(ConfigureForSuccess) { }
     #endregion
 
     #region Properties
@@ -31,8 +32,7 @@
     #endregion
 
     #region Methods
-    public override void ClearObjects(System.Boolean ConfigureForSuccess) { base.ClearObjects(ConfigureForSuccess); this.Data = default; }
-    public override void ClearObjects() { this.ClearObjects(false); }
+    public override void ClearObjects() { base.ClearObjects(); this.Data = default; }
     #endregion
   }
 }

@@ -18,9 +18,9 @@
 
 Este pacote fornece apoio para serviços de envio de e-mail utilizando Twilio SendGrid como provedor.</Description>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
-    <FileVersion>1.0.1.0</FileVersion>
-    <Version>1.0.1</Version>
+    <AssemblyVersion>1.0.2.0</AssemblyVersion>
+    <FileVersion>1.0.2.0</FileVersion>
+    <Version>1.0.2</Version>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
@@ -36,7 +36,7 @@ Este pacote fornece apoio para serviços de envio de e-mail utilizando Twilio Se
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SendGrid" Version="9.15.0" />
+    <PackageReference Include="SendGrid" Version="9.15.1" />
   </ItemGroup>
 
   <ItemGroup>

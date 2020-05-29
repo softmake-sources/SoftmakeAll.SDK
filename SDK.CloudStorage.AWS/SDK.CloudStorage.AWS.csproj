@@ -18,9 +18,9 @@
 
 Este pacote fornece apoio para administração de arquivos no AWS S3.</Description>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
-    <FileVersion>1.0.1.0</FileVersion>
-    <Version>1.0.1</Version>
+    <AssemblyVersion>1.0.2.0</AssemblyVersion>
+    <FileVersion>1.0.2.0</FileVersion>
+    <Version>1.0.2</Version>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
@@ -36,7 +36,7 @@ Este pacote fornece apoio para administração de arquivos no AWS S3.</Descripti
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.S3" Version="3.3.110.68" />
+    <PackageReference Include="AWSSDK.S3" Version="3.3.111.4" />
   </ItemGroup>
 
   <ItemGroup>

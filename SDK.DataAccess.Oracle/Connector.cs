@@ -31,7 +31,7 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
             if (Parameter.ParameterName == "ShowResultsTable")
               HasShowResultsTableParameter = true;
 
-            Parameter.Value = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetCorrectParameterValue(Parameter.Value);
+            Parameter.Value = Parameter.Value ?? System.Convert.DBNull;
             this.Command.Parameters.Add(Parameter);
           }
 
@@ -53,12 +53,6 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
       #region Properties
       public global::Oracle.ManagedDataAccess.Client.OracleConnection Connection { get; }
       public global::Oracle.ManagedDataAccess.Client.OracleCommand Command { get; }
-      #endregion
-
-      #region Fields
-      private const System.String Summaries = "SELECT NULL AS \"ID\", NULL AS \"Message\", 0 AS \"ExitCode\" FROM DUAL";
-      protected override System.String SummariesSQL => Summaries + ";";
-      protected override System.String SummariesSQLAsJSON => SummariesSQL;
       #endregion
     }
     #endregion
@@ -187,7 +181,7 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
 
             try
             {
-              Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt64(ResultsTable.Rows[0]["ID"]);
+              Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ResultsTable.Rows[0]["ID"]);
               Result.Message = System.Convert.ToString(ResultsTable.Rows[0]["Message"]);
               Result.ExitCode = System.Convert.ToInt16(SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ResultsTable.Rows[0]["ExitCode"]));
             }
@@ -280,7 +274,7 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
 
             try
             {
-              Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt64(ResultsTable.Rows[0]["ID"]);
+              Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ResultsTable.Rows[0]["ID"]);
               Result.Message = System.Convert.ToString(ResultsTable.Rows[0]["Message"]);
               Result.ExitCode = System.Convert.ToInt16(SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ResultsTable.Rows[0]["ExitCode"]));
             }
@@ -392,7 +386,7 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
           }
           else
           {
-            Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt64(ResultsTable.Rows[0]["ID"]);
+            Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ResultsTable.Rows[0]["ID"]);
             Result.Message = System.Convert.ToString(ResultsTable.Rows[0]["Message"]);
             Result.ExitCode = System.Convert.ToInt16(SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ResultsTable.Rows[0]["ExitCode"]));
 
@@ -488,7 +482,7 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
           }
           else
           {
-            Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt64(ResultsTable.Rows[0]["ID"]);
+            Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ResultsTable.Rows[0]["ID"]);
             Result.Message = System.Convert.ToString(ResultsTable.Rows[0]["Message"]);
             Result.ExitCode = System.Convert.ToInt16(SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ResultsTable.Rows[0]["ExitCode"]));
 

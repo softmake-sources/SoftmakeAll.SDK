@@ -64,7 +64,7 @@ namespace SoftmakeAll.SDK.NetReflector
       if (System.String.IsNullOrWhiteSpace(DirectoryPath)) throw new System.Exception(System.String.Format(SoftmakeAll.SDK.NetReflector.Compiler.NullOrEmptyMessage, "directory path"));
       if (!(System.IO.Directory.Exists(DirectoryPath))) throw new System.Exception("The directory path doesn't exists.");
 
-      SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> CompileResult = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>(true);
+      SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> CompileResult = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
       using (System.IO.MemoryStream MemoryStream = new System.IO.MemoryStream())
       {
         CompileResult = this.CompileTo(MemoryStream);
@@ -83,7 +83,7 @@ namespace SoftmakeAll.SDK.NetReflector
         SyntaxTrees.Add(Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree.ParseText(Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree.ParseText(CodeFile.Value.Trim()).GetRoot().NormalizeWhitespace(new System.String(' ', this.IndentSize), System.Environment.NewLine, false).ToFullString(), null, CodeFile.Key));
       if (!(SyntaxTrees.Any())) throw new System.Exception(System.String.Format(SoftmakeAll.SDK.NetReflector.Compiler.NullOrEmptyMessage, "Code"));
 
-      SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> CompileResult = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>(true);
+      SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> CompileResult = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
 
       System.Collections.Generic.List<Microsoft.CodeAnalysis.MetadataReference> CurrentReferences = new System.Collections.Generic.List<Microsoft.CodeAnalysis.MetadataReference>();
       if ((this.ReferencedFiles != null) && (this.ReferencedFiles.Any()))
