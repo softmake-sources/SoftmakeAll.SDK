@@ -25,41 +25,27 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
           CommandType = CommandType,
         };
 
-        System.Boolean HasShowResultsTableParameter = false;
+        if (ReadSummaries)
+        {
+          this.Command.Parameters.Add(new System.Data.SqlClient.SqlParameter("$Count", System.Data.SqlDbType.Int) { Direction = System.Data.ParameterDirection.Output });
+          this.Command.Parameters.Add(new System.Data.SqlClient.SqlParameter("$ID", System.Data.SqlDbType.VarChar, 256) { Direction = System.Data.ParameterDirection.Output });
+          this.Command.Parameters.Add(new System.Data.SqlClient.SqlParameter("$Message", System.Data.SqlDbType.VarChar, -1) { Direction = System.Data.ParameterDirection.Output });
+          this.Command.Parameters.Add(new System.Data.SqlClient.SqlParameter("$ExitCode", System.Data.SqlDbType.SmallInt) { Direction = System.Data.ParameterDirection.Output });
+        }
+
         if ((Parameters != null) && (Parameters.Any()))
           foreach (System.Data.Common.DbParameter Parameter in Parameters)
           {
-            if (Parameter.ParameterName == "ShowResultsTable")
-              HasShowResultsTableParameter = true;
-
-            Parameter.Value = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetCorrectParameterValue(Parameter.Value);
+            Parameter.Value = Parameter.Value ?? System.Convert.DBNull;
             this.Command.Parameters.Add(Parameter);
           }
 
-        if (!(ReadSummaries))
-          return;
-
-        if ((CommandType == System.Data.CommandType.StoredProcedure) && (!(HasShowResultsTableParameter)))
-          this.Command.Parameters.Add(new System.Data.SqlClient.SqlParameter
-          {
-            Direction = System.Data.ParameterDirection.Input,
-            ParameterName = "ShowResultsTable",
-            SqlDbType = System.Data.SqlDbType.Bit,
-            Size = 0,
-            Value = true
-          });
       }
       #endregion
 
       #region Properties
       public System.Data.SqlClient.SqlConnection Connection { get; }
       public System.Data.SqlClient.SqlCommand Command { get; }
-      #endregion
-
-      #region Fields
-      private const System.String Summaries = "SELECT NULL AS [ID], NULL AS [Message], 0 AS [ExitCode]";
-      protected override System.String SummariesSQL => Summaries + ";";
-      protected override System.String SummariesSQLAsJSON => Summaries + " FOR JSON PATH, WITHOUT_ARRAY_WRAPPER;";
       #endregion
     }
     #endregion
@@ -215,7 +201,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
         ParameterName = Name,
         SqlDbType = (System.Data.SqlDbType)Type,
         Direction = Direction,
-        Size = Size,
+        Size = ((Size == 0) && ((Type == (int)System.Data.SqlDbType.VarChar) || (Type == (int)System.Data.SqlDbType.NVarChar))) ? -1 : Size,
         Value = Value
       };
     }
@@ -390,6 +376,8 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
 
         System.Data.SqlClient.SqlDataAdapter Adapter = null;
 
+        base.WriteApplicationDebugEvent(ThisProcedureName, ConnectorObjects.Command.CommandText);
+
         try
         {
           System.Data.DataSet DataSet = new System.Data.DataSet();
@@ -410,53 +398,29 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
               DataSet.Tables.Add(DataTable);
             }
 
-          if (DataSet.Tables.Count == 0)
+          if ((base.ReadSummaries.Value) && (!(base.ShowPlan)))
           {
-            DataSet.Tables.Add(new System.Data.DataTable());
-            Result.ID = null;
-            if (!(base.ReadSummaries.Value))
+            System.Int16? DatabaseExitCode = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ConnectorObjects.Command.Parameters["$ExitCode"].Value);
+
+            Result.ExitCode = System.Convert.ToInt16(DatabaseExitCode);
+            Result.Message = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["$Message"].Value);
+            Result.Count = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt32(ConnectorObjects.Command.Parameters["$Count"].Value);
+            Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["$ID"].Value);
+
+            if ((DataSet.Tables.Count == 0) && (DatabaseExitCode == null))
             {
-              Result.Message = null;
-              Result.ExitCode = 0;
-            }
-            else
-            {
-              Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.NoInformationReceived, ConnectorObjects.Command.CommandText);
-              Result.ExitCode = -4;
-              base.WriteApplicationDebugEvent(ThisProcedureName, Result.Message);
+              if (System.String.IsNullOrWhiteSpace(Result.Message))
+                Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.NoInformationReceived, ConnectorObjects.Command.CommandText);
+              Result.ExitCode = 204;
+              base.WriteApplicationWarningEvent(ThisProcedureName, Result.Message);
             }
           }
-          else
-          {
-            if ((base.ShowPlan) || (!(base.ReadSummaries.Value)))
-            {
-              Result.ID = null;
-              Result.Message = null;
-              Result.ExitCode = 0;
-            }
-            else
-            {
-              System.Data.DataTable ResultsTable = DataSet.Tables[DataSet.Tables.Count - 1];
-              try
-              {
-                Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt64(ResultsTable.Rows[0]["ID"]);
-                Result.Message = System.Convert.ToString(ResultsTable.Rows[0]["Message"]);
-                Result.ExitCode = System.Convert.ToInt16(SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ResultsTable.Rows[0]["ExitCode"]));
-              }
-              catch
-              {
-                Result.ID = null;
-                Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ResultSetsNotExpected, ConnectorObjects.Command.CommandText);
-                Result.ExitCode = -3;
-                base.WriteApplicationDebugEvent(ThisProcedureName, Result.Message);
-              }
-            }
-          }
+          if (DataSet.Tables.Count == 0) DataSet = null;
           Result.Data = DataSet;
         }
         catch (System.Exception ex)
         {
-          Result.ExitCode = -5;
+          Result.ExitCode = 500;
           Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ExecutionError, ex.Message, ConnectorObjects.Command.CommandText);
           base.WriteApplicationErrorEvent(ThisProcedureName, Result.Message);
         }
@@ -467,7 +431,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
       }
       catch (System.Exception ex)
       {
-        Result.ExitCode = -6;
+        Result.ExitCode = 503;
         Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ConnectionError, ex.Message);
         base.WriteErrorFile(Result);
       }
@@ -524,53 +488,29 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
               DataSet.Tables.Add(DataTable);
             }
 
-          if (DataSet.Tables.Count == 0)
+          if ((base.ReadSummaries.Value) && (!(base.ShowPlan)))
           {
-            DataSet.Tables.Add(new System.Data.DataTable());
-            Result.ID = null;
-            if (!(base.ReadSummaries.Value))
+            System.Int16? DatabaseExitCode = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ConnectorObjects.Command.Parameters["$ExitCode"].Value);
+
+            Result.ExitCode = System.Convert.ToInt16(DatabaseExitCode);
+            Result.Message = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["$Message"].Value);
+            Result.Count = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt32(ConnectorObjects.Command.Parameters["$Count"].Value);
+            Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["$ID"].Value);
+
+            if ((DataSet.Tables.Count == 0) && (DatabaseExitCode == null))
             {
-              Result.Message = null;
-              Result.ExitCode = 0;
-            }
-            else
-            {
-              Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.NoInformationReceived, ConnectorObjects.Command.CommandText);
-              Result.ExitCode = -4;
-              await base.WriteApplicationDebugEventAsync(ThisProcedureName, Result.Message);
+              if (System.String.IsNullOrWhiteSpace(Result.Message))
+                Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.NoInformationReceived, ConnectorObjects.Command.CommandText);
+              Result.ExitCode = 204;
+              await base.WriteApplicationWarningEventAsync(ThisProcedureName, Result.Message);
             }
           }
-          else
-          {
-            if ((base.ShowPlan) || (!(base.ReadSummaries.Value)))
-            {
-              Result.ID = null;
-              Result.Message = null;
-              Result.ExitCode = 0;
-            }
-            else
-            {
-              System.Data.DataTable ResultsTable = DataSet.Tables[DataSet.Tables.Count - 1];
-              try
-              {
-                Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt64(ResultsTable.Rows[0]["ID"]);
-                Result.Message = System.Convert.ToString(ResultsTable.Rows[0]["Message"]);
-                Result.ExitCode = System.Convert.ToInt16(SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ResultsTable.Rows[0]["ExitCode"]));
-              }
-              catch
-              {
-                Result.ID = null;
-                Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ResultSetsNotExpected, ConnectorObjects.Command.CommandText);
-                Result.ExitCode = -3;
-                await base.WriteApplicationDebugEventAsync(ThisProcedureName, Result.Message);
-              }
-            }
-          }
+          if (DataSet.Tables.Count == 0) DataSet = null;
           Result.Data = DataSet;
         }
         catch (System.Exception ex)
         {
-          Result.ExitCode = -5;
+          Result.ExitCode = 500;
           Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ExecutionError, ex.Message, ConnectorObjects.Command.CommandText);
           await base.WriteApplicationErrorEventAsync(ThisProcedureName, Result.Message);
         }
@@ -581,7 +521,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
       }
       catch (System.Exception ex)
       {
-        Result.ExitCode = -6;
+        Result.ExitCode = 503;
         Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ConnectionError, ex.Message);
         await base.WriteErrorFileAsync(Result);
       }
@@ -614,8 +554,8 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
       }
 
 
-      if ((CommandType == System.Data.CommandType.Text) && (this.ReadBlocks(ProcedureNameOrCommandText).Count > 1))
-        throw new System.Exception("To execute multiple blocks, use the method 'ExecuteTextAsync(...)'.");
+      if ((CommandType == System.Data.CommandType.Text) && ((this.ReadBlocks(ProcedureNameOrCommandText)).Count > 1))
+        throw new System.Exception("To execute multiple blocks, use the method 'ExecuteText(...)'.");
 
 
       System.String ConnectionString = SoftmakeAll.SDK.DataAccess.SQLServer.Environment._ConnectionString;
@@ -628,6 +568,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
         ConnectorObjects.Connection.Open();
 
         this.ExecutePreCommands(ConnectorObjects);
+
 
         base.WriteApplicationDebugEvent(ThisProcedureName, ConnectorObjects.Command.CommandText);
 
@@ -644,44 +585,33 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
               AllResults.Add(JSONData.ToString().ToJsonElement());
             } while (DataReader.NextResult());
 
-            System.Boolean ResultsTableOK = false;
-            System.Text.Json.JsonElement LastResultSet = AllResults.LastOrDefault();
-            System.Text.Json.JsonElement ExitCodeJsonElement = LastResultSet.GetJsonElement("ExitCode");
+            if (AllResults.Count == 1)
+              Result.Data = AllResults[0];
+            else
+              Result.Data = AllResults.ToJsonElement();
 
-            if (ExitCodeJsonElement.IsValid())
+            if (base.ReadSummaries.Value)
             {
-              Result = LastResultSet.ToObject<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>>();
-              if (AllResults.Count >= 3)
-                Result.Data = AllResults.SkipLast(1).ToJsonElement();
-              else
-                Result.Data = AllResults[0];
-              ResultsTableOK = true;
-            }
+              System.Int16? DatabaseExitCode = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ConnectorObjects.Command.Parameters["$ExitCode"].Value);
 
-            if (!(ResultsTableOK))
-            {
-              Result.ID = null;
-              Result.Message = null;
-              Result.ExitCode = 0;
-              if (base.ReadSummaries.Value)
+              Result.ExitCode = System.Convert.ToInt16(DatabaseExitCode);
+              Result.Message = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["$Message"].Value);
+              Result.Count = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt32(ConnectorObjects.Command.Parameters["$Count"].Value);
+              Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["$ID"].Value);
+
+              if ((!(Result.Data.IsValid())) && (DatabaseExitCode == null))
               {
-                Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ResultSetsNotExpected, ConnectorObjects.Command.CommandText);
-                Result.ExitCode = -3;
-                base.WriteApplicationDebugEvent(ThisProcedureName, Result.Message);
-              }
-              else
-              {
-                if (AllResults.Count == 1)
-                  Result.Data = AllResults[0];
-                else
-                  Result.Data = AllResults.ToJsonElement();
+                if (System.String.IsNullOrWhiteSpace(Result.Message))
+                  Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.NoInformationReceived, ConnectorObjects.Command.CommandText);
+                Result.ExitCode = 204;
+                base.WriteApplicationWarningEvent(ThisProcedureName, Result.Message);
               }
             }
           }
         }
         catch (System.Exception ex)
         {
-          Result.ExitCode = -5;
+          Result.ExitCode = 500;
           Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ExecutionError, ex.Message, ConnectorObjects.Command.CommandText);
           base.WriteApplicationErrorEvent(ThisProcedureName, Result.Message);
         }
@@ -690,7 +620,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
       }
       catch (System.Exception ex)
       {
-        Result.ExitCode = -6;
+        Result.ExitCode = 503;
         Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ConnectionError, ex.Message);
         base.WriteErrorFile(Result);
       }
@@ -753,44 +683,33 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
               AllResults.Add(JSONData.ToString().ToJsonElement());
             } while (await DataReader.NextResultAsync());
 
-            System.Boolean ResultsTableOK = false;
-            System.Text.Json.JsonElement LastResultSet = AllResults.LastOrDefault();
-            System.Text.Json.JsonElement ExitCodeJsonElement = LastResultSet.GetJsonElement("ExitCode");
+            if (AllResults.Count == 1)
+              Result.Data = AllResults[0];
+            else
+              Result.Data = AllResults.ToJsonElement();
 
-            if (ExitCodeJsonElement.IsValid())
+            if (base.ReadSummaries.Value)
             {
-              Result = LastResultSet.ToObject<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>>();
-              if (AllResults.Count >= 3)
-                Result.Data = AllResults.SkipLast(1).ToJsonElement();
-              else
-                Result.Data = AllResults[0];
-              ResultsTableOK = true;
-            }
+              System.Int16? DatabaseExitCode = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ConnectorObjects.Command.Parameters["$ExitCode"].Value);
 
-            if (!(ResultsTableOK))
-            {
-              Result.ID = null;
-              Result.Message = null;
-              Result.ExitCode = 0;
-              if (base.ReadSummaries.Value)
+              Result.ExitCode = System.Convert.ToInt16(DatabaseExitCode);
+              Result.Message = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["$Message"].Value);
+              Result.Count = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt32(ConnectorObjects.Command.Parameters["$Count"].Value);
+              Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["$ID"].Value);
+
+              if ((!(Result.Data.IsValid())) && (DatabaseExitCode == null))
               {
-                Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ResultSetsNotExpected, ConnectorObjects.Command.CommandText);
-                Result.ExitCode = -3;
-                await base.WriteApplicationDebugEventAsync(ThisProcedureName, Result.Message);
-              }
-              else
-              {
-                if (AllResults.Count == 1)
-                  Result.Data = AllResults[0];
-                else
-                  Result.Data = AllResults.ToJsonElement();
+                if (System.String.IsNullOrWhiteSpace(Result.Message))
+                  Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.NoInformationReceived, ConnectorObjects.Command.CommandText);
+                Result.ExitCode = 204;
+                await base.WriteApplicationWarningEventAsync(ThisProcedureName, Result.Message);
               }
             }
           }
         }
         catch (System.Exception ex)
         {
-          Result.ExitCode = -5;
+          Result.ExitCode = 500;
           Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ExecutionError, ex.Message, ConnectorObjects.Command.CommandText);
           await base.WriteApplicationErrorEventAsync(ThisProcedureName, Result.Message);
         }
@@ -799,7 +718,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
       }
       catch (System.Exception ex)
       {
-        Result.ExitCode = -6;
+        Result.ExitCode = 503;
         Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ConnectionError, ex.Message);
         await base.WriteErrorFileAsync(Result);
       }
@@ -921,7 +840,6 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
       System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters = new System.Collections.Generic.List<System.Data.Common.DbParameter>();
       Parameters.Add(this.CreateInputParameter("ProcedureName", (int)System.Data.SqlDbType.VarChar, 261, ProcedureName));
       Parameters.Add(this.CreateInputParameter("Description", (int)System.Data.SqlDbType.VarChar, 0, Description));
-      Parameters.Add(this.CreateInputParameter("ShowResultsTable", (int)System.Data.SqlDbType.Bit, true));
 
       System.String ConnectionString = SoftmakeAll.SDK.DataAccess.SQLServer.Environment._ConnectionString;
       if (!(System.String.IsNullOrEmpty(base.ConnectionString)))
@@ -966,7 +884,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
           }
           else
           {
-            Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt64(ResultsTable.Rows[0]["ID"]);
+            Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ResultsTable.Rows[0]["ID"]);
             Result.Message = System.Convert.ToString(ResultsTable.Rows[0]["Message"]);
             Result.ExitCode = System.Convert.ToInt16(SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ResultsTable.Rows[0]["ExitCode"]));
 
@@ -976,7 +894,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
         }
         catch (System.Exception ex)
         {
-          Result.ExitCode = -5;
+          Result.ExitCode = 500;
           Result.Message = System.String.Concat(ThisProcedureName, " -> ", System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ExecutionError, ex.Message, ConnectorObjects.Command.CommandText));
           base.WriteErrorFile(Result);
         }
@@ -987,7 +905,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
       }
       catch (System.Exception ex)
       {
-        Result.ExitCode = -6;
+        Result.ExitCode = 503;
         Result.Message = System.String.Concat(ThisProcedureName, " -> ", System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ConnectionError, ex.Message));
         base.WriteErrorFile(Result);
       }
@@ -1031,7 +949,6 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
       System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters = new System.Collections.Generic.List<System.Data.Common.DbParameter>();
       Parameters.Add(this.CreateInputParameter("ProcedureName", (int)System.Data.SqlDbType.VarChar, 261, ProcedureName));
       Parameters.Add(this.CreateInputParameter("Description", (int)System.Data.SqlDbType.VarChar, 0, Description));
-      Parameters.Add(this.CreateInputParameter("ShowResultsTable", (int)System.Data.SqlDbType.Bit, true));
 
       System.String ConnectionString = SoftmakeAll.SDK.DataAccess.SQLServer.Environment._ConnectionString;
       if (!(System.String.IsNullOrEmpty(base.ConnectionString)))
@@ -1076,7 +993,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
           }
           else
           {
-            Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt64(ResultsTable.Rows[0]["ID"]);
+            Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ResultsTable.Rows[0]["ID"]);
             Result.Message = System.Convert.ToString(ResultsTable.Rows[0]["Message"]);
             Result.ExitCode = System.Convert.ToInt16(SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ResultsTable.Rows[0]["ExitCode"]));
 

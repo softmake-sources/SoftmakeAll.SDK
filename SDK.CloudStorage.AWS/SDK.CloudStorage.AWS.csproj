@@ -36,7 +36,7 @@ Este pacote fornece apoio para administração de arquivos no AWS S3.</Descripti
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.S3" Version="3.3.110.68" />
+    <PackageReference Include="AWSSDK.S3" Version="3.3.111.4" />
   </ItemGroup>
 
   <ItemGroup>

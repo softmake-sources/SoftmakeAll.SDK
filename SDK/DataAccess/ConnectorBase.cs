@@ -42,24 +42,7 @@ namespace SoftmakeAll.SDK.DataAccess
 
         if (System.String.IsNullOrWhiteSpace(ProcedureNameOrCommandText))
           throw new System.Exception(SoftmakeAll.SDK.Environment.NullProcedureNameOrCommandText);
-
-        ProcedureNameOrCommandText = ProcedureNameOrCommandText.Trim();
-        if ((ShowPlan) || (!(ReadSummaries)) || (CommandType == System.Data.CommandType.StoredProcedure) || (System.Text.RegularExpressions.Regex.Match(ProcedureNameOrCommandText, @";SELECT.*AS \[?(ID|ExitCode|Message)+\]?[,;]+").Success))
-          return;
-
-        if (!(ProcedureNameOrCommandText.EndsWith(';')))
-          ProcedureNameOrCommandText = $"{ProcedureNameOrCommandText};";
-
-        if (ExecuteForJSON)
-          ProcedureNameOrCommandText = $"{ProcedureNameOrCommandText}{this.SummariesSQLAsJSON}";
-        else
-          ProcedureNameOrCommandText = $"{ProcedureNameOrCommandText}{this.SummariesSQL}";
       }
-      #endregion
-
-      #region Fields
-      protected abstract System.String SummariesSQL { get; }
-      protected abstract System.String SummariesSQLAsJSON { get; }
       #endregion
     }
     #endregion
@@ -161,9 +144,10 @@ namespace SoftmakeAll.SDK.DataAccess
       SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> Result = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
 
       SoftmakeAll.SDK.OperationResult<System.Data.DataSet> DatabaseOperationResult = this.ExecuteCommand(ProcedureNameOrCommandText, Parameters, CommandType);
-      Result.ExitCode = DatabaseOperationResult.ExitCode;
-      Result.Message = DatabaseOperationResult.Message;
+      Result.Count = DatabaseOperationResult.Count;
       Result.ID = DatabaseOperationResult.ID;
+      Result.Message = DatabaseOperationResult.Message;
+      Result.ExitCode = DatabaseOperationResult.ExitCode;
       if (DatabaseOperationResult.ExitCode != 0)
         return Result;
 
@@ -189,9 +173,10 @@ namespace SoftmakeAll.SDK.DataAccess
       SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> Result = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
 
       SoftmakeAll.SDK.OperationResult<System.Data.DataSet> DatabaseOperationResult = await this.ExecuteCommandAsync(ProcedureNameOrCommandText, Parameters, CommandType);
-      Result.ExitCode = DatabaseOperationResult.ExitCode;
-      Result.Message = DatabaseOperationResult.Message;
+      Result.Count = DatabaseOperationResult.Count;
       Result.ID = DatabaseOperationResult.ID;
+      Result.Message = DatabaseOperationResult.Message;
+      Result.ExitCode = DatabaseOperationResult.ExitCode;
       if (DatabaseOperationResult.ExitCode != 0)
         return Result;
 

@@ -31,7 +31,7 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
             if (Parameter.ParameterName == "ShowResultsTable")
               HasShowResultsTableParameter = true;
 
-            Parameter.Value = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetCorrectParameterValue(Parameter.Value);
+            Parameter.Value = Parameter.Value ?? System.Convert.DBNull;
             this.Command.Parameters.Add(Parameter);
           }
 
@@ -53,12 +53,6 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
       #region Properties
       public MySql.Data.MySqlClient.MySqlConnection Connection { get; }
       public MySql.Data.MySqlClient.MySqlCommand Command { get; }
-      #endregion
-
-      #region Fields
-      private const System.String Summaries = "SELECT NULL AS `ID`, NULL AS `Message`, 0 AS `ExitCode`";
-      protected override System.String SummariesSQL => Summaries + ";";
-      protected override System.String SummariesSQLAsJSON => SummariesSQL;
       #endregion
     }
     #endregion
@@ -192,7 +186,7 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
 
             try
             {
-              Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt64(ResultsTable.Rows[0]["ID"]);
+              Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ResultsTable.Rows[0]["ID"]);
               Result.Message = System.Convert.ToString(ResultsTable.Rows[0]["Message"]);
               Result.ExitCode = System.Convert.ToInt16(SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ResultsTable.Rows[0]["ExitCode"]));
             }
@@ -285,7 +279,7 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
 
             try
             {
-              Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt64(ResultsTable.Rows[0]["ID"]);
+              Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ResultsTable.Rows[0]["ID"]);
               Result.Message = System.Convert.ToString(ResultsTable.Rows[0]["Message"]);
               Result.ExitCode = System.Convert.ToInt16(SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ResultsTable.Rows[0]["ExitCode"]));
             }
@@ -397,7 +391,7 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
           }
           else
           {
-            Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt64(ResultsTable.Rows[0]["ID"]);
+            Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ResultsTable.Rows[0]["ID"]);
             Result.Message = System.Convert.ToString(ResultsTable.Rows[0]["Message"]);
             Result.ExitCode = System.Convert.ToInt16(SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ResultsTable.Rows[0]["ExitCode"]));
 
@@ -493,7 +487,7 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
           }
           else
           {
-            Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt64(ResultsTable.Rows[0]["ID"]);
+            Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ResultsTable.Rows[0]["ID"]);
             Result.Message = System.Convert.ToString(ResultsTable.Rows[0]["Message"]);
             Result.ExitCode = System.Convert.ToInt16(SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ResultsTable.Rows[0]["ExitCode"]));
 
