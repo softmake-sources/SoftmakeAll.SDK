@@ -7,10 +7,10 @@
     #endregion
 
     #region Properties
-    public System.Nullable<System.Int32> Count { get; set; }
-    public System.String ID { get; set; }
-    public System.String Message { get; set; }
     public System.Int32 ExitCode { get; set; }
+    public System.String Message { get; set; }
+    public System.String ID { get; set; }
+    public System.Nullable<System.Int32> Count { get; set; }
 
     [System.Text.Json.Serialization.JsonIgnore]
     public System.Boolean Success => ((this.ExitCode == 0) || (this.ExitCode == 200) || (this.ExitCode == 204));
