@@ -1,5 +1,4 @@
-﻿using SoftmakeAll.SDK.Helpers.JSON.Extensions;
-using System.Linq;
+﻿using System.Linq;
 
 namespace SoftmakeAll.SDK.DataAccess.MySQL
 {
@@ -24,29 +23,20 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
           CommandType = CommandType,
         };
 
-        System.Boolean HasShowResultsTableParameter = false;
+        if (ReadSummaries)
+        {
+          this.Command.Parameters.Add(new MySql.Data.MySqlClient.MySqlParameter("@$Count", MySql.Data.MySqlClient.MySqlDbType.Int32) { Direction = System.Data.ParameterDirection.Output });
+          this.Command.Parameters.Add(new MySql.Data.MySqlClient.MySqlParameter("@$ID", MySql.Data.MySqlClient.MySqlDbType.VarChar, 255) { Direction = System.Data.ParameterDirection.Output });
+          this.Command.Parameters.Add(new MySql.Data.MySqlClient.MySqlParameter("@$Message", MySql.Data.MySqlClient.MySqlDbType.VarString, -1) { Direction = System.Data.ParameterDirection.Output });
+          this.Command.Parameters.Add(new MySql.Data.MySqlClient.MySqlParameter("@$ExitCode", MySql.Data.MySqlClient.MySqlDbType.Int16) { Direction = System.Data.ParameterDirection.Output });
+        }
+
         if ((Parameters != null) && (Parameters.Any()))
           foreach (System.Data.Common.DbParameter Parameter in Parameters)
           {
-            if (Parameter.ParameterName == "ShowResultsTable")
-              HasShowResultsTableParameter = true;
-
             Parameter.Value = Parameter.Value ?? System.Convert.DBNull;
             this.Command.Parameters.Add(Parameter);
           }
-
-        if (!(ReadSummaries))
-          return;
-
-        if ((CommandType == System.Data.CommandType.StoredProcedure) && (!(HasShowResultsTableParameter)))
-          this.Command.Parameters.Add(new MySql.Data.MySqlClient.MySqlParameter
-          {
-            Direction = System.Data.ParameterDirection.Input,
-            ParameterName = "ShowResultsTable",
-            MySqlDbType = MySql.Data.MySqlClient.MySqlDbType.Bit,
-            Size = 0,
-            Value = true
-          });
       }
       #endregion
 
@@ -84,7 +74,7 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
         ParameterName = Name,
         MySqlDbType = (MySql.Data.MySqlClient.MySqlDbType)Type,
         Direction = Direction,
-        Size = Size,
+        Size = ((Size == 0) && (Type == (int)MySql.Data.MySqlClient.MySqlDbType.LongText)) ? -1 : Size,
         Value = Value
       };
     }
@@ -155,6 +145,8 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
 
         MySql.Data.MySqlClient.MySqlDataAdapter Adapter = null;
 
+        base.WriteApplicationDebugEvent(ThisProcedureName, ConnectorObjects.Command.CommandText);
+
         try
         {
           System.Data.DataSet DataSet = new System.Data.DataSet();
@@ -164,50 +156,28 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
           base.WriteApplicationDebugEvent(ThisProcedureName, ConnectorObjects.Command.CommandText);
           Adapter.Fill(DataSet);
 
-          if (DataSet.Tables.Count == 0)
+          if ((base.ReadSummaries.Value) && (!(base.ShowPlan)))
           {
-            DataSet.Tables.Add(new System.Data.DataTable());
-            Result.ID = null;
-            if (!(base.ReadSummaries.Value))
-            {
-              Result.Message = null;
-              Result.ExitCode = 0;
-            }
-            else
-            {
-              Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.NoInformationReceived, ConnectorObjects.Command.CommandText);
-              Result.ExitCode = -4;
-              base.WriteApplicationDebugEvent(ThisProcedureName, Result.Message);
-            }
-          }
-          else
-          {
-            System.Data.DataTable ResultsTable = DataSet.Tables[DataSet.Tables.Count - 1];
+            System.Int16? DatabaseExitCode = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ConnectorObjects.Command.Parameters["@$ExitCode"].Value);
+            Result.ExitCode = System.Convert.ToInt16(DatabaseExitCode);
+            Result.Message = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["@$Message"].Value);
+            Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["@$ID"].Value);
+            Result.Count = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt32(ConnectorObjects.Command.Parameters["@$Count"].Value);
 
-            try
+            if ((DataSet.Tables.Count == 0) && (DatabaseExitCode == null))
             {
-              Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ResultsTable.Rows[0]["ID"]);
-              Result.Message = System.Convert.ToString(ResultsTable.Rows[0]["Message"]);
-              Result.ExitCode = System.Convert.ToInt16(SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ResultsTable.Rows[0]["ExitCode"]));
-            }
-            catch
-            {
-              Result.ID = null;
-              Result.Message = null;
-              Result.ExitCode = 0;
-              if ((!(base.ShowPlan)) && (base.ReadSummaries.Value))
-              {
-                Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ResultSetsNotExpected, ConnectorObjects.Command.CommandText);
-                Result.ExitCode = -3;
-                base.WriteApplicationDebugEvent(ThisProcedureName, Result.Message);
-              }
+              Result.ExitCode = 204;
+              if (System.String.IsNullOrWhiteSpace(Result.Message))
+                Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.NoInformationReceived, ConnectorObjects.Command.CommandText);
+              base.WriteApplicationWarningEvent(ThisProcedureName, Result.Message);
             }
           }
+          if (DataSet.Tables.Count == 0) DataSet = null;
           Result.Data = DataSet;
         }
         catch (System.Exception ex)
         {
-          Result.ExitCode = -5;
+          Result.ExitCode = 500;
           Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ExecutionError, ex.Message, ConnectorObjects.Command.CommandText);
           base.WriteApplicationErrorEvent(ThisProcedureName, Result.Message);
         }
@@ -218,7 +188,7 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
       }
       catch (System.Exception ex)
       {
-        Result.ExitCode = -6;
+        Result.ExitCode = 503;
         Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ConnectionError, ex.Message);
         base.WriteErrorFile(Result);
       }
@@ -257,50 +227,28 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
           Adapter = new MySql.Data.MySqlClient.MySqlDataAdapter(ConnectorObjects.Command);
           Adapter.Fill(DataSet);
 
-          if (DataSet.Tables.Count == 0)
+          if ((base.ReadSummaries.Value) && (!(base.ShowPlan)))
           {
-            DataSet.Tables.Add(new System.Data.DataTable());
-            Result.ID = null;
-            if (!(base.ReadSummaries.Value))
-            {
-              Result.Message = null;
-              Result.ExitCode = 0;
-            }
-            else
-            {
-              Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.NoInformationReceived, ConnectorObjects.Command.CommandText);
-              Result.ExitCode = -4;
-              await base.WriteApplicationDebugEventAsync(ThisProcedureName, Result.Message);
-            }
-          }
-          else
-          {
-            System.Data.DataTable ResultsTable = DataSet.Tables[DataSet.Tables.Count - 1];
+            System.Int16? DatabaseExitCode = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ConnectorObjects.Command.Parameters["@$ExitCode"].Value);
+            Result.ExitCode = System.Convert.ToInt16(DatabaseExitCode);
+            Result.Message = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["@$Message"].Value);
+            Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["@$ID"].Value);
+            Result.Count = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt32(ConnectorObjects.Command.Parameters["@$Count"].Value);
 
-            try
+            if ((DataSet.Tables.Count == 0) && (DatabaseExitCode == null))
             {
-              Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ResultsTable.Rows[0]["ID"]);
-              Result.Message = System.Convert.ToString(ResultsTable.Rows[0]["Message"]);
-              Result.ExitCode = System.Convert.ToInt16(SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ResultsTable.Rows[0]["ExitCode"]));
-            }
-            catch
-            {
-              Result.ID = null;
-              Result.Message = null;
-              Result.ExitCode = 0;
-              if ((!(base.ShowPlan)) && (base.ReadSummaries.Value))
-              {
-                Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ResultSetsNotExpected, ConnectorObjects.Command.CommandText);
-                Result.ExitCode = -3;
-                await base.WriteApplicationDebugEventAsync(ThisProcedureName, Result.Message);
-              }
+              Result.ExitCode = 204;
+              if (System.String.IsNullOrWhiteSpace(Result.Message))
+                Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.NoInformationReceived, ConnectorObjects.Command.CommandText);
+              await base.WriteApplicationWarningEventAsync(ThisProcedureName, Result.Message);
             }
           }
+          if (DataSet.Tables.Count == 0) DataSet = null;
           Result.Data = DataSet;
         }
         catch (System.Exception ex)
         {
-          Result.ExitCode = -5;
+          Result.ExitCode = 500;
           Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ExecutionError, ex.Message, ConnectorObjects.Command.CommandText);
           await base.WriteApplicationErrorEventAsync(ThisProcedureName, Result.Message);
         }
@@ -311,7 +259,7 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
       }
       catch (System.Exception ex)
       {
-        Result.ExitCode = -6;
+        Result.ExitCode = 503;
         Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ConnectionError, ex.Message);
         await base.WriteErrorFileAsync(Result);
       }
@@ -358,9 +306,8 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
       SoftmakeAll.SDK.OperationResult Result = new SoftmakeAll.SDK.OperationResult();
 
       System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters = new System.Collections.Generic.List<System.Data.Common.DbParameter>();
-      Parameters.Add(this.CreateInputParameter("ProcedureName", (int)MySql.Data.MySqlClient.MySqlDbType.VarChar, 261, ProcedureName));
-      Parameters.Add(this.CreateInputParameter("Description", (int)MySql.Data.MySqlClient.MySqlDbType.VarChar, 0, Description));
-      Parameters.Add(this.CreateInputParameter("ShowResultsTable", (int)MySql.Data.MySqlClient.MySqlDbType.Bit, true));
+      Parameters.Add(this.CreateInputParameter("ProcedureName", (int)MySql.Data.MySqlClient.MySqlDbType.VarChar, 128, ProcedureName));
+      Parameters.Add(this.CreateInputParameter("Description", (int)MySql.Data.MySqlClient.MySqlDbType.LongText, Description));
 
       System.String ConnectionString = SoftmakeAll.SDK.DataAccess.MySQL.Environment._ConnectionString;
       if (!(System.String.IsNullOrEmpty(base.ConnectionString)))
@@ -374,45 +321,29 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
       {
         ConnectorObjects.Connection.Open();
 
-        MySql.Data.MySqlClient.MySqlDataAdapter Adapter = null;
-
         try
         {
-          System.Data.DataTable ResultsTable = new System.Data.DataTable();
+          ConnectorObjects.Command.ExecuteNonQuery();
+          Result.ExitCode = System.Convert.ToInt16(SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ConnectorObjects.Command.Parameters["@$ExitCode"].Value));
+          Result.Message = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["@$Message"].Value);
+          Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["@$ID"].Value);
+          Result.Count = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt32(ConnectorObjects.Command.Parameters["@$Count"].Value);
 
-          Adapter = new MySql.Data.MySqlClient.MySqlDataAdapter(ConnectorObjects.Command);
-          Adapter.Fill(ResultsTable);
-
-          if (!(base.ReadSummaries.Value))
-          {
-            Result.ID = null;
-            Result.Message = null;
-            Result.ExitCode = 0;
-          }
-          else
-          {
-            Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ResultsTable.Rows[0]["ID"]);
-            Result.Message = System.Convert.ToString(ResultsTable.Rows[0]["Message"]);
-            Result.ExitCode = System.Convert.ToInt16(SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ResultsTable.Rows[0]["ExitCode"]));
-
-            if (Result.ExitCode == 2) // Error when writing the system event
-              base.WriteErrorFile(Result);
-          }
+          if (Result.ExitCode != 0)
+            base.WriteErrorFile(Result);
         }
         catch (System.Exception ex)
         {
-          Result.ExitCode = -5;
+          Result.ExitCode = 500;
           Result.Message = System.String.Concat(ThisProcedureName, " -> ", System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ExecutionError, ex.Message, ConnectorObjects.Command.CommandText));
           base.WriteErrorFile(Result);
         }
-
-        Adapter?.Dispose();
 
         ConnectorObjects.Connection.Close();
       }
       catch (System.Exception ex)
       {
-        Result.ExitCode = -6;
+        Result.ExitCode = 503;
         Result.Message = System.String.Concat(ThisProcedureName, " -> ", System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ConnectionError, ex.Message));
         base.WriteErrorFile(Result);
       }
@@ -454,9 +385,8 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
       SoftmakeAll.SDK.OperationResult Result = new SoftmakeAll.SDK.OperationResult();
 
       System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters = new System.Collections.Generic.List<System.Data.Common.DbParameter>();
-      Parameters.Add(this.CreateInputParameter("ProcedureName", (int)MySql.Data.MySqlClient.MySqlDbType.VarChar, 261, ProcedureName));
-      Parameters.Add(this.CreateInputParameter("Description", (int)MySql.Data.MySqlClient.MySqlDbType.VarChar, 0, Description));
-      Parameters.Add(this.CreateInputParameter("ShowResultsTable", (int)MySql.Data.MySqlClient.MySqlDbType.Bit, true));
+      Parameters.Add(this.CreateInputParameter("ProcedureName", (int)MySql.Data.MySqlClient.MySqlDbType.VarChar, 128, ProcedureName));
+      Parameters.Add(this.CreateInputParameter("Description", (int)MySql.Data.MySqlClient.MySqlDbType.LongText, Description));
 
       System.String ConnectionString = SoftmakeAll.SDK.DataAccess.MySQL.Environment._ConnectionString;
       if (!(System.String.IsNullOrEmpty(base.ConnectionString)))
@@ -470,45 +400,29 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
       {
         await ConnectorObjects.Connection.OpenAsync();
 
-        MySql.Data.MySqlClient.MySqlDataAdapter Adapter = null;
-
         try
         {
-          System.Data.DataTable ResultsTable = new System.Data.DataTable();
+          ConnectorObjects.Command.ExecuteNonQuery();
+          Result.ExitCode = System.Convert.ToInt16(SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ConnectorObjects.Command.Parameters["@$ExitCode"].Value));
+          Result.Message = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["@$Message"].Value);
+          Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["@$ID"].Value);
+          Result.Count = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt32(ConnectorObjects.Command.Parameters["@$Count"].Value);
 
-          Adapter = new MySql.Data.MySqlClient.MySqlDataAdapter(ConnectorObjects.Command);
-          Adapter.Fill(ResultsTable);
-
-          if (!(base.ReadSummaries.Value))
-          {
-            Result.ID = null;
-            Result.Message = null;
-            Result.ExitCode = 0;
-          }
-          else
-          {
-            Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ResultsTable.Rows[0]["ID"]);
-            Result.Message = System.Convert.ToString(ResultsTable.Rows[0]["Message"]);
-            Result.ExitCode = System.Convert.ToInt16(SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ResultsTable.Rows[0]["ExitCode"]));
-
-            if (Result.ExitCode == 2) // Error when writing the system event
-              await base.WriteErrorFileAsync(Result);
-          }
+          if (Result.ExitCode != 0)
+            base.WriteErrorFile(Result);
         }
         catch (System.Exception ex)
         {
-          Result.ExitCode = -5;
+          Result.ExitCode = 500;
           Result.Message = System.String.Concat(ThisProcedureName, " -> ", System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ExecutionError, ex.Message, ConnectorObjects.Command.CommandText));
           await base.WriteErrorFileAsync(Result);
         }
-
-        Adapter?.Dispose();
 
         await ConnectorObjects.Connection.CloseAsync();
       }
       catch (System.Exception ex)
       {
-        Result.ExitCode = -6;
+        Result.ExitCode = 503;
         Result.Message = System.String.Concat(ThisProcedureName, " -> ", System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ConnectionError, ex.Message));
         await base.WriteErrorFileAsync(Result);
       }
