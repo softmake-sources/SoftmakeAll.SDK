@@ -10,17 +10,21 @@
     <PackageIcon>Cubes.png</PackageIcon>
     <RepositoryType>Public C# (.NET Standard) Repository</RepositoryType>
     <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2020</Copyright>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <Description>Este pacote é parte do pacote SoftmakeAll.SDK</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Este pacote é parte do pacote SoftmakeAll.SDK
+
+Este pacote fornece apoio para:
+  - Escrita/leitura de dados locais a partir do navegador;
+  - Autenticação baseada em função utilizando JWT</Description>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
-    <Version>1.0.0</Version>
-    <PackageTags>SoftmakeAll SDK</PackageTags>
-    <PackageId>SoftmakeAll.SDK.ContactCenter.Fluent</PackageId>
-    <AssemblyName>SoftmakeAll.SDK.ContactCenter.Fluent</AssemblyName>
-    <RootNamespace>SoftmakeAll.SDK.ContactCenter.Fluent</RootNamespace>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <Version>1.0.1</Version>
+    <PackageTags>SoftmakeAll SDK Blazor LocalStorage Authentication JWT</PackageTags>
+    <PackageId>SoftmakeAll.SDK.Blazor</PackageId>
+    <AssemblyName>SoftmakeAll.SDK.Blazor</AssemblyName>
+    <RootNamespace>SoftmakeAll.SDK.Blazor</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -35,8 +39,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SDK.Fluent\SDK.Fluent.csproj" />
-    <ProjectReference Include="..\SDK\SDK.csproj" />
+    <Compile Remove="Entities\**" />
+    <EmbeddedResource Remove="Entities\**" />
+    <None Remove="Entities\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,10 +49,20 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+    <None Include="License.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="src\Entities\" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SDK\SDK.csproj" />
   </ItemGroup>
 
 </Project>
