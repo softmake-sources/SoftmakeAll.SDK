@@ -328,6 +328,8 @@ namespace SoftmakeAll.SDK.DataAccess.PostgreSQL
     #region System Events (Log)
     protected override void WriteEvent(System.String Source, System.String Type, System.String ProcedureName, System.String Description)
     {
+      if (base.ShowPlan) return;
+
       if (
               ((Type == "D") && (!(DataAccess.Environment.WriteDebugSystemEvents)))
            || ((Type == "I") && (!(DataAccess.Environment.WriteInformationSystemEvents)))
@@ -424,6 +426,8 @@ namespace SoftmakeAll.SDK.DataAccess.PostgreSQL
     }
     protected override async System.Threading.Tasks.Task WriteEventAsync(System.String Source, System.String Type, System.String ProcedureName, System.String Description)
     {
+      if (base.ShowPlan) return;
+      
       if (
               ((Type == "D") && (!(DataAccess.Environment.WriteDebugSystemEvents)))
            || ((Type == "I") && (!(DataAccess.Environment.WriteInformationSystemEvents)))

@@ -1,4 +1,4 @@
-﻿namespace SoftmakeAll.SDK.Helpers.JSON
+﻿namespace SoftmakeAll.SDK.Helpers.JSON.Converters
 {
   public class JsonElementSerializationConverter : System.Text.Json.Serialization.JsonConverter<System.Text.Json.JsonElement>
   {

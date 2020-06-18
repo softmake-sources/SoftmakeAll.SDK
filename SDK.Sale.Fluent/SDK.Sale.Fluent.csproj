@@ -46,4 +46,9 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="src\Entities\" />
+    <Folder Include="src\" />
+  </ItemGroup>
+
 </Project>

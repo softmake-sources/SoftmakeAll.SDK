@@ -45,34 +45,34 @@ Este pacote fornece apoio para Reflection e compilação de código dinâmico de
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="DefaultAssemblies\Microsoft.AspNetCore.Authorization.dll">
+    <None Update="src\DefaultAssemblies\Microsoft.AspNetCore.Authorization.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="DefaultAssemblies\Microsoft.AspNetCore.Http.Abstractions.dll">
+    <None Update="src\DefaultAssemblies\Microsoft.AspNetCore.Http.Abstractions.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="DefaultAssemblies\Microsoft.AspNetCore.Http.dll">
+    <None Update="src\DefaultAssemblies\Microsoft.AspNetCore.Http.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="DefaultAssemblies\Microsoft.AspNetCore.Http.Features.dll">
+    <None Update="src\DefaultAssemblies\Microsoft.AspNetCore.Http.Features.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="DefaultAssemblies\Microsoft.AspNetCore.Mvc.Abstractions.dll">
+    <None Update="src\DefaultAssemblies\Microsoft.AspNetCore.Mvc.Abstractions.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="DefaultAssemblies\Microsoft.AspNetCore.Mvc.Core.dll">
+    <None Update="src\DefaultAssemblies\Microsoft.AspNetCore.Mvc.Core.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="DefaultAssemblies\mscorlib.dll">
+    <None Update="src\DefaultAssemblies\mscorlib.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="DefaultAssemblies\netstandard.dll">
+    <None Update="src\DefaultAssemblies\netstandard.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="DefaultAssemblies\Newtonsoft.Json.dll">
+    <None Update="src\DefaultAssemblies\Newtonsoft.Json.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="DefaultAssemblies\System.Text.Json.dll">
+    <None Update="src\DefaultAssemblies\System.Text.Json.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\..\..\Arthur\Softmake\Marca\Logotipos\Cubes.png">

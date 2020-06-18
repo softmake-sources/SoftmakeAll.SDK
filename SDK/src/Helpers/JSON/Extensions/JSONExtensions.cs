@@ -10,7 +10,7 @@
     #endregion
 
     #region Methods
-    private static System.Text.Json.JsonSerializerOptions CreateJsonSerializerOptions(System.Boolean UseCamelCase, System.Boolean IgnoreNullValues)
+    public static System.Text.Json.JsonSerializerOptions CreateJsonSerializerOptions(System.Boolean UseCamelCase, System.Boolean IgnoreNullValues)
     {
       System.Text.Json.JsonSerializerOptions JsonSerializerOptions = new System.Text.Json.JsonSerializerOptions();
       if (UseCamelCase)
@@ -25,7 +25,8 @@
         JsonSerializerOptions.PropertyNamingPolicy = null;
         JsonSerializerOptions.PropertyNameCaseInsensitive = true;
       }
-      JsonSerializerOptions.Converters.Add(new SoftmakeAll.SDK.Helpers.JSON.JsonElementSerializationConverter());
+      JsonSerializerOptions.Converters.Add(new SoftmakeAll.SDK.Helpers.JSON.Converters.JsonElementSerializationConverter());
+      JsonSerializerOptions.Converters.Add(new SoftmakeAll.SDK.Helpers.JSON.Converters.TimeSpanSerializationConverter());
       JsonSerializerOptions.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
       JsonSerializerOptions.IgnoreNullValues = IgnoreNullValues;
       return JsonSerializerOptions;

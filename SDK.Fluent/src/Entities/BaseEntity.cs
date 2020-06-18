@@ -1,4 +1,4 @@
-﻿namespace SoftmakeAllSDK.Fluent
+﻿namespace SoftmakeAll.SDK.Fluent
 {
   public abstract class BaseEntity
   {

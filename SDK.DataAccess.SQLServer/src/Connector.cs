@@ -25,6 +25,8 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
           CommandType = CommandType,
         };
 
+        if (ShowPlan) return;
+
         if (ReadSummaries)
         {
           this.Command.Parameters.Add(new System.Data.SqlClient.SqlParameter("$Count", System.Data.SqlDbType.Int) { Direction = System.Data.ParameterDirection.Output });
@@ -39,7 +41,6 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
             Parameter.Value = Parameter.Value ?? System.Convert.DBNull;
             this.Command.Parameters.Add(Parameter);
           }
-
       }
       #endregion
 
@@ -384,19 +385,13 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
           DataSet.EnforceConstraints = false;
 
           Adapter = new System.Data.SqlClient.SqlDataAdapter(ConnectorObjects.Command);
-          if ((base.ShowPlan) || (CommandType == System.Data.CommandType.StoredProcedure) || (Blocks.Count == 1))
+          foreach (System.String Block in Blocks)
           {
-            ConnectorObjects.Command.CommandText = Blocks[0];
-            Adapter.Fill(DataSet);
+            System.Data.DataTable DataTable = new System.Data.DataTable();
+            ConnectorObjects.Command.CommandText = Block;
+            Adapter.Fill(DataTable);
+            DataSet.Tables.Add(DataTable);
           }
-          else
-            foreach (System.String Block in Blocks)
-            {
-              System.Data.DataTable DataTable = new System.Data.DataTable();
-              ConnectorObjects.Command.CommandText = Block;
-              Adapter.Fill(DataTable);
-              DataSet.Tables.Add(DataTable);
-            }
 
           if ((base.ReadSummaries.Value) && (!(base.ShowPlan)))
           {
@@ -473,19 +468,13 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
           DataSet.EnforceConstraints = false;
 
           Adapter = new System.Data.SqlClient.SqlDataAdapter(ConnectorObjects.Command);
-          if ((base.ShowPlan) || (CommandType == System.Data.CommandType.StoredProcedure) || (Blocks.Count == 1))
+          foreach (System.String Block in Blocks)
           {
-            ConnectorObjects.Command.CommandText = Blocks[0];
-            Adapter.Fill(DataSet);
+            System.Data.DataTable DataTable = new System.Data.DataTable();
+            ConnectorObjects.Command.CommandText = Block;
+            Adapter.Fill(DataTable);
+            DataSet.Tables.Add(DataTable);
           }
-          else
-            foreach (System.String Block in Blocks)
-            {
-              System.Data.DataTable DataTable = new System.Data.DataTable();
-              ConnectorObjects.Command.CommandText = Block;
-              Adapter.Fill(DataTable);
-              DataSet.Tables.Add(DataTable);
-            }
 
           if ((base.ReadSummaries.Value) && (!(base.ShowPlan)))
           {
@@ -545,16 +534,17 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
         Result.Count = ShowPlanResult.Count;
         if (ShowPlanResult.ExitCode == 0)
         {
-          foreach (System.Data.DataRow Row in ShowPlanResult.Data.Tables[0].Rows)
-            Row[0] = System.Convert.ToString(Row[0]).ReplaceLeftWhiteSpacesUntil('.', '|').Replace("..", ".");
-          Result.Data = SoftmakeAll.SDK.DataAccess.DatabaseValues.DataTableToJSON(ShowPlanResult.Data.Tables[0], true);
+          foreach (System.Data.DataTable DataTable in ShowPlanResult.Data.Tables)
+            foreach (System.Data.DataRow Row in DataTable.Rows)
+              Row[0] = System.Convert.ToString(Row[0]).ReplaceLeftWhiteSpacesUntil('.', '|').Replace("..", ".");
+
+          if (ShowPlanResult.Data.Tables.Count == 1)
+            Result.Data = SoftmakeAll.SDK.DataAccess.DatabaseValues.DataTableToJSON(ShowPlanResult.Data.Tables[0], true);
+          else
+            Result.Data = SoftmakeAll.SDK.DataAccess.DatabaseValues.DataSetToJSON(ShowPlanResult.Data, true);
         }
         return Result;
       }
-
-
-      if ((CommandType == System.Data.CommandType.Text) && ((this.ReadBlocks(ProcedureNameOrCommandText)).Count > 1))
-        throw new System.Exception("To execute multiple blocks, use the method 'ExecuteText(...)'.");
 
 
       System.String ConnectionString = SoftmakeAll.SDK.DataAccess.SQLServer.Environment._ConnectionString;
@@ -562,48 +552,56 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
         ConnectionString = base.ConnectionString;
       SoftmakeAll.SDK.DataAccess.SQLServer.Connector.ConnectorObjects ConnectorObjects = new SoftmakeAll.SDK.DataAccess.SQLServer.Connector.ConnectorObjects(ConnectionString, ProcedureNameOrCommandText, Parameters, CommandType, true, base.ShowPlan, base.ReadSummaries.Value);
 
+      System.Collections.Generic.List<System.String> Blocks = null;
+      if (CommandType == System.Data.CommandType.Text)
+        Blocks = this.ReadBlocks(ConnectorObjects.Command.CommandText);
+      else
+        Blocks = new System.Collections.Generic.List<System.String>() { ConnectorObjects.Command.CommandText };
+
       try
       {
         ConnectorObjects.Connection.Open();
 
         this.ExecutePreCommands(ConnectorObjects);
 
-
         base.WriteApplicationDebugEvent(ThisProcedureName, ConnectorObjects.Command.CommandText);
 
         try
         {
-          using (System.Data.Common.DbDataReader DataReader = ConnectorObjects.Command.ExecuteReader())
+          System.Collections.Generic.List<System.Text.Json.JsonElement> AllResults = new System.Collections.Generic.List<System.Text.Json.JsonElement>();
+
+          foreach (System.String Block in Blocks)
           {
-            System.Collections.Generic.List<System.Text.Json.JsonElement> AllResults = new System.Collections.Generic.List<System.Text.Json.JsonElement>();
-            do
-            {
-              System.Text.StringBuilder JSONData = new System.Text.StringBuilder();
-              while (DataReader.Read())
-                JSONData.Append(DataReader[0]);
-              AllResults.Add(JSONData.ToString().ToJsonElement());
-            } while (DataReader.NextResult());
-
-            if (AllResults.Count == 1)
-              Result.Data = AllResults[0];
-            else
-              Result.Data = AllResults.ToJsonElement();
-
-            if (base.ReadSummaries.Value)
-            {
-              System.Int16? DatabaseExitCode = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ConnectorObjects.Command.Parameters["$ExitCode"].Value);
-              Result.ExitCode = System.Convert.ToInt16(DatabaseExitCode);
-              Result.Message = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["$Message"].Value);
-              Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["$ID"].Value);
-              Result.Count = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt32(ConnectorObjects.Command.Parameters["$Count"].Value);
-
-              if ((!(Result.Data.IsValid())) && (DatabaseExitCode == null))
+            ConnectorObjects.Command.CommandText = Block;
+            using (System.Data.Common.DbDataReader DataReader = ConnectorObjects.Command.ExecuteReader())
+              do
               {
-                Result.ExitCode = 204;
-                if (System.String.IsNullOrWhiteSpace(Result.Message))
-                  Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.NoInformationReceived, ConnectorObjects.Command.CommandText);
-                base.WriteApplicationWarningEvent(ThisProcedureName, Result.Message);
-              }
+                System.Text.StringBuilder JSONData = new System.Text.StringBuilder();
+                while (DataReader.Read())
+                  JSONData.Append(DataReader[0]);
+                AllResults.Add(JSONData.ToString().ToJsonElement());
+              } while (DataReader.NextResult());
+          }
+
+          if (AllResults.Count == 1)
+            Result.Data = AllResults[0];
+          else
+            Result.Data = AllResults.ToJsonElement();
+
+          if (base.ReadSummaries.Value)
+          {
+            System.Int16? DatabaseExitCode = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ConnectorObjects.Command.Parameters["$ExitCode"].Value);
+            Result.ExitCode = System.Convert.ToInt16(DatabaseExitCode);
+            Result.Message = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["$Message"].Value);
+            Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["$ID"].Value);
+            Result.Count = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt32(ConnectorObjects.Command.Parameters["$Count"].Value);
+
+            if ((!(Result.Data.IsValid())) && (DatabaseExitCode == null))
+            {
+              Result.ExitCode = 204;
+              if (System.String.IsNullOrWhiteSpace(Result.Message))
+                Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.NoInformationReceived, ConnectorObjects.Command.CommandText);
+              base.WriteApplicationWarningEvent(ThisProcedureName, Result.Message);
             }
           }
         }
@@ -642,16 +640,17 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
         Result.Count = ShowPlanResult.Count;
         if (ShowPlanResult.ExitCode == 0)
         {
-          foreach (System.Data.DataRow Row in ShowPlanResult.Data.Tables[0].Rows)
-            Row[0] = System.Convert.ToString(Row[0]).ReplaceLeftWhiteSpacesUntil('.', '|').Replace("..", ".");
-          Result.Data = SoftmakeAll.SDK.DataAccess.DatabaseValues.DataTableToJSON(ShowPlanResult.Data.Tables[0], true);
+          foreach (System.Data.DataTable DataTable in ShowPlanResult.Data.Tables)
+            foreach (System.Data.DataRow Row in DataTable.Rows)
+              Row[0] = System.Convert.ToString(Row[0]).ReplaceLeftWhiteSpacesUntil('.', '|').Replace("..", ".");
+
+          if (ShowPlanResult.Data.Tables.Count == 1)
+            Result.Data = SoftmakeAll.SDK.DataAccess.DatabaseValues.DataTableToJSON(ShowPlanResult.Data.Tables[0], true);
+          else
+            Result.Data = SoftmakeAll.SDK.DataAccess.DatabaseValues.DataSetToJSON(ShowPlanResult.Data, true);
         }
         return Result;
       }
-
-
-      if ((CommandType == System.Data.CommandType.Text) && ((await this.ReadBlocksAsync(ProcedureNameOrCommandText)).Count > 1))
-        throw new System.Exception("To execute multiple blocks, use the method 'ExecuteTextAsync(...)'.");
 
 
       System.String ConnectionString = SoftmakeAll.SDK.DataAccess.SQLServer.Environment._ConnectionString;
@@ -659,48 +658,56 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
         ConnectionString = base.ConnectionString;
       SoftmakeAll.SDK.DataAccess.SQLServer.Connector.ConnectorObjects ConnectorObjects = new SoftmakeAll.SDK.DataAccess.SQLServer.Connector.ConnectorObjects(ConnectionString, ProcedureNameOrCommandText, Parameters, CommandType, true, base.ShowPlan, base.ReadSummaries.Value);
 
+      System.Collections.Generic.List<System.String> Blocks = null;
+      if (CommandType == System.Data.CommandType.Text)
+        Blocks = await this.ReadBlocksAsync(ConnectorObjects.Command.CommandText);
+      else
+        Blocks = new System.Collections.Generic.List<System.String>() { ConnectorObjects.Command.CommandText };
+
       try
       {
         await ConnectorObjects.Connection.OpenAsync();
 
         await this.ExecutePreCommandsAsync(ConnectorObjects);
 
-
         await base.WriteApplicationDebugEventAsync(ThisProcedureName, ConnectorObjects.Command.CommandText);
 
         try
         {
-          using (System.Data.Common.DbDataReader DataReader = await ConnectorObjects.Command.ExecuteReaderAsync())
+          System.Collections.Generic.List<System.Text.Json.JsonElement> AllResults = new System.Collections.Generic.List<System.Text.Json.JsonElement>();
+
+          foreach (System.String Block in Blocks)
           {
-            System.Collections.Generic.List<System.Text.Json.JsonElement> AllResults = new System.Collections.Generic.List<System.Text.Json.JsonElement>();
-            do
-            {
-              System.Text.StringBuilder JSONData = new System.Text.StringBuilder();
-              while (await DataReader.ReadAsync())
-                JSONData.Append(DataReader[0]);
-              AllResults.Add(JSONData.ToString().ToJsonElement());
-            } while (await DataReader.NextResultAsync());
-
-            if (AllResults.Count == 1)
-              Result.Data = AllResults[0];
-            else
-              Result.Data = AllResults.ToJsonElement();
-
-            if (base.ReadSummaries.Value)
-            {
-              System.Int16? DatabaseExitCode = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ConnectorObjects.Command.Parameters["$ExitCode"].Value);
-              Result.ExitCode = System.Convert.ToInt16(DatabaseExitCode);
-              Result.Message = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["$Message"].Value);
-              Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["$ID"].Value);
-              Result.Count = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt32(ConnectorObjects.Command.Parameters["$Count"].Value);
-
-              if ((!(Result.Data.IsValid())) && (DatabaseExitCode == null))
+            ConnectorObjects.Command.CommandText = Block;
+            using (System.Data.Common.DbDataReader DataReader = await ConnectorObjects.Command.ExecuteReaderAsync())
+              do
               {
-                Result.ExitCode = 204;
-                if (System.String.IsNullOrWhiteSpace(Result.Message))
-                  Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.NoInformationReceived, ConnectorObjects.Command.CommandText);
-                await base.WriteApplicationWarningEventAsync(ThisProcedureName, Result.Message);
-              }
+                System.Text.StringBuilder JSONData = new System.Text.StringBuilder();
+                while (await DataReader.ReadAsync())
+                  JSONData.Append(DataReader[0]);
+                AllResults.Add(JSONData.ToString().ToJsonElement());
+              } while (await DataReader.NextResultAsync());
+          }
+
+          if (AllResults.Count == 1)
+            Result.Data = AllResults[0];
+          else
+            Result.Data = AllResults.ToJsonElement();
+
+          if (base.ReadSummaries.Value)
+          {
+            System.Int16? DatabaseExitCode = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ConnectorObjects.Command.Parameters["$ExitCode"].Value);
+            Result.ExitCode = System.Convert.ToInt16(DatabaseExitCode);
+            Result.Message = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["$Message"].Value);
+            Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["$ID"].Value);
+            Result.Count = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt32(ConnectorObjects.Command.Parameters["$Count"].Value);
+
+            if ((!(Result.Data.IsValid())) && (DatabaseExitCode == null))
+            {
+              Result.ExitCode = 204;
+              if (System.String.IsNullOrWhiteSpace(Result.Message))
+                Result.Message = System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.NoInformationReceived, ConnectorObjects.Command.CommandText);
+              await base.WriteApplicationWarningEventAsync(ThisProcedureName, Result.Message);
             }
           }
         }
@@ -803,6 +810,8 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
     #region System Events (Log)
     protected override void WriteEvent(System.String Source, System.String Type, System.String ProcedureName, System.String Description)
     {
+      if (base.ShowPlan) return;
+
       if (
               ((Type == "D") && (!(DataAccess.Environment.WriteDebugSystemEvents)))
            || ((Type == "I") && (!(DataAccess.Environment.WriteInformationSystemEvents)))
@@ -895,6 +904,8 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
     }
     protected override async System.Threading.Tasks.Task WriteEventAsync(System.String Source, System.String Type, System.String ProcedureName, System.String Description)
     {
+      if (base.ShowPlan) return;
+
       if (
               ((Type == "D") && (!(DataAccess.Environment.WriteDebugSystemEvents)))
            || ((Type == "I") && (!(DataAccess.Environment.WriteInformationSystemEvents)))
