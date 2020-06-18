@@ -1,4 +1,4 @@
-﻿namespace SoftmakeAll.SDK.Blazor.LocalStorage.EventArgs
+﻿namespace SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs
 {
   public class ChangedEventArgs
   {

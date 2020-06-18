@@ -21,7 +21,7 @@ Este pacote fornece apoio para:
     <AssemblyVersion>1.0.1.0</AssemblyVersion>
     <FileVersion>1.0.1.0</FileVersion>
     <Version>1.0.1</Version>
-    <PackageTags>SoftmakeAll SDK Blazor LocalStorage Authentication JWT</PackageTags>
+    <PackageTags>SoftmakeAll SDK Blazor ClientStorage Authentication JWT</PackageTags>
     <PackageId>SoftmakeAll.SDK.Blazor</PackageId>
     <AssemblyName>SoftmakeAll.SDK.Blazor</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK.Blazor</RootNamespace>

@@ -1,10 +1,10 @@
-﻿namespace SoftmakeAll.SDK.Blazor.LocalStorage.Services
+﻿namespace SoftmakeAll.SDK.Blazor.ClientStorage.Services
 {
-  public interface IAsyncLocalStorageService
+  public interface IAsyncClientStorageService
   {
     #region Events
-    public event System.EventHandler<SoftmakeAll.SDK.Blazor.LocalStorage.EventArgs.ChangingEventArgs> OnChanging;
-    public event System.EventHandler<SoftmakeAll.SDK.Blazor.LocalStorage.EventArgs.ChangedEventArgs> OnChanged;
+    public event System.EventHandler<SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangingEventArgs> OnChanging;
+    public event System.EventHandler<SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangedEventArgs> OnChanged;
     #endregion
 
     #region Methods
@@ -17,4 +17,6 @@
     public System.Threading.Tasks.Task<System.Int32> LengthAsync();
     #endregion
   }
+  public interface IAsyncLocalStorageService : SoftmakeAll.SDK.Blazor.ClientStorage.Services.IAsyncClientStorageService { }
+  public interface IAsyncSessionStorageService : SoftmakeAll.SDK.Blazor.ClientStorage.Services.IAsyncClientStorageService { }
 }

@@ -1,39 +1,58 @@
 ﻿using Microsoft.JSInterop;
 
-namespace SoftmakeAll.SDK.Blazor.LocalStorage.Services
+namespace SoftmakeAll.SDK.Blazor.ClientStorage.Services
 {
-  public class LocalStorageService : SoftmakeAll.SDK.Blazor.LocalStorage.Services.IAsyncLocalStorageService, SoftmakeAll.SDK.Blazor.LocalStorage.Services.ISyncLocalStorageService
+  public abstract class ClientStorageService : SoftmakeAll.SDK.Blazor.ClientStorage.Services.IAsyncClientStorageService, SoftmakeAll.SDK.Blazor.ClientStorage.Services.ISyncClientStorageService
   {
     #region Fields
     private readonly Microsoft.JSInterop.IJSRuntime JSRuntime;
     private readonly Microsoft.JSInterop.IJSInProcessRuntime JSInProcessRuntime;
-    private readonly System.Text.Json.JsonSerializerOptions JsonSerializerOptions;
     #endregion
 
     #region Constructor
-    public LocalStorageService(Microsoft.JSInterop.IJSRuntime JSRuntimeContext)
+    public ClientStorageService(Microsoft.JSInterop.IJSRuntime JSRuntimeContext)
     {
       this.JSRuntime = JSRuntimeContext;
       this.JSInProcessRuntime = JSRuntimeContext as Microsoft.JSInterop.IJSInProcessRuntime;
-      this.JsonSerializerOptions = SoftmakeAll.SDK.Helpers.JSON.Extensions.JSONExtensions.CreateJsonSerializerOptions(false, true);
     }
     #endregion
 
     #region Events
-    public event System.EventHandler<SoftmakeAll.SDK.Blazor.LocalStorage.EventArgs.ChangingEventArgs> OnChanging;
-    public event System.EventHandler<SoftmakeAll.SDK.Blazor.LocalStorage.EventArgs.ChangedEventArgs> OnChanged;
+    public event System.EventHandler<SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangingEventArgs> OnChanging;
+    public event System.EventHandler<SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangedEventArgs> OnChanged;
     #endregion
 
-    #region Constants
-    private const System.String PrefixName = "localStorage.";
-    private const System.String SuffixName = "Item";
-    private const System.String SetItemAction = PrefixName + "set" + SuffixName;
-    private const System.String GetItemAction = PrefixName + "get" + SuffixName;
-    private const System.String RemoveItemAction = PrefixName + "remove" + SuffixName;
-    private const System.String ClearAction = PrefixName + "clear";
-    private const System.String ContainsKeyProperty = PrefixName + "hasOwnProperty";
-    private const System.String KeyProperty = PrefixName + "key";
-    private const System.String LengthProperty = PrefixName + "length";
+    #region Properties
+    private System.String StorageTypeName = "";
+    protected SoftmakeAll.SDK.Blazor.ClientStorage.StorageTypes StorageType
+    {
+      get
+      {
+        switch (this.StorageTypeName)
+        {
+          case "localStorage.": return SoftmakeAll.SDK.Blazor.ClientStorage.StorageTypes.LocalStorage;
+          case "sessionStorage.": return SoftmakeAll.SDK.Blazor.ClientStorage.StorageTypes.SessionStorage;
+        }
+        throw new System.Exception("Invalid StorageType. Valid types: LocalStorage or SessionStorage.");
+      }
+      set
+      {
+        switch (value)
+        {
+          case SoftmakeAll.SDK.Blazor.ClientStorage.StorageTypes.LocalStorage: this.StorageTypeName = "localStorage."; return;
+          case SoftmakeAll.SDK.Blazor.ClientStorage.StorageTypes.SessionStorage: this.StorageTypeName = "sessionStorage."; return;
+        }
+        throw new System.Exception("Invalid StorageType. Valid types: LocalStorage or SessionStorage.");
+      }
+    }
+    private System.String SuffixName => "Item";
+    private System.String SetItemAction => StorageTypeName + "set" + SuffixName;
+    private System.String GetItemAction => StorageTypeName + "get" + SuffixName;
+    private System.String RemoveItemAction => StorageTypeName + "remove" + SuffixName;
+    private System.String ClearAction => StorageTypeName + "clear";
+    private System.String ContainsKeyProperty => StorageTypeName + "hasOwnProperty";
+    private System.String KeyProperty => StorageTypeName + "key";
+    private System.String LengthProperty => StorageTypeName + "length";
     #endregion
 
     #region Methods
@@ -42,26 +61,23 @@ namespace SoftmakeAll.SDK.Blazor.LocalStorage.Services
       if (System.String.IsNullOrWhiteSpace(SerializedValue))
         return default;
 
-      if ((SerializedValue.StartsWith("{") && SerializedValue.EndsWith("}")) || (SerializedValue.StartsWith("\"") && SerializedValue.EndsWith("\"")))
-        return System.Text.Json.JsonSerializer.Deserialize<T>(SerializedValue, JsonSerializerOptions);
-
       return (T)(System.Object)SerializedValue;
     }
     private void RaiseOnChanged(System.String Key, System.Object OldValue, System.Object NewValue)
     {
-      SoftmakeAll.SDK.Blazor.LocalStorage.EventArgs.ChangedEventArgs ChangedEventArgs = new SoftmakeAll.SDK.Blazor.LocalStorage.EventArgs.ChangedEventArgs();
+      SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangedEventArgs ChangedEventArgs = new SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangedEventArgs();
       ChangedEventArgs.Key = Key;
       ChangedEventArgs.OldValue = OldValue;
       ChangedEventArgs.NewValue = NewValue;
       this.OnChanged?.Invoke(this, ChangedEventArgs);
     }
 
-    #region IAsyncLocalStorageService
+    #region IAsyncClientStorageService
     private void ValidateJSRuntime() { if (this.JSRuntime == null) throw new System.InvalidOperationException("JSRuntime not available."); }
     private void ValidateJSRuntime(System.String Key) { this.ValidateJSRuntime(); if (System.String.IsNullOrWhiteSpace(Key)) throw new System.ArgumentNullException("The Key parameter cannot be null or empty."); }
-    private async System.Threading.Tasks.Task<SoftmakeAll.SDK.Blazor.LocalStorage.EventArgs.ChangingEventArgs> RaiseOnChangingAsync(System.String Key, System.Object Value)
+    private async System.Threading.Tasks.Task<SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangingEventArgs> RaiseOnChangingAsync(System.String Key, System.Object Value)
     {
-      SoftmakeAll.SDK.Blazor.LocalStorage.EventArgs.ChangingEventArgs ChangingEventArgs = new SoftmakeAll.SDK.Blazor.LocalStorage.EventArgs.ChangingEventArgs();
+      SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangingEventArgs ChangingEventArgs = new SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangingEventArgs();
       ChangingEventArgs.Key = Key;
       ChangingEventArgs.OldValue = await this.GetItemAsync<System.Object>(Key);
       ChangingEventArgs.NewValue = Value;
@@ -72,13 +88,10 @@ namespace SoftmakeAll.SDK.Blazor.LocalStorage.Services
     {
       this.ValidateJSRuntime(Key);
 
-      SoftmakeAll.SDK.Blazor.LocalStorage.EventArgs.ChangingEventArgs ChangingEventArgs = await this.RaiseOnChangingAsync(Key, Value);
+      SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangingEventArgs ChangingEventArgs = await this.RaiseOnChangingAsync(Key, Value);
       if (ChangingEventArgs.Cancel) return;
 
-      if (Value is System.String)
-        await this.JSRuntime.InvokeVoidAsync(SetItemAction, Key, Value);
-      else
-        await this.JSRuntime.InvokeVoidAsync(SetItemAction, Key, System.Text.Json.JsonSerializer.Serialize(Value, this.JsonSerializerOptions));
+      await this.JSRuntime.InvokeVoidAsync(SetItemAction, Key, Value);
 
       this.RaiseOnChanged(Key, ChangingEventArgs.OldValue, Value);
     }
@@ -90,12 +103,12 @@ namespace SoftmakeAll.SDK.Blazor.LocalStorage.Services
     public async System.Threading.Tasks.Task<System.Int32> LengthAsync() => await this.JSRuntime.InvokeAsync<System.Int32>("eval", LengthProperty);
     #endregion
 
-    #region ISyncLocalStorageService
+    #region ISyncClientStorageService
     private void ValidateJSInProcessRuntime() { if (this.JSInProcessRuntime == null) throw new System.InvalidOperationException("JSInProcessRuntime not available."); }
     private void ValidateJSInProcessRuntime(System.String Key) { this.ValidateJSInProcessRuntime(); if (System.String.IsNullOrWhiteSpace(Key)) throw new System.ArgumentNullException("The Key parameter cannot be null or empty."); }
-    private SoftmakeAll.SDK.Blazor.LocalStorage.EventArgs.ChangingEventArgs RaiseOnChanging(System.String Key, System.Object Value)
+    private SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangingEventArgs RaiseOnChanging(System.String Key, System.Object Value)
     {
-      SoftmakeAll.SDK.Blazor.LocalStorage.EventArgs.ChangingEventArgs ChangingEventArgs = new SoftmakeAll.SDK.Blazor.LocalStorage.EventArgs.ChangingEventArgs();
+      SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangingEventArgs ChangingEventArgs = new SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangingEventArgs();
       ChangingEventArgs.Key = Key;
       ChangingEventArgs.OldValue = this.GetItem<System.Object>(Key);
       ChangingEventArgs.NewValue = Value;
@@ -106,13 +119,10 @@ namespace SoftmakeAll.SDK.Blazor.LocalStorage.Services
     {
       this.ValidateJSInProcessRuntime(Key);
 
-      SoftmakeAll.SDK.Blazor.LocalStorage.EventArgs.ChangingEventArgs ChangingEventArgs = this.RaiseOnChanging(Key, Value);
+      SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangingEventArgs ChangingEventArgs = this.RaiseOnChanging(Key, Value);
       if (ChangingEventArgs.Cancel) return;
 
-      if (Value is System.String)
-        this.JSInProcessRuntime.InvokeVoid(SetItemAction, Key, Value);
-      else
-        this.JSInProcessRuntime.InvokeVoid(SetItemAction, Key, System.Text.Json.JsonSerializer.Serialize(Value, this.JsonSerializerOptions));
+      this.JSInProcessRuntime.InvokeVoid(SetItemAction, Key, Value);
 
       this.RaiseOnChanged(Key, ChangingEventArgs.OldValue, Value);
     }
@@ -124,5 +134,19 @@ namespace SoftmakeAll.SDK.Blazor.LocalStorage.Services
     public System.Int32 Length() { this.ValidateJSInProcessRuntime(); return this.JSInProcessRuntime.Invoke<System.Int32>("eval", LengthProperty); }
     #endregion
     #endregion
+  }
+  public class LocalStorageService : SoftmakeAll.SDK.Blazor.ClientStorage.Services.ClientStorageService, SoftmakeAll.SDK.Blazor.ClientStorage.Services.IAsyncLocalStorageService, SoftmakeAll.SDK.Blazor.ClientStorage.Services.ISyncLocalStorageService
+  {
+    public LocalStorageService(Microsoft.JSInterop.IJSRuntime JSRuntimeContext) : base(JSRuntimeContext)
+    {
+      base.StorageType = SoftmakeAll.SDK.Blazor.ClientStorage.StorageTypes.LocalStorage;
+    }
+  }
+  public class SessionStorageService : SoftmakeAll.SDK.Blazor.ClientStorage.Services.ClientStorageService, SoftmakeAll.SDK.Blazor.ClientStorage.Services.IAsyncSessionStorageService, SoftmakeAll.SDK.Blazor.ClientStorage.Services.ISyncSessionStorageService
+  {
+    public SessionStorageService(Microsoft.JSInterop.IJSRuntime JSRuntimeContext) : base(JSRuntimeContext)
+    {
+      base.StorageType = SoftmakeAll.SDK.Blazor.ClientStorage.StorageTypes.SessionStorage;
+    }
   }
 }
