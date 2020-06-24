@@ -28,74 +28,67 @@
     [Microsoft.AspNetCore.Mvc.HttpPost()]
     public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> PostAsync
       (
-      [Microsoft.AspNetCore.Mvc.FromBody()]System.Text.Json.JsonElement Object
+      [Microsoft.AspNetCore.Mvc.FromBody()] System.Text.Json.JsonElement Object
       )
-    {
-      return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
-    }
+      => await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
 
     [Microsoft.AspNetCore.Mvc.HttpPost("{ID}")]
     public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> PostAsync
       (
-      [Microsoft.AspNetCore.Mvc.FromRoute()]System.String ID,
+      [Microsoft.AspNetCore.Mvc.FromRoute()] System.String ID,
       System.Collections.Generic.List<Microsoft.AspNetCore.Http.IFormFile> Files
       )
-    {
-      return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
-    }
+      => await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
 
     [Microsoft.AspNetCore.Mvc.HttpGet("{ID}")]
     [Microsoft.AspNetCore.Mvc.HttpHead("{ID}")]
     public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> GetAsync
       (
-      [Microsoft.AspNetCore.Mvc.FromRoute()]System.String ID
+      [Microsoft.AspNetCore.Mvc.FromRoute()] System.String ID
       )
-    {
-      return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
-    }
+      => await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
 
     [Microsoft.AspNetCore.Mvc.HttpGet()]
     [Microsoft.AspNetCore.Mvc.HttpHead()]
     public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> GetAsync
       (
-      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Fields")]System.String Fields,
-      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Filter")]System.String Filter,
-      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Sort")]System.String Sort,
-      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Skip")]System.Int32 Skip,
-      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Take")]System.Int32 Take
+      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Fields")] System.String Fields,
+      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Filter")] System.String Filter,
+      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Sort")] System.String Sort,
+      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Skip")] System.Int32 Skip,
+      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Take")] System.Int32 Take
       )
-    {
-      return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
-    }
+      => await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
 
     [Microsoft.AspNetCore.Mvc.HttpPatch("{ID}")]
     public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> PatchAsync
       (
-      [Microsoft.AspNetCore.Mvc.FromRoute()]System.String ID,
-      [Microsoft.AspNetCore.Mvc.FromBody()]System.Text.Json.JsonElement Object
+      [Microsoft.AspNetCore.Mvc.FromRoute()] System.String ID,
+      [Microsoft.AspNetCore.Mvc.FromBody()] System.Text.Json.JsonElement Object
       )
-    {
-      return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
-    }
+      => await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
 
     [Microsoft.AspNetCore.Mvc.HttpPut("{ID}")]
     public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> PutAsync
       (
-      [Microsoft.AspNetCore.Mvc.FromRoute()]System.String ID,
-      [Microsoft.AspNetCore.Mvc.FromBody()]System.Text.Json.JsonElement Object
+      [Microsoft.AspNetCore.Mvc.FromRoute()] System.String ID,
+      [Microsoft.AspNetCore.Mvc.FromBody()] System.Text.Json.JsonElement Object
       )
-    {
-      return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
-    }
+      => await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
 
     [Microsoft.AspNetCore.Mvc.HttpDelete("{ID}")]
     public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> DeleteAsync
       (
-      [Microsoft.AspNetCore.Mvc.FromRoute()]System.String ID
+      [Microsoft.AspNetCore.Mvc.FromRoute()] System.String ID
       )
-    {
-      return await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
-    }
+      => await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
+
+    [Microsoft.AspNetCore.Mvc.HttpDelete()]
+    public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> DeleteAsync
+      (
+      [Microsoft.AspNetCore.Mvc.FromBody()] System.Text.Json.JsonElement Array
+      )
+      => await this.StatusCodeAsync((int)System.Net.HttpStatusCode.MethodNotAllowed);
     #endregion
 
     #region Methods
