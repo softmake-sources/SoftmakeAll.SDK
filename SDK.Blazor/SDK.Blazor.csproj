@@ -13,15 +13,17 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Este pacote é parte do pacote SoftmakeAll.SDK
 
+
 Este pacote fornece apoio para:
-  - Escrita/leitura de dados locais a partir do navegador;
-  - Autenticação baseada em função utilizando JWT</Description>
+
+- Escrita/leitura de dados locais a partir do navegador;
+</Description>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
-    <FileVersion>1.0.1.0</FileVersion>
-    <Version>1.0.1</Version>
-    <PackageTags>SoftmakeAll SDK Blazor ClientStorage Authentication JWT</PackageTags>
+    <AssemblyVersion>1.0.2.0</AssemblyVersion>
+    <FileVersion>1.0.2.0</FileVersion>
+    <Version>1.0.2</Version>
+    <PackageTags>SoftmakeAll SDK Blazor ClientStorage</PackageTags>
     <PackageId>SoftmakeAll.SDK.Blazor</PackageId>
     <AssemblyName>SoftmakeAll.SDK.Blazor</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK.Blazor</RootNamespace>
