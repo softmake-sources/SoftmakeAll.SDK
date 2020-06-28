@@ -54,6 +54,7 @@
       (
       [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Fields")] System.String Fields,
       [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Filter")] System.String Filter,
+      [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Group")] System.String Group,
       [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Sort")] System.String Sort,
       [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Skip")] System.Int32 Skip,
       [Microsoft.AspNetCore.Mvc.FromQuery(Name = "Take")] System.Int32 Take
