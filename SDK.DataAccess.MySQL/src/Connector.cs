@@ -494,14 +494,14 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
         default: { return; }
       }
 
-      System.String SystemEventWriteProcedureName = "`Write{0}{1}Event`";
-      SystemEventWriteProcedureName = System.String.Format(SystemEventWriteProcedureName, Source, Type);
+      System.String SystemEventWriteProcedureName = "{0}[Write{1}{2}Event]";
+      SystemEventWriteProcedureName = System.String.Format(SystemEventWriteProcedureName, System.String.IsNullOrWhiteSpace(base.SystemEventsProcedureSchemaName) ? "" : $"[{base.SystemEventsProcedureSchemaName}].", Source, Type);
 
       SoftmakeAll.SDK.OperationResult Result = new SoftmakeAll.SDK.OperationResult();
 
       System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters = new System.Collections.Generic.List<System.Data.Common.DbParameter>();
-      Parameters.Add(this.CreateInputParameter("ProcedureName", (int)MySql.Data.MySqlClient.MySqlDbType.VarChar, 128, ProcedureName));
-      Parameters.Add(this.CreateInputParameter("Description", (int)MySql.Data.MySqlClient.MySqlDbType.LongText, Description));
+      Parameters.Add(this.CreateInputParameter("ProcedureName", (int)System.Data.SqlDbType.VarChar, 261, ProcedureName));
+      Parameters.Add(this.CreateInputParameter("Description", (int)System.Data.SqlDbType.VarChar, 0, Description));
 
       System.String ConnectionString = SoftmakeAll.SDK.DataAccess.MySQL.Environment._ConnectionString;
       if (!(System.String.IsNullOrEmpty(base.ConnectionString)))
@@ -514,6 +514,8 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
       try
       {
         ConnectorObjects.Connection.Open();
+
+        this.ExecutePreCommands(ConnectorObjects);
 
         try
         {
@@ -575,14 +577,14 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
         default: { return; }
       }
 
-      System.String SystemEventWriteProcedureName = "`Write{0}{1}Event`";
-      SystemEventWriteProcedureName = System.String.Format(SystemEventWriteProcedureName, Source, Type);
+      System.String SystemEventWriteProcedureName = "{0}[Write{1}{2}Event]";
+      SystemEventWriteProcedureName = System.String.Format(SystemEventWriteProcedureName, System.String.IsNullOrWhiteSpace(base.SystemEventsProcedureSchemaName) ? "" : $"[{base.SystemEventsProcedureSchemaName}].", Source, Type);
 
       SoftmakeAll.SDK.OperationResult Result = new SoftmakeAll.SDK.OperationResult();
 
       System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters = new System.Collections.Generic.List<System.Data.Common.DbParameter>();
-      Parameters.Add(this.CreateInputParameter("ProcedureName", (int)MySql.Data.MySqlClient.MySqlDbType.VarChar, 128, ProcedureName));
-      Parameters.Add(this.CreateInputParameter("Description", (int)MySql.Data.MySqlClient.MySqlDbType.LongText, Description));
+      Parameters.Add(this.CreateInputParameter("ProcedureName", (int)System.Data.SqlDbType.VarChar, 261, ProcedureName));
+      Parameters.Add(this.CreateInputParameter("Description", (int)System.Data.SqlDbType.VarChar, 0, Description));
 
       System.String ConnectionString = SoftmakeAll.SDK.DataAccess.MySQL.Environment._ConnectionString;
       if (!(System.String.IsNullOrEmpty(base.ConnectionString)))
@@ -595,6 +597,8 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
       try
       {
         await ConnectorObjects.Connection.OpenAsync();
+
+        await this.ExecutePreCommandsAsync(ConnectorObjects);
 
         try
         {

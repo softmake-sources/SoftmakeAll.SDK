@@ -27,6 +27,7 @@ Este pacote fornece apoio para:
     <PackageId>SoftmakeAll.SDK.Blazor</PackageId>
     <AssemblyName>SoftmakeAll.SDK.Blazor</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK.Blazor</RootNamespace>
+    <PackageReleaseNotes>Atualização das dependências para a última versão estável.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -58,9 +59,9 @@ Este pacote fornece apoio para:
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.7" />
   </ItemGroup>
 
   <ItemGroup>

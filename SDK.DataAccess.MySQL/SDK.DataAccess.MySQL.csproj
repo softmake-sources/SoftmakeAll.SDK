@@ -16,12 +16,13 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Este pacote é parte do pacote SoftmakeAll.SDK
 
-Este pacote fornece apoio para acesso à dados quando o banco de dados é MySQL ou MariaDB.</Description>
+. Este pacote fornece apoio para acesso à dados quando o banco de dados é MySQL ou MariaDB.</Description>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <AssemblyVersion>1.0.3.0</AssemblyVersion>
-    <FileVersion>1.0.3.0</FileVersion>
-    <Version>1.0.3</Version>
+    <AssemblyVersion>1.0.4.0</AssemblyVersion>
+    <FileVersion>1.0.4.0</FileVersion>
+    <Version>1.0.4</Version>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>Atualização das dependências para a última versão estável e inclusão das variáveis de contexto nos métodos de escrita de eventos.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -36,7 +37,7 @@ Este pacote fornece apoio para acesso à dados quando o banco de dados é MySQL 
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MySql.Data" Version="8.0.20" />
+    <PackageReference Include="MySql.Data" Version="8.0.21" />
   </ItemGroup>
 
   <ItemGroup>

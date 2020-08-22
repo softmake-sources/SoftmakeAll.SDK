@@ -14,17 +14,15 @@
     <PackageIcon>Cubes.png</PackageIcon>
     <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2020</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>Este pacote é parte do pacote SoftmakeAll.SDK
-
-
+    <Description>Este pacote é parte do pacote SoftmakeAll.SDK. 
 
 Este pacote fornece apoio para acesso à dados quando o banco de dados é SQL Server.</Description>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <AssemblyVersion>1.0.7.0</AssemblyVersion>
-    <FileVersion>1.0.7.0</FileVersion>
-    <Version>1.0.7</Version>
+    <AssemblyVersion>1.0.8.0</AssemblyVersion>
+    <FileVersion>1.0.8.0</FileVersion>
+    <Version>1.0.8</Version>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReleaseNotes>Atualização das dependências para a última versão estável e inclusão das variáveis de contexto nos métodos de escrita de eventos.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -39,7 +37,7 @@ Este pacote fornece apoio para acesso à dados quando o banco de dados é SQL Se
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 
   <ItemGroup>

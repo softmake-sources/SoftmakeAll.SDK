@@ -349,15 +349,14 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
         default: { return; }
       }
 
-      System.String SystemEventWriteProcedureName = "{0}Write{1}{2}Event";
-      SystemEventWriteProcedureName = System.String.Format(SystemEventWriteProcedureName, System.String.IsNullOrWhiteSpace(base.SystemEventsProcedureSchemaName) ? "" : $"{base.SystemEventsProcedureSchemaName}.", Source, Type);
+      System.String SystemEventWriteProcedureName = "{0}[Write{1}{2}Event]";
+      SystemEventWriteProcedureName = System.String.Format(SystemEventWriteProcedureName, System.String.IsNullOrWhiteSpace(base.SystemEventsProcedureSchemaName) ? "" : $"[{base.SystemEventsProcedureSchemaName}].", Source, Type);
 
       SoftmakeAll.SDK.OperationResult Result = new SoftmakeAll.SDK.OperationResult();
 
       System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters = new System.Collections.Generic.List<System.Data.Common.DbParameter>();
-      Parameters.Add(this.CreateInputParameter("ProcedureName", (int)global::Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2, 261, ProcedureName));
-      Parameters.Add(this.CreateInputParameter("Description", (int)global::Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2, 0, Description));
-      Parameters.Add(this.CreateInputParameter("ShowResultsTable", (int)global::Oracle.ManagedDataAccess.Client.OracleDbType.Int32, true));
+      Parameters.Add(this.CreateInputParameter("ProcedureName", (int)System.Data.SqlDbType.VarChar, 261, ProcedureName));
+      Parameters.Add(this.CreateInputParameter("Description", (int)System.Data.SqlDbType.VarChar, 0, Description));
 
       System.String ConnectionString = SoftmakeAll.SDK.DataAccess.Oracle.Environment._ConnectionString;
       if (!(System.String.IsNullOrEmpty(base.ConnectionString)))
@@ -371,45 +370,31 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
       {
         ConnectorObjects.Connection.Open();
 
-        global::Oracle.ManagedDataAccess.Client.OracleDataAdapter Adapter = null;
+        this.ExecutePreCommands(ConnectorObjects);
 
         try
         {
-          System.Data.DataTable ResultsTable = new System.Data.DataTable();
+          ConnectorObjects.Command.ExecuteNonQuery();
+          Result.ExitCode = System.Convert.ToInt16(SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ConnectorObjects.Command.Parameters["$ExitCode"].Value));
+          Result.Message = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["$Message"].Value);
+          Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["$ID"].Value);
+          Result.Count = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt32(ConnectorObjects.Command.Parameters["$Count"].Value);
 
-          Adapter = new global::Oracle.ManagedDataAccess.Client.OracleDataAdapter(ConnectorObjects.Command);
-          Adapter.Fill(ResultsTable);
-
-          if (!(base.ReadSummaries.Value))
-          {
-            Result.ID = null;
-            Result.Message = null;
-            Result.ExitCode = 0;
-          }
-          else
-          {
-            Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ResultsTable.Rows[0]["ID"]);
-            Result.Message = System.Convert.ToString(ResultsTable.Rows[0]["Message"]);
-            Result.ExitCode = System.Convert.ToInt16(SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ResultsTable.Rows[0]["ExitCode"]));
-
-            if (Result.ExitCode == 2) // Error when writing the system event
-              base.WriteErrorFile(Result);
-          }
+          if (Result.ExitCode != 0)
+            base.WriteErrorFile(Result);
         }
         catch (System.Exception ex)
         {
-          Result.ExitCode = -5;
+          Result.ExitCode = 500;
           Result.Message = System.String.Concat(ThisProcedureName, " -> ", System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ExecutionError, ex.Message, ConnectorObjects.Command.CommandText));
           base.WriteErrorFile(Result);
         }
-
-        Adapter?.Dispose();
 
         ConnectorObjects.Connection.Close();
       }
       catch (System.Exception ex)
       {
-        Result.ExitCode = -6;
+        Result.ExitCode = 503;
         Result.Message = System.String.Concat(ThisProcedureName, " -> ", System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ConnectionError, ex.Message));
         base.WriteErrorFile(Result);
       }
@@ -420,7 +405,7 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
     protected override async System.Threading.Tasks.Task WriteEventAsync(System.String Source, System.String Type, System.String ProcedureName, System.String Description)
     {
       if (base.ShowPlan) return;
-     
+
       if (
               ((Type == "D") && (!(DataAccess.Environment.WriteDebugSystemEvents)))
            || ((Type == "I") && (!(DataAccess.Environment.WriteInformationSystemEvents)))
@@ -447,15 +432,14 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
         default: { return; }
       }
 
-      System.String SystemEventWriteProcedureName = "{0}Write{1}{2}Event";
-      SystemEventWriteProcedureName = System.String.Format(SystemEventWriteProcedureName, System.String.IsNullOrWhiteSpace(base.SystemEventsProcedureSchemaName) ? "" : $"{base.SystemEventsProcedureSchemaName}.", Source, Type);
+      System.String SystemEventWriteProcedureName = "{0}[Write{1}{2}Event]";
+      SystemEventWriteProcedureName = System.String.Format(SystemEventWriteProcedureName, System.String.IsNullOrWhiteSpace(base.SystemEventsProcedureSchemaName) ? "" : $"[{base.SystemEventsProcedureSchemaName}].", Source, Type);
 
       SoftmakeAll.SDK.OperationResult Result = new SoftmakeAll.SDK.OperationResult();
 
       System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters = new System.Collections.Generic.List<System.Data.Common.DbParameter>();
-      Parameters.Add(this.CreateInputParameter("ProcedureName", (int)global::Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2, 261, ProcedureName));
-      Parameters.Add(this.CreateInputParameter("Description", (int)global::Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2, 0, Description));
-      Parameters.Add(this.CreateInputParameter("ShowResultsTable", (int)global::Oracle.ManagedDataAccess.Client.OracleDbType.Int32, true));
+      Parameters.Add(this.CreateInputParameter("ProcedureName", (int)System.Data.SqlDbType.VarChar, 261, ProcedureName));
+      Parameters.Add(this.CreateInputParameter("Description", (int)System.Data.SqlDbType.VarChar, 0, Description));
 
       System.String ConnectionString = SoftmakeAll.SDK.DataAccess.Oracle.Environment._ConnectionString;
       if (!(System.String.IsNullOrEmpty(base.ConnectionString)))
@@ -469,45 +453,31 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
       {
         await ConnectorObjects.Connection.OpenAsync();
 
-        global::Oracle.ManagedDataAccess.Client.OracleDataAdapter Adapter = null;
+        await this.ExecutePreCommandsAsync(ConnectorObjects);
 
         try
         {
-          System.Data.DataTable ResultsTable = new System.Data.DataTable();
+          ConnectorObjects.Command.ExecuteNonQuery();
+          Result.ExitCode = System.Convert.ToInt16(SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ConnectorObjects.Command.Parameters["$ExitCode"].Value));
+          Result.Message = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["$Message"].Value);
+          Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ConnectorObjects.Command.Parameters["$ID"].Value);
+          Result.Count = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt32(ConnectorObjects.Command.Parameters["$Count"].Value);
 
-          Adapter = new global::Oracle.ManagedDataAccess.Client.OracleDataAdapter(ConnectorObjects.Command);
-          Adapter.Fill(ResultsTable);
-
-          if (!(base.ReadSummaries.Value))
-          {
-            Result.ID = null;
-            Result.Message = null;
-            Result.ExitCode = 0;
-          }
-          else
-          {
-            Result.ID = SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableString(ResultsTable.Rows[0]["ID"]);
-            Result.Message = System.Convert.ToString(ResultsTable.Rows[0]["Message"]);
-            Result.ExitCode = System.Convert.ToInt16(SoftmakeAll.SDK.DataAccess.DatabaseValues.GetNullableInt16(ResultsTable.Rows[0]["ExitCode"]));
-
-            if (Result.ExitCode == 2) // Error when writing the system event
-              await base.WriteErrorFileAsync(Result);
-          }
+          if (Result.ExitCode != 0)
+            base.WriteErrorFile(Result);
         }
         catch (System.Exception ex)
         {
-          Result.ExitCode = -5;
+          Result.ExitCode = 500;
           Result.Message = System.String.Concat(ThisProcedureName, " -> ", System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ExecutionError, ex.Message, ConnectorObjects.Command.CommandText));
           await base.WriteErrorFileAsync(Result);
         }
-
-        Adapter?.Dispose();
 
         await ConnectorObjects.Connection.CloseAsync();
       }
       catch (System.Exception ex)
       {
-        Result.ExitCode = -6;
+        Result.ExitCode = 503;
         Result.Message = System.String.Concat(ThisProcedureName, " -> ", System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ConnectionError, ex.Message));
         await base.WriteErrorFileAsync(Result);
       }

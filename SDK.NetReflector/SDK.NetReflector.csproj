@@ -19,9 +19,10 @@
 Este pacote fornece apoio para Reflection e compilação de código dinâmico de bibliotecas .NET Standard.</Description>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
-    <FileVersion>1.0.1.0</FileVersion>
-    <Version>1.0.1</Version>
+    <AssemblyVersion>1.0.2.0</AssemblyVersion>
+    <FileVersion>1.0.2.0</FileVersion>
+    <Version>1.0.2</Version>
+    <PackageReleaseNotes>Atualização das dependências para a última versão estável.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -36,8 +37,8 @@ Este pacote fornece apoio para Reflection e compilação de código dinâmico de
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.6.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.6.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.7.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.7.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -859,18 +859,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
       {
         ConnectorObjects.Connection.Open();
 
-        System.Data.SqlClient.SqlCommand OptionsCommand = new System.Data.SqlClient.SqlCommand("SET ARITHABORT ON; SET XACT_ABORT OFF; SET NOCOUNT ON;", ConnectorObjects.Connection);
-        try
-        {
-          OptionsCommand.ExecuteNonQuery();
-        }
-        catch (System.Exception ex)
-        {
-          Result.ExitCode = 500;
-          Result.Message = System.String.Concat(ThisProcedureName, " -> ", System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ErrorOnSetBaseCommands, ex.Message));
-          base.WriteErrorFile(Result);
-        }
-        OptionsCommand.Dispose();
+        this.ExecutePreCommands(ConnectorObjects);
 
         try
         {
@@ -953,18 +942,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
       {
         await ConnectorObjects.Connection.OpenAsync();
 
-        System.Data.SqlClient.SqlCommand OptionsCommand = new System.Data.SqlClient.SqlCommand("SET ARITHABORT ON; SET XACT_ABORT OFF; SET NOCOUNT ON;", ConnectorObjects.Connection);
-        try
-        {
-          await OptionsCommand.ExecuteNonQueryAsync();
-        }
-        catch (System.Exception ex)
-        {
-          Result.ExitCode = 500;
-          Result.Message = System.String.Concat(ThisProcedureName, " -> ", System.String.Format(SoftmakeAll.SDK.DataAccess.ConnectorBase.ErrorOnSetBaseCommands, ex.Message));
-          await base.WriteErrorFileAsync(Result);
-        }
-        await OptionsCommand.DisposeAsync();
+        await this.ExecutePreCommandsAsync(ConnectorObjects);
 
         try
         {

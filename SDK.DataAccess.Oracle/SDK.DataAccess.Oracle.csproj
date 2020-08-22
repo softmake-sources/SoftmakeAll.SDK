@@ -16,12 +16,13 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Este pacote é parte do pacote SoftmakeAll.SDK
 
-Este pacote fornece apoio para acesso à dados quando o banco de dados é Oracle.</Description>
+. Este pacote fornece apoio para acesso à dados quando o banco de dados é Oracle.</Description>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <AssemblyVersion>1.0.1.0</AssemblyVersion>
     <FileVersion>1.0.1.0</FileVersion>
     <Version>1.0.1</Version>
+    <PackageReleaseNotes>Atualização das dependências para a última versão estável e inclusão das variáveis de contexto nos métodos de escrita de eventos.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -36,7 +37,7 @@ Este pacote fornece apoio para acesso à dados quando o banco de dados é Oracle
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.70" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.80" />
   </ItemGroup>
 
   <ItemGroup>

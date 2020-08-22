@@ -17,12 +17,13 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Este pacote é parte do pacote SoftmakeAll.SDK
 
-Este pacote fornece apoio para administração de BLOBS no Azure Storage.</Description>
+. Este pacote fornece apoio para administração de BLOBS no Azure Storage.</Description>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
-    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <Version>1.0.1</Version>
+    <PackageReleaseNotes>Atualização das dependências para a última versão estável.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -37,7 +38,7 @@ Este pacote fornece apoio para administração de BLOBS no Azure Storage.</Descr
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.4.2" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.5.1" />
   </ItemGroup>
 
   <ItemGroup>
