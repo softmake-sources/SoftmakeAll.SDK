@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <PackageLicenseExpression></PackageLicenseExpression>
+
     <Authors>Arthur Mattos</Authors>
     <Company>Softmake - Software &amp; Automação</Company>
     <PackageId>SoftmakeAll.SDK.Libraries</PackageId>
@@ -17,8 +17,8 @@
     <Description>Este pacote é parte do pacote SoftmakeAll.SDK
 
 Este pacote fornece apoio para a construção de bibliotecas instaláveis no Softmake All.</Description>
-    <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
     <AssemblyVersion>1.0.2.0</AssemblyVersion>
     <FileVersion>1.0.2.0</FileVersion>
     <Version>1.0.2</Version>
@@ -46,10 +46,6 @@ Este pacote fornece apoio para a construção de bibliotecas instaláveis no Sof
 
   <ItemGroup>
     <None Include="..\..\..\..\..\Arthur\Softmake\Marca\Logotipos\Cubes.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-    <None Include="License.txt">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

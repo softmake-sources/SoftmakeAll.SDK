@@ -145,6 +145,8 @@ namespace SoftmakeAll.SDK.NetReflector
 
       return CompileResult;
     }
+    public static async System.Threading.Tasks.Task<System.Object> EvaluateScriptAsync(System.String Code) => await Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.EvaluateAsync(Code);
+    public static async System.Threading.Tasks.Task<T> EvaluateScriptAsync<T>(System.String Code) => await Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.EvaluateAsync<T>(Code);
     #endregion
   }
 }

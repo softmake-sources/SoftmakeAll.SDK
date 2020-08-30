@@ -1,7 +1,7 @@
 ﻿using SoftmakeAll.SDK.Helpers.LINQ.Extensions;
 using System.Linq;
 
-namespace SoftmakeAll.SDK.NETReflector
+namespace SoftmakeAll.SDK.NetReflector
 {
   public class Discovery
   {
@@ -39,12 +39,12 @@ namespace SoftmakeAll.SDK.NETReflector
 
       return true;
     }
-    public System.Collections.Generic.List<SoftmakeAll.SDK.NETReflector.Structures.Namespace> Discover()
+    public System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Namespace> Discover()
     {
-      System.Collections.Generic.List<SoftmakeAll.SDK.NETReflector.Structures.Namespace> Namespaces = this.GetExportedNamespaces();
+      System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Namespace> Namespaces = this.GetExportedNamespaces();
 
-      foreach (SoftmakeAll.SDK.NETReflector.Structures.Namespace Namespace in Namespaces)
-        foreach (SoftmakeAll.SDK.NETReflector.Structures.Object Object in this.GetExportedObjects(Namespace.Name))
+      foreach (SoftmakeAll.SDK.NetReflector.Structures.Namespace Namespace in Namespaces)
+        foreach (SoftmakeAll.SDK.NetReflector.Structures.Object Object in this.GetExportedObjects(Namespace.Name))
         {
           System.String FullName = Object.Name;
           if (!(System.String.IsNullOrWhiteSpace(Namespace.Name)))
@@ -57,17 +57,17 @@ namespace SoftmakeAll.SDK.NETReflector
 
       return Namespaces;
     }
-    public System.Collections.Generic.List<SoftmakeAll.SDK.NETReflector.Structures.Namespace> GetExportedNamespaces()
+    public System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Namespace> GetExportedNamespaces()
     {
-      System.Collections.Generic.List<SoftmakeAll.SDK.NETReflector.Structures.Namespace> Result = new System.Collections.Generic.List<SoftmakeAll.SDK.NETReflector.Structures.Namespace>();
+      System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Namespace> Result = new System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Namespace>();
 
       if (this._Assembly == null)
-        return new System.Collections.Generic.List<SoftmakeAll.SDK.NETReflector.Structures.Namespace>();
+        return new System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Namespace>();
 
       Result.AddRange(
         this._Assembly.ExportedTypes
         .Select(t =>
-          new SoftmakeAll.SDK.NETReflector.Structures.Namespace()
+          new SoftmakeAll.SDK.NetReflector.Structures.Namespace()
           {
             Name = t.Namespace,
             Objects = new System.Collections.Generic.List<Structures.Object>()
@@ -76,10 +76,10 @@ namespace SoftmakeAll.SDK.NETReflector
 
       return Result;
     }
-    public System.Collections.Generic.List<SoftmakeAll.SDK.NETReflector.Structures.Object> GetExportedObjects(System.String Namespace)
+    public System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Object> GetExportedObjects(System.String Namespace)
     {
       if (this._Assembly == null)
-        return new System.Collections.Generic.List<SoftmakeAll.SDK.NETReflector.Structures.Object>();
+        return new System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Object>();
 
       if (!(System.String.IsNullOrWhiteSpace(Namespace)))
         Namespace = System.String.Concat(Namespace, ".");
@@ -89,20 +89,20 @@ namespace SoftmakeAll.SDK.NETReflector
         .Where(t => (t.FullName == System.String.Concat(Namespace, t.Name)))
         .Where(t => ((!(t.IsInterface)) && (((t.IsAbstract) && (t.IsSealed)) || ((!(t.IsAbstract)) || (t.IsDefined(typeof(System.Runtime.CompilerServices.ExtensionAttribute), false))))))
         .Select(t =>
-          new SoftmakeAll.SDK.NETReflector.Structures.Object()
+          new SoftmakeAll.SDK.NetReflector.Structures.Object()
           {
             IsStatic = t.IsAbstract && t.IsSealed,
             IsClass = t.IsClass,
             IsStructure = t.IsValueType,
             Name = t.Name,
-            Properties = new System.Collections.Generic.List<SoftmakeAll.SDK.NETReflector.Structures.Property>(),
-            Methods = new System.Collections.Generic.List<SoftmakeAll.SDK.NETReflector.Structures.Method>()
+            Properties = new System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Property>(),
+            Methods = new System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Method>()
           }
         ).OrderBy(o => o.Name).ToList();
     }
-    public System.Collections.Generic.List<SoftmakeAll.SDK.NETReflector.Structures.Property> GetExportedProperties(System.String FullName)
+    public System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Property> GetExportedProperties(System.String FullName)
     {
-      System.Collections.Generic.List<SoftmakeAll.SDK.NETReflector.Structures.Property> Result = new System.Collections.Generic.List<SoftmakeAll.SDK.NETReflector.Structures.Property>();
+      System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Property> Result = new System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Property>();
 
       if ((this._Assembly == null) || (System.String.IsNullOrWhiteSpace(FullName)))
         return Result;
@@ -114,7 +114,7 @@ namespace SoftmakeAll.SDK.NETReflector
       Result.AddRange(
         Type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
         .Select(p =>
-          new SoftmakeAll.SDK.NETReflector.Structures.Property()
+          new SoftmakeAll.SDK.NetReflector.Structures.Property()
           {
             IsStatic = true,
             TypeDescription = p.PropertyType.ToString(),
@@ -127,7 +127,7 @@ namespace SoftmakeAll.SDK.NETReflector
       Result.AddRange(
         Type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)
         .Select(p =>
-          new SoftmakeAll.SDK.NETReflector.Structures.Property()
+          new SoftmakeAll.SDK.NetReflector.Structures.Property()
           {
             IsStatic = false,
             TypeDescription = p.PropertyType.ToString(),
@@ -139,9 +139,9 @@ namespace SoftmakeAll.SDK.NETReflector
 
       return Result.OrderBy(p => p.Name).ToList();
     }
-    public System.Collections.Generic.List<SoftmakeAll.SDK.NETReflector.Structures.Method> GetExportedMethods(System.String FullName)
+    public System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Method> GetExportedMethods(System.String FullName)
     {
-      System.Collections.Generic.List<SoftmakeAll.SDK.NETReflector.Structures.Method> Result = new System.Collections.Generic.List<SoftmakeAll.SDK.NETReflector.Structures.Method>();
+      System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Method> Result = new System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Method>();
 
       if ((this._Assembly == null) || (System.String.IsNullOrWhiteSpace(FullName)))
         return Result;
@@ -155,7 +155,7 @@ namespace SoftmakeAll.SDK.NETReflector
         .Where(m => (!(m.Attributes.HasFlag(System.Reflection.MethodAttributes.SpecialName))))
         .Where(m => (!(typeof(System.Object).GetMethods().Select(om => om.Name).Contains(m.Name))))
         .Select(m =>
-          new SoftmakeAll.SDK.NETReflector.Structures.Method()
+          new SoftmakeAll.SDK.NetReflector.Structures.Method()
           {
             IsConstructor = m.IsConstructor,
             IsStatic = m.IsStatic,
@@ -168,12 +168,12 @@ namespace SoftmakeAll.SDK.NETReflector
 
       return Result.OrderBy(m => m.Name).ToList();
     }
-    public System.Collections.Generic.List<SoftmakeAll.SDK.NETReflector.Structures.Parameter> GetMethodParameters(System.Reflection.MethodInfo MethodInfo)
+    public System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Parameter> GetMethodParameters(System.Reflection.MethodInfo MethodInfo)
     {
       return
         MethodInfo.GetParameters()
         .Select(p =>
-          new SoftmakeAll.SDK.NETReflector.Structures.Parameter()
+          new SoftmakeAll.SDK.NetReflector.Structures.Parameter()
           {
             Position = p.Position,
             TypeDescription = p.ParameterType.ToString(),

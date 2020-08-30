@@ -20,14 +20,14 @@ Não deixe de consultar os pacotes adicionais.</Description>
     <NeutralLanguage>English (United States)</NeutralLanguage>
     <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
     <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
-    <PackageLicenseExpression></PackageLicenseExpression>
+
     <RepositoryUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</RepositoryUrl>
     <RepositoryType>Public C# (.NET Standard) Repository</RepositoryType>
     <PackageIcon>Cubes.png</PackageIcon>
     <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2020</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageLicenseFile>License.txt</PackageLicenseFile>
+
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <AssemblyVersion>1.0.6.0</AssemblyVersion>
     <FileVersion>1.0.6.0</FileVersion>
     <Version>1.0.6</Version>
@@ -51,10 +51,6 @@ Não deixe de consultar os pacotes adicionais.</Description>
 
   <ItemGroup>
     <None Include="..\..\..\..\..\Arthur\Softmake\Marca\Logotipos\Cubes.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-    <None Include="License.txt">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

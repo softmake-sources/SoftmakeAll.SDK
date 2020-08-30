@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <PackageLicenseExpression></PackageLicenseExpression>
+
     <Authors>Arthur Mattos</Authors>
     <Company>Softmake - Software &amp; Automação</Company>
     <PackageId>SoftmakeAll.SDK.NetReflector</PackageId>
@@ -17,12 +17,12 @@
     <Description>Este pacote é parte do pacote SoftmakeAll.SDK
 
 Este pacote fornece apoio para Reflection e compilação de código dinâmico de bibliotecas .NET Standard.</Description>
-    <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
-    <FileVersion>1.0.2.0</FileVersion>
-    <Version>1.0.2</Version>
-    <PackageReleaseNotes>Atualização das dependências para a última versão estável.</PackageReleaseNotes>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+    <AssemblyVersion>1.0.3.0</AssemblyVersion>
+    <FileVersion>1.0.3.0</FileVersion>
+    <Version>1.0.3</Version>
+    <PackageReleaseNotes>Inclusão da função EvaluateScript.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -46,41 +46,37 @@ Este pacote fornece apoio para Reflection e compilação de código dinâmico de
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="src\DefaultAssemblies\Microsoft.AspNetCore.Authorization.dll">
+    <None Update="DefaultAssemblies\Microsoft.AspNetCore.Authorization.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="src\DefaultAssemblies\Microsoft.AspNetCore.Http.Abstractions.dll">
+    <None Update="DefaultAssemblies\Microsoft.AspNetCore.Http.Abstractions.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="src\DefaultAssemblies\Microsoft.AspNetCore.Http.dll">
+    <None Update="DefaultAssemblies\Microsoft.AspNetCore.Http.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="src\DefaultAssemblies\Microsoft.AspNetCore.Http.Features.dll">
+    <None Update="DefaultAssemblies\Microsoft.AspNetCore.Http.Features.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="src\DefaultAssemblies\Microsoft.AspNetCore.Mvc.Abstractions.dll">
+    <None Update="DefaultAssemblies\Microsoft.AspNetCore.Mvc.Abstractions.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="src\DefaultAssemblies\Microsoft.AspNetCore.Mvc.Core.dll">
+    <None Update="DefaultAssemblies\Microsoft.AspNetCore.Mvc.Core.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="src\DefaultAssemblies\mscorlib.dll">
+    <None Update="DefaultAssemblies\mscorlib.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="src\DefaultAssemblies\netstandard.dll">
+    <None Update="DefaultAssemblies\netstandard.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="src\DefaultAssemblies\Newtonsoft.Json.dll">
+    <None Update="DefaultAssemblies\Newtonsoft.Json.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="src\DefaultAssemblies\System.Text.Json.dll">
+    <None Update="DefaultAssemblies\System.Text.Json.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\..\..\Arthur\Softmake\Marca\Logotipos\Cubes.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-    <None Include="License.txt">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

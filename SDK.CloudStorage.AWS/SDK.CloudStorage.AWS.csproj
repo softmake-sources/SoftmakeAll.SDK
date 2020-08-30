@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <PackageLicenseExpression></PackageLicenseExpression>
+
     <Authors>Arthur Mattos</Authors>
     <Company>Softmake - Software &amp; Automação</Company>
     <PackageId>SoftmakeAll.SDK.CloudStorage.AWS</PackageId>
@@ -17,11 +17,11 @@
     <Description>Este pacote é parte do pacote SoftmakeAll.SDK
 
 . Este pacote fornece apoio para administração de arquivos no AWS S3.</Description>
-    <PackageLicenseFile>License.txt</PackageLicenseFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <AssemblyVersion>1.0.3.0</AssemblyVersion>
     <FileVersion>1.0.3.0</FileVersion>
     <Version>1.0.3</Version>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+
     <PackageReleaseNotes>Atualização das dependências para a última versão estável.</PackageReleaseNotes>
   </PropertyGroup>
 
@@ -46,10 +46,6 @@
 
   <ItemGroup>
     <None Include="..\..\..\..\..\Arthur\Softmake\Marca\Logotipos\Cubes.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-    <None Include="License.txt">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

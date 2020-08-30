@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <PackageLicenseExpression></PackageLicenseExpression>
+
     <Authors>Arthur Mattos</Authors>
     <Company>Softmake - Software &amp; Automação</Company>
     <PackageId>SoftmakeAll.SDK.DataAccess.PostgreSQL</PackageId>
@@ -17,8 +17,8 @@
     <Description>Este pacote é parte do pacote SoftmakeAll.SDK
 
 . Este pacote fornece apoio para acesso à dados quando o banco de dados é Postgre SQL.</Description>
-    <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
     <AssemblyVersion>1.0.1.0</AssemblyVersion>
     <FileVersion>1.0.1.0</FileVersion>
     <Version>1.0.1</Version>
@@ -46,10 +46,6 @@
 
   <ItemGroup>
     <None Include="..\..\..\..\..\Arthur\Softmake\Marca\Logotipos\Cubes.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-    <None Include="License.txt">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
