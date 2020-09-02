@@ -1,4 +1,5 @@
 ﻿using SoftmakeAll.SDK.Helpers.JSON.Extensions;
+using System.Linq;
 
 namespace SoftmakeAll.SDK.Communication
 {
@@ -31,6 +32,7 @@ namespace SoftmakeAll.SDK.Communication
     public System.String Method { get; set; }
     public System.Collections.Generic.Dictionary<System.String, System.String> Headers { get; }
     public System.String AuthorizationBearerToken { get; set; }
+    public System.String AuthorizationBasicBase64 { get; set; }
     public System.Text.Json.JsonElement Body { get; set; }
     public System.Int32 Timeout { get; set; }
 
@@ -70,13 +72,7 @@ namespace SoftmakeAll.SDK.Communication
               HttpWebRequest.Headers.Add(Header.Key, Header.Value);
             else
               HttpWebRequest.ContentType = Header.Value;
-
-        if (!(System.String.IsNullOrWhiteSpace(this.AuthorizationBearerToken)))
-        {
-          HttpWebRequest.UseDefaultCredentials = false;
-          HttpWebRequest.PreAuthenticate = true;
-          HttpWebRequest.Headers.Add("Authorization", "Bearer " + this.AuthorizationBearerToken);
-        }
+        this.AddAuthorizationHeader(HttpWebRequest);
 
         if (this.Body.ValueKind == System.Text.Json.JsonValueKind.Undefined)
           HttpWebRequest.ContentLength = 0;
@@ -141,13 +137,7 @@ namespace SoftmakeAll.SDK.Communication
               HttpWebRequest.Headers.Add(Header.Key, Header.Value);
             else
               HttpWebRequest.ContentType = Header.Value;
-
-        if (!(System.String.IsNullOrWhiteSpace(this.AuthorizationBearerToken)))
-        {
-          HttpWebRequest.UseDefaultCredentials = false;
-          HttpWebRequest.PreAuthenticate = true;
-          HttpWebRequest.Headers.Add("Authorization", "Bearer " + this.AuthorizationBearerToken);
-        }
+        this.AddAuthorizationHeader(HttpWebRequest);
 
         if (this.Body.ValueKind == System.Text.Json.JsonValueKind.Undefined)
           HttpWebRequest.ContentLength = 0;
@@ -202,9 +192,7 @@ namespace SoftmakeAll.SDK.Communication
         if (this.Headers.Count > 0)
           foreach (System.Collections.Generic.KeyValuePair<System.String, System.String> Header in this.Headers)
             HttpClient.DefaultRequestHeaders.Add(Header.Key, Header.Value);
-
-        if (!(System.String.IsNullOrWhiteSpace(this.AuthorizationBearerToken)))
-          HttpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + this.AuthorizationBearerToken);
+        this.AddAuthorizationHeader(HttpClient);
 
         using (System.Net.Http.MultipartFormDataContent MultipartFormDataContent = new System.Net.Http.MultipartFormDataContent())
         {
@@ -252,13 +240,7 @@ namespace SoftmakeAll.SDK.Communication
         if (this.Headers.Count > 0)
           foreach (System.Collections.Generic.KeyValuePair<System.String, System.String> Header in this.Headers)
             HttpWebRequest.Headers.Add(Header.Key, Header.Value);
-
-        if (!(System.String.IsNullOrWhiteSpace(this.AuthorizationBearerToken)))
-        {
-          HttpWebRequest.UseDefaultCredentials = false;
-          HttpWebRequest.PreAuthenticate = true;
-          HttpWebRequest.Headers.Add("Authorization", "Bearer " + this.AuthorizationBearerToken);
-        }
+        this.AddAuthorizationHeader(HttpWebRequest);
 
         if (this.Body.ValueKind == System.Text.Json.JsonValueKind.Undefined)
           HttpWebRequest.ContentLength = 0;
@@ -279,11 +261,9 @@ namespace SoftmakeAll.SDK.Communication
           this._StatusCode = HttpWebResponse.StatusCode;
 
           System.Net.WebClient WebClient = new System.Net.WebClient();
-          if (!(System.String.IsNullOrWhiteSpace(this.AuthorizationBearerToken)))
-          {
-            WebClient.UseDefaultCredentials = false;
-            WebClient.Headers.Add("Authorization", "Bearer " + this.AuthorizationBearerToken);
-          }
+          foreach (System.Collections.Generic.KeyValuePair<System.String, System.String> Header in this.Headers)
+            WebClient.Headers.Add(Header.Key, Header.Value);
+          this.AddAuthorizationHeader(WebClient);
           System.Byte[] FileContents = WebClient.DownloadData(this.URL);
 
           if ((FileContents == null) || (FileContents.Length == 0))
@@ -373,6 +353,47 @@ namespace SoftmakeAll.SDK.Communication
       this.Timeout = 0;
       this._HasRequestErrors = false;
       this._StatusCode = System.Net.HttpStatusCode.OK;
+    }
+    private void AddAuthorizationHeader(System.Net.HttpWebRequest HttpWebRequest)
+    {
+      if (HttpWebRequest == null)
+        return;
+
+      if (!(System.String.IsNullOrWhiteSpace(this.AuthorizationBearerToken)))
+        HttpWebRequest.Headers["Authorization"] = "Bearer " + this.AuthorizationBearerToken.Replace("Bearer ", "");
+      else if (!(System.String.IsNullOrWhiteSpace(this.AuthorizationBasicBase64)))
+        HttpWebRequest.Headers["Authorization"] = "Basic " + this.AuthorizationBasicBase64.Replace("Basic ", "");
+
+      if (!(System.String.IsNullOrWhiteSpace(HttpWebRequest.Headers["Authorization"])))
+        HttpWebRequest.PreAuthenticate = true;
+    }
+    private void AddAuthorizationHeader(System.Net.WebClient WebClient)
+    {
+      if (WebClient == null)
+        return;
+
+      if (!(System.String.IsNullOrWhiteSpace(this.AuthorizationBearerToken)))
+        WebClient.Headers["Authorization"] = "Bearer " + this.AuthorizationBearerToken.Replace("Bearer ", "");
+      else if (!(System.String.IsNullOrWhiteSpace(this.AuthorizationBasicBase64)))
+        WebClient.Headers["Authorization"] = "Basic " + this.AuthorizationBasicBase64.Replace("Basic ", "");
+    }
+    private void AddAuthorizationHeader(System.Net.Http.HttpClient HttpClient)
+    {
+      if (HttpClient == null)
+        return;
+
+      if (!(System.String.IsNullOrWhiteSpace(this.AuthorizationBearerToken)))
+      {
+        if (HttpClient.DefaultRequestHeaders.Contains("Authorization"))
+          HttpClient.DefaultRequestHeaders.Remove("Authorization");
+        HttpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + this.AuthorizationBearerToken.Replace("Bearer ", ""));
+      }
+      else if (!(System.String.IsNullOrWhiteSpace(this.AuthorizationBasicBase64)))
+      {
+        if (HttpClient.DefaultRequestHeaders.Contains("Authorization"))
+          HttpClient.DefaultRequestHeaders.Remove("Authorization");
+        HttpClient.DefaultRequestHeaders.Add("Authorization", "Basic " + this.AuthorizationBasicBase64.Replace("Basic ", ""));
+      }
     }
     #endregion
   }
