@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <PackageLicenseExpression></PackageLicenseExpression>
+
     <Authors>Arthur Mattos</Authors>
     <Company>Softmake - Software &amp; Automação</Company>
     <PackageId>SoftmakeAll.SDK.DataAccess.MySQL</PackageId>
@@ -16,12 +16,13 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Este pacote é parte do pacote SoftmakeAll.SDK
 
-Este pacote fornece apoio para acesso à dados quando o banco de dados é MySQL ou MariaDB.</Description>
-    <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <AssemblyVersion>1.0.3.0</AssemblyVersion>
-    <FileVersion>1.0.3.0</FileVersion>
-    <Version>1.0.3</Version>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+. Este pacote fornece apoio para acesso à dados quando o banco de dados é MySQL ou MariaDB.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <AssemblyVersion>1.0.4.0</AssemblyVersion>
+    <FileVersion>1.0.4.0</FileVersion>
+    <Version>1.0.4</Version>
+
+    <PackageReleaseNotes>Atualização das dependências para a última versão estável e inclusão das variáveis de contexto nos métodos de escrita de eventos.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -36,7 +37,7 @@ Este pacote fornece apoio para acesso à dados quando o banco de dados é MySQL 
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MySql.Data" Version="8.0.20" />
+    <PackageReference Include="MySql.Data" Version="8.0.21" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,10 +46,6 @@ Este pacote fornece apoio para acesso à dados quando o banco de dados é MySQL 
 
   <ItemGroup>
     <None Include="..\..\..\..\..\Arthur\Softmake\Marca\Logotipos\Cubes.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-    <None Include="License.txt">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

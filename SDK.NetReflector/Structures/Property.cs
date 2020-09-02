@@ -1,4 +1,4 @@
-﻿namespace SoftmakeAll.SDK.NETReflector.Structures
+﻿namespace SoftmakeAll.SDK.NetReflector.Structures
 {
   public struct Property
   {

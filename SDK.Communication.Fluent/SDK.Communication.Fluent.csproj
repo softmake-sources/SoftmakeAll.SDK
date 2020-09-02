@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <PackageLicenseExpression></PackageLicenseExpression>
+
     <Authors>Arthur Mattos</Authors>
     <Company>Softmake - Software &amp; Automação</Company>
     <NeutralLanguage>English (United States)</NeutralLanguage>
@@ -12,15 +12,15 @@
     <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2020</Copyright>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Description>Este pacote é parte do pacote SoftmakeAll.SDK</Description>
-    <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
     <Version>1.0.0</Version>
     <PackageTags>SoftmakeAll SDK</PackageTags>
-    <PackageId>SoftmakeAll.SDK.ContactCenter.Fluent</PackageId>
-    <AssemblyName>SoftmakeAll.SDK.ContactCenter.Fluent</AssemblyName>
-    <RootNamespace>SoftmakeAll.SDK.ContactCenter.Fluent</RootNamespace>
+    <PackageId>SoftmakeAll.SDK.Communication.Fluent</PackageId>
+    <AssemblyName>SoftmakeAll.SDK.Communication.Fluent</AssemblyName>
+    <RootNamespace>SoftmakeAll.SDK.Communication.Fluent</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -40,14 +40,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Entities\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\..\..\..\..\Arthur\Softmake\Marca\Logotipos\Cubes.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="src\Entities\" />
   </ItemGroup>
 
 </Project>

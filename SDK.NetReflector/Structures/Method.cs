@@ -1,4 +1,4 @@
-﻿namespace SoftmakeAll.SDK.NETReflector.Structures
+﻿namespace SoftmakeAll.SDK.NetReflector.Structures
 {
   public struct Method
   {
@@ -8,7 +8,7 @@
     public System.Boolean IsAsync { get; set; }
     public System.String TypeDescription { get; set; }
     public System.String Name { get; set; }
-    public System.Collections.Generic.List<SoftmakeAll.SDK.NETReflector.Structures.Parameter> Parameters { get; set; }
+    public System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Parameter> Parameters { get; set; }
     #endregion
   }
 }
