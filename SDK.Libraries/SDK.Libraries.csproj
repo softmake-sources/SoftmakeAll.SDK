@@ -45,7 +45,7 @@ Este pacote fornece apoio para a construção de bibliotecas instaláveis no Sof
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\..\..\Arthur\Softmake\Marca\Logotipos\Cubes.png">
+    <None Include="..\Cubes.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

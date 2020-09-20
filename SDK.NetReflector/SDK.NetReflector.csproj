@@ -76,7 +76,10 @@ Este pacote fornece apoio para Reflection e compilação de código dinâmico de
     <None Update="DefaultAssemblies\System.Text.Json.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\..\..\..\Arthur\Softmake\Marca\Logotipos\Cubes.png">
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\Cubes.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
