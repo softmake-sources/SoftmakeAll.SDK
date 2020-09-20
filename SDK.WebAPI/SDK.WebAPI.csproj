@@ -46,7 +46,7 @@ Este pacote fornece apoio para a construção de APIs de serviços que serão co
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\..\..\Arthur\Softmake\Marca\Logotipos\Cubes.png">
+    <None Include="..\Cubes.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

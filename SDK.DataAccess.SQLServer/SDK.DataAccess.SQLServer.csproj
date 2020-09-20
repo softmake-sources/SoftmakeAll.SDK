@@ -45,7 +45,7 @@ Este pacote fornece apoio para acesso à dados quando o banco de dados é SQL Se
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\..\..\Arthur\Softmake\Marca\Logotipos\Cubes.png">
+    <None Include="..\Cubes.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
