@@ -70,7 +70,6 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
     }
     private System.Collections.Generic.List<System.String> ReadBlocks(System.String CommandText)
     {
-      System.Boolean IsRowCountDefined = false;
       System.Collections.Generic.List<System.String> Result = new System.Collections.Generic.List<System.String>();
       System.Text.StringBuilder Buffer = new System.Text.StringBuilder();
       using (System.IO.StringReader StringReader = new System.IO.StringReader(CommandText))
@@ -87,13 +86,6 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
           System.String TrimmedAndLoweredLine = TrimmedLine.ToLower();
           if (TrimmedAndLoweredLine.StartsWith("use "))
             continue;
-
-          if ((TrimmedAndLoweredLine.Contains("rowcount")) && (!(TrimmedAndLoweredLine.Contains("@@rowcount"))))
-          {
-            if (IsRowCountDefined)
-              continue;
-            IsRowCountDefined = true;
-          }
 
           if (TrimmedLine.StartsWith("/*"))
           {
@@ -132,7 +124,6 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
     }
     private async System.Threading.Tasks.Task<System.Collections.Generic.List<System.String>> ReadBlocksAsync(System.String CommandText)
     {
-      System.Boolean IsRowCountDefined = false;
       System.Collections.Generic.List<System.String> Result = new System.Collections.Generic.List<System.String>();
       System.Text.StringBuilder Buffer = new System.Text.StringBuilder();
       using (System.IO.StringReader StringReader = new System.IO.StringReader(CommandText))
@@ -149,13 +140,6 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
           System.String TrimmedAndLoweredLine = TrimmedLine.ToLower();
           if (TrimmedAndLoweredLine.StartsWith("use "))
             continue;
-
-          if ((TrimmedAndLoweredLine.Contains("rowcount")) && (!(TrimmedAndLoweredLine.Contains("@@rowcount"))))
-          {
-            if (IsRowCountDefined)
-              continue;
-            IsRowCountDefined = true;
-          }
 
           if (TrimmedLine.StartsWith("/*"))
           {
@@ -384,14 +368,31 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
           System.Data.DataSet DataSet = new System.Data.DataSet();
           DataSet.EnforceConstraints = false;
 
-          Adapter = new System.Data.SqlClient.SqlDataAdapter(ConnectorObjects.Command);
-          foreach (System.String Block in Blocks)
+          if (Blocks.Count == 1)
           {
+            Adapter = new System.Data.SqlClient.SqlDataAdapter();
             System.Data.DataTable DataTable = new System.Data.DataTable();
-            ConnectorObjects.Command.CommandText = Block;
+            Adapter.SelectCommand = ConnectorObjects.Command;
             Adapter.Fill(DataTable);
             DataSet.Tables.Add(DataTable);
           }
+          else
+            foreach (System.String Block in Blocks)
+            {
+              System.Data.DataTable DataTable = new System.Data.DataTable();
+              ConnectorObjects.Command.CommandText = Block;
+
+              using (System.Data.SqlClient.SqlCommand BlockCommand = new System.Data.SqlClient.SqlCommand())
+              {
+                BlockCommand.Connection = ConnectorObjects.Connection;
+                BlockCommand.CommandText = Block;
+                BlockCommand.CommandTimeout = ConnectorObjects.Command.CommandTimeout;
+                Adapter.SelectCommand = BlockCommand;
+                Adapter.Fill(DataTable);
+              }
+
+              DataSet.Tables.Add(DataTable);
+            }
 
           if ((base.ReadSummaries.Value) && (!(base.ShowPlan)))
           {
@@ -467,14 +468,31 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
           System.Data.DataSet DataSet = new System.Data.DataSet();
           DataSet.EnforceConstraints = false;
 
-          Adapter = new System.Data.SqlClient.SqlDataAdapter(ConnectorObjects.Command);
-          foreach (System.String Block in Blocks)
+          Adapter = new System.Data.SqlClient.SqlDataAdapter();
+          if (Blocks.Count == 1)
           {
             System.Data.DataTable DataTable = new System.Data.DataTable();
-            ConnectorObjects.Command.CommandText = Block;
+            Adapter.SelectCommand = ConnectorObjects.Command;
             Adapter.Fill(DataTable);
             DataSet.Tables.Add(DataTable);
           }
+          else
+            foreach (System.String Block in Blocks)
+            {
+              System.Data.DataTable DataTable = new System.Data.DataTable();
+              ConnectorObjects.Command.CommandText = Block;
+
+              using (System.Data.SqlClient.SqlCommand BlockCommand = new System.Data.SqlClient.SqlCommand())
+              {
+                BlockCommand.Connection = ConnectorObjects.Connection;
+                BlockCommand.CommandText = Block;
+                BlockCommand.CommandTimeout = ConnectorObjects.Command.CommandTimeout;
+                Adapter.SelectCommand = BlockCommand;
+                Adapter.Fill(DataTable);
+              }
+
+              DataSet.Tables.Add(DataTable);
+            }
 
           if ((base.ReadSummaries.Value) && (!(base.ShowPlan)))
           {
