@@ -19,7 +19,7 @@ namespace SoftmakeAll.SDK.Asterisk.ARI.Middleware.Default
       var cmd = (Command)command;
       var result = cmd.Client.Send();
       T data = default;
-      System.String resultText = result.GetRawText();
+      System.String resultText = result.ToRawText();
       if (!(System.String.IsNullOrWhiteSpace(resultText)))
       {
         resultText = resultText.ToJsonElement().ToRawText();
@@ -34,7 +34,7 @@ namespace SoftmakeAll.SDK.Asterisk.ARI.Middleware.Default
       var cmd = (Command)command;
       var result = cmd.Client.Send();
       System.Byte[] rawData = null;
-      System.String resultText = result.GetRawText();
+      System.String resultText = result.ToRawText();
       if (!(System.String.IsNullOrWhiteSpace(resultText)))
       {
         resultText = resultText.ToJsonElement().ToRawText();
@@ -49,7 +49,7 @@ namespace SoftmakeAll.SDK.Asterisk.ARI.Middleware.Default
       var cmd = (Command)command;
       var result = await cmd.Client.SendAsync();
       T data = default;
-      System.String resultText = result.GetRawText();
+      System.String resultText = result.ToRawText();
       if (!(System.String.IsNullOrWhiteSpace(resultText)))
       {
         resultText = resultText.ToJsonElement().ToRawText();
@@ -65,7 +65,7 @@ namespace SoftmakeAll.SDK.Asterisk.ARI.Middleware.Default
       var result = await cmd.Client.SendAsync();
 
       System.Byte[] rawData = null;
-      System.String resultText = result.GetRawText();
+      System.String resultText = result.ToRawText();
       if (!(System.String.IsNullOrWhiteSpace(resultText)))
       {
         resultText = resultText.ToJsonElement().ToRawText();
