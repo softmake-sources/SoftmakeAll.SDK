@@ -20,14 +20,14 @@ Este pacote fornece apoio para:
 </Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
-    <FileVersion>1.0.2.0</FileVersion>
-    <Version>1.0.2</Version>
+    <AssemblyVersion>1.0.3.0</AssemblyVersion>
+    <FileVersion>1.0.3.0</FileVersion>
+    <Version>1.0.3</Version>
     <PackageTags>SoftmakeAll SDK Blazor ClientStorage</PackageTags>
     <PackageId>SoftmakeAll.SDK.Blazor</PackageId>
     <AssemblyName>SoftmakeAll.SDK.Blazor</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK.Blazor</RootNamespace>
-    <PackageReleaseNotes>Atualização das dependências para a última versão estável.</PackageReleaseNotes>
+    <PackageReleaseNotes>Atualização das dependências e alteração do Root Namespace.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -48,9 +48,9 @@ Este pacote fornece apoio para:
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.9" />
   </ItemGroup>
 
   <ItemGroup>

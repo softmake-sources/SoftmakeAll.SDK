@@ -18,11 +18,15 @@
 
 Este pacote fornece apoio para acesso à dados quando o banco de dados é SQL Server.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <AssemblyVersion>1.0.9.0</AssemblyVersion>
-    <FileVersion>1.0.9.0</FileVersion>
-    <Version>1.0.9</Version>
+    <AssemblyVersion>1.0.10.0</AssemblyVersion>
+    <FileVersion>1.0.10.0</FileVersion>
+    <Version>1.0.10</Version>
 
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReleaseNotes>Atualização das dependências e alteração do Root Namespace.</PackageReleaseNotes>
+
+    <AssemblyName>SoftmakeAll.SDK.DataAccess.SQLServer</AssemblyName>
+
+    <RootNamespace>SoftmakeAll.SDK.DataAccess.SQLServer</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

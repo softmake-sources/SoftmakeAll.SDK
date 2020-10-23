@@ -19,10 +19,12 @@
 . Este pacote fornece apoio para acesso à dados quando o banco de dados é Oracle.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
-    <FileVersion>1.0.1.0</FileVersion>
-    <Version>1.0.1</Version>
-    <PackageReleaseNotes>Atualização das dependências para a última versão estável e inclusão das variáveis de contexto nos métodos de escrita de eventos.</PackageReleaseNotes>
+    <AssemblyVersion>1.0.2.0</AssemblyVersion>
+    <FileVersion>1.0.2.0</FileVersion>
+    <Version>1.0.2</Version>
+    <PackageReleaseNotes>Atualização das dependências e alteração do Root Namespace.</PackageReleaseNotes>
+    <AssemblyName>SoftmakeAll.SDK.DataAccess.Oracle</AssemblyName>
+    <RootNamespace>SoftmakeAll.SDK.DataAccess.Oracle</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -37,7 +39,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.90" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.91" />
   </ItemGroup>
 
   <ItemGroup>
