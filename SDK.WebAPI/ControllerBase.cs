@@ -4,14 +4,29 @@
   public abstract class ControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
   {
     #region Fields
-    private readonly SoftmakeAll.SDK.DataAccess.ConnectorBase DatabaseInstance;
+    protected readonly SoftmakeAll.SDK.DataAccess.ConnectorBase DatabaseInstance;
+    protected readonly SoftmakeAll.SDK.WebAPI.ICRUDOperations ICRUDOperations;
+    protected readonly SoftmakeAll.SDK.WebAPI.INotificationEmitter INotificationEmitter;
     #endregion
 
     #region Constructor
     public ControllerBase() { }
-    public ControllerBase(SoftmakeAll.SDK.DataAccess.ConnectorBase DatabaseInstanceContext)
+    public ControllerBase(SoftmakeAll.SDK.DataAccess.ConnectorBase DatabaseInstanceContext) => this.DatabaseInstance = DatabaseInstanceContext;
+    public ControllerBase(SoftmakeAll.SDK.DataAccess.ConnectorBase DatabaseInstanceContext, SoftmakeAll.SDK.WebAPI.ICRUDOperations ICRUDOperationsContext)
     {
       this.DatabaseInstance = DatabaseInstanceContext;
+      this.ICRUDOperations = ICRUDOperationsContext;
+    }
+    public ControllerBase(SoftmakeAll.SDK.DataAccess.ConnectorBase DatabaseInstanceContext, SoftmakeAll.SDK.WebAPI.INotificationEmitter INotificationEmitterContext)
+    {
+      this.DatabaseInstance = DatabaseInstanceContext;
+      this.INotificationEmitter = INotificationEmitterContext;
+    }
+    public ControllerBase(SoftmakeAll.SDK.DataAccess.ConnectorBase DatabaseInstanceContext, SoftmakeAll.SDK.WebAPI.ICRUDOperations ICRUDOperationsContext, SoftmakeAll.SDK.WebAPI.INotificationEmitter INotificationEmitterContext)
+    {
+      this.DatabaseInstance = DatabaseInstanceContext;
+      this.ICRUDOperations = ICRUDOperationsContext;
+      this.INotificationEmitter = INotificationEmitterContext;
     }
     #endregion
 

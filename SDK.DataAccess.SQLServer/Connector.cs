@@ -751,8 +751,10 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
       return Result;
     }
 
-    public SoftmakeAll.SDK.OperationResult ImportData(System.Data.DataTable DataTable) { return this.ImportData(DataTable, 0); }
-    public SoftmakeAll.SDK.OperationResult ImportData(System.Data.DataTable DataTable, System.Int32 BatchSize)
+    public SoftmakeAll.SDK.OperationResult ImportData(System.Data.DataTable DataTable) => this.ImportData(DataTable, null, 0);
+    public SoftmakeAll.SDK.OperationResult ImportData(System.Data.DataTable DataTable, System.Collections.Generic.Dictionary<System.String, System.String> ColumnMappings) => this.ImportData(DataTable, ColumnMappings, 0);
+    public SoftmakeAll.SDK.OperationResult ImportData(System.Data.DataTable DataTable, System.Int32 BatchSize) => this.ImportData(DataTable, null, BatchSize);
+    public SoftmakeAll.SDK.OperationResult ImportData(System.Data.DataTable DataTable, System.Collections.Generic.Dictionary<System.String, System.String> ColumnMappings, System.Int32 BatchSize)
     {
       System.String ConnectionString = SoftmakeAll.SDK.DataAccess.SQLServer.Environment._ConnectionString;
       if (!(System.String.IsNullOrEmpty(base.ConnectionString)))
@@ -767,10 +769,14 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
 
       try
       {
-        using (System.Data.SqlClient.SqlBulkCopy SqlBulkCopy = new System.Data.SqlClient.SqlBulkCopy(ConnectionString, System.Data.SqlClient.SqlBulkCopyOptions.TableLock | System.Data.SqlClient.SqlBulkCopyOptions.UseInternalTransaction))
+        using (System.Data.SqlClient.SqlBulkCopy SqlBulkCopy = new System.Data.SqlClient.SqlBulkCopy(ConnectionString, System.Data.SqlClient.SqlBulkCopyOptions.CheckConstraints | System.Data.SqlClient.SqlBulkCopyOptions.TableLock | System.Data.SqlClient.SqlBulkCopyOptions.UseInternalTransaction))
         {
           SqlBulkCopy.DestinationTableName = DataTable.TableName;
-          if (BatchSize > 0) SqlBulkCopy.BatchSize = BatchSize;
+          if ((ColumnMappings != null) && (ColumnMappings.Any()))
+            foreach (System.Collections.Generic.KeyValuePair<System.String, System.String> ColumnMapping in ColumnMappings)
+              SqlBulkCopy.ColumnMappings.Add(new System.Data.SqlClient.SqlBulkCopyColumnMapping(ColumnMapping.Key, ColumnMapping.Value));
+          if (BatchSize > 0)
+            SqlBulkCopy.BatchSize = BatchSize;
           Stopwatch.Start();
           SqlBulkCopy.WriteToServer(DataTable);
           Stopwatch.Stop();
@@ -787,8 +793,11 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
 
       return OperationResult;
     }
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> ImportDataAsync(System.Data.DataTable DataTable) { return await this.ImportDataAsync(DataTable, 0); }
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> ImportDataAsync(System.Data.DataTable DataTable, System.Int32 BatchSize)
+
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> ImportDataAsync(System.Data.DataTable DataTable) => await this.ImportDataAsync(DataTable, null, 0);
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> ImportDataAsync(System.Data.DataTable DataTable, System.Collections.Generic.Dictionary<System.String, System.String> ColumnMappings) => await this.ImportDataAsync(DataTable, ColumnMappings, 0);
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> ImportDataAsync(System.Data.DataTable DataTable, System.Int32 BatchSize) => await this.ImportDataAsync(DataTable, null, BatchSize);
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> ImportDataAsync(System.Data.DataTable DataTable, System.Collections.Generic.Dictionary<System.String, System.String> ColumnMappings, System.Int32 BatchSize)
     {
       System.String ConnectionString = SoftmakeAll.SDK.DataAccess.SQLServer.Environment._ConnectionString;
       if (!(System.String.IsNullOrEmpty(base.ConnectionString)))
@@ -803,10 +812,14 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
 
       try
       {
-        using (System.Data.SqlClient.SqlBulkCopy SqlBulkCopy = new System.Data.SqlClient.SqlBulkCopy(ConnectionString, System.Data.SqlClient.SqlBulkCopyOptions.TableLock | System.Data.SqlClient.SqlBulkCopyOptions.UseInternalTransaction))
+        using (System.Data.SqlClient.SqlBulkCopy SqlBulkCopy = new System.Data.SqlClient.SqlBulkCopy(ConnectionString, System.Data.SqlClient.SqlBulkCopyOptions.CheckConstraints | System.Data.SqlClient.SqlBulkCopyOptions.TableLock | System.Data.SqlClient.SqlBulkCopyOptions.UseInternalTransaction))
         {
           SqlBulkCopy.DestinationTableName = DataTable.TableName;
-          if (BatchSize > 0) SqlBulkCopy.BatchSize = BatchSize;
+          if ((ColumnMappings != null) && (ColumnMappings.Any()))
+            foreach (System.Collections.Generic.KeyValuePair<System.String, System.String> ColumnMapping in ColumnMappings)
+              SqlBulkCopy.ColumnMappings.Add(new System.Data.SqlClient.SqlBulkCopyColumnMapping(ColumnMapping.Key, ColumnMapping.Value));
+          if (BatchSize > 0)
+            SqlBulkCopy.BatchSize = BatchSize;
           Stopwatch.Start();
           await SqlBulkCopy.WriteToServerAsync(DataTable);
           Stopwatch.Stop();

@@ -18,11 +18,15 @@
 
 Este pacote fornece apoio para serviços de envio de e-mail utilizando Twilio SendGrid como provedor.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <AssemblyVersion>1.0.3.0</AssemblyVersion>
-    <FileVersion>1.0.3.0</FileVersion>
-    <Version>1.0.3</Version>
+    <AssemblyVersion>1.0.4.0</AssemblyVersion>
+    <FileVersion>1.0.4.0</FileVersion>
+    <Version>1.0.4</Version>
 
-    <PackageReleaseNotes>Atualização das dependências para a última versão estável.</PackageReleaseNotes>
+    <PackageReleaseNotes>Atualização das dependências e alteração do Root Namespace.</PackageReleaseNotes>
+
+    <AssemblyName>SoftmakeAll.SDK.MailServices</AssemblyName>
+
+    <RootNamespace>SoftmakeAll.SDK.MailServices</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
