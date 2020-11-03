@@ -18,11 +18,11 @@
 
 Este pacote fornece apoio para acesso à dados quando o banco de dados é SQL Server.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <AssemblyVersion>1.0.10.0</AssemblyVersion>
-    <FileVersion>1.0.10.0</FileVersion>
-    <Version>1.0.10</Version>
+    <AssemblyVersion>1.0.11.0</AssemblyVersion>
+    <FileVersion>1.0.11.0</FileVersion>
+    <Version>1.0.11</Version>
 
-    <PackageReleaseNotes>Atualização das dependências e alteração do Root Namespace.</PackageReleaseNotes>
+    <PackageReleaseNotes>Novas assinaturas para os métodos de importação de dados. O recurso adicionado é o mapeamento de colunas.</PackageReleaseNotes>
 
     <AssemblyName>SoftmakeAll.SDK.DataAccess.SQLServer</AssemblyName>
 
