@@ -1,14 +1,12 @@
 ﻿namespace SoftmakeAll.SDK.FileWR.CSV
 {
-  internal class FileColumn
+  public class FileColumn
   {
     #region Constructor
     public FileColumn() { }
     #endregion
 
     #region Properties
-    public System.Collections.Generic.List<System.Tuple<System.String, System.String>> AllowedDataTypeNameReplacements { get; set; }
-
     public System.String Name { get; set; }
     public System.Int32 Index { get; set; }
 
@@ -27,7 +25,7 @@
           return;
         }
 
-        if ((value == "String") || (this.AllowedDataTypeNameReplacements == null) || (AllowedDataTypeNameReplacements.Exists(i => i.Item1 == this._DataTypeName && i.Item2 == value)))
+        if ((value == "String") || (SoftmakeAll.SDK.FileWR.CSV.ConverterEngine.AllowedDataTypeNameReplacements.Exists(i => i.Item1 == this._DataTypeName && i.Item2 == value)))
           this._DataTypeName = value;
       }
     }
@@ -60,6 +58,8 @@
           this._AllowNulls = value;
       }
     }
+
+    public System.Globalization.CultureInfo CultureInfo { get; set; }
     #endregion
   }
 }

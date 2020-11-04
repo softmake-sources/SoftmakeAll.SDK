@@ -28,10 +28,10 @@ Não deixe de consultar os pacotes adicionais.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <AssemblyVersion>1.0.8.0</AssemblyVersion>
-    <FileVersion>1.0.8.0</FileVersion>
-    <Version>1.0.8</Version>
-    <PackageReleaseNotes>Atualização das dependências e alteração do Root Namespace.</PackageReleaseNotes>
+    <AssemblyVersion>1.0.9.0</AssemblyVersion>
+    <FileVersion>1.0.9.0</FileVersion>
+    <Version>1.0.9</Version>
+    <PackageReleaseNotes>Alterações no processador de arquivos CSV. Agora é possível especificar colunas a serem extraídas do arquivo.</PackageReleaseNotes>
     <AssemblyName>SoftmakeAll.SDK</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK</RootNamespace>
   </PropertyGroup>
