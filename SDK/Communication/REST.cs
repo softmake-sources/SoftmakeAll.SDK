@@ -23,6 +23,7 @@ namespace SoftmakeAll.SDK.Communication
       #region Properties
       public System.String Name { get; set; }
       public System.Byte[] Contents { get; set; }
+      public System.String ContentType { get; set; }
       #endregion
     }
     #endregion
@@ -35,9 +36,7 @@ namespace SoftmakeAll.SDK.Communication
     public System.String AuthorizationBasicBase64 { get; set; }
     public System.Text.Json.JsonElement Body { get; set; }
     public System.Int32 Timeout { get; set; }
-
-    private System.Boolean _HasRequestErrors;
-    public System.Boolean HasRequestErrors => this._HasRequestErrors;
+    public System.Boolean HasRequestErrors { get; private set; }
 
     private System.Net.HttpStatusCode _StatusCode;
     public System.Net.HttpStatusCode StatusCode => this._StatusCode;
@@ -55,7 +54,7 @@ namespace SoftmakeAll.SDK.Communication
       if (System.String.IsNullOrWhiteSpace(this.URL))
         throw new System.Exception(SoftmakeAll.SDK.Communication.REST.EmptyURLErrorMessage);
 
-      this._HasRequestErrors = false;
+      this.HasRequestErrors = false;
 
       if (System.String.IsNullOrWhiteSpace(this.Method))
         this.Method = SoftmakeAll.SDK.Communication.REST.DefaultMethod;
@@ -95,7 +94,7 @@ namespace SoftmakeAll.SDK.Communication
       }
       catch (System.Net.WebException ex)
       {
-        this._HasRequestErrors = true;
+        this.HasRequestErrors = true;
         System.Net.HttpWebResponse HttpWebResponse = ex.Response as System.Net.HttpWebResponse;
         if (HttpWebResponse == null)
         {
@@ -108,7 +107,7 @@ namespace SoftmakeAll.SDK.Communication
       }
       catch (System.Exception ex)
       {
-        this._HasRequestErrors = true;
+        this.HasRequestErrors = true;
         this._StatusCode = System.Net.HttpStatusCode.InternalServerError;
         Result = new { Error = true, Message = ex.Message }.ToJsonElement();
       }
@@ -120,7 +119,7 @@ namespace SoftmakeAll.SDK.Communication
       if (System.String.IsNullOrWhiteSpace(this.URL))
         throw new System.Exception(SoftmakeAll.SDK.Communication.REST.EmptyURLErrorMessage);
 
-      this._HasRequestErrors = false;
+      this.HasRequestErrors = false;
 
       if (System.String.IsNullOrWhiteSpace(this.Method))
         this.Method = SoftmakeAll.SDK.Communication.REST.DefaultMethod;
@@ -160,7 +159,7 @@ namespace SoftmakeAll.SDK.Communication
       }
       catch (System.Net.WebException ex)
       {
-        this._HasRequestErrors = true;
+        this.HasRequestErrors = true;
         System.Net.HttpWebResponse HttpWebResponse = ex.Response as System.Net.HttpWebResponse;
         if (HttpWebResponse == null)
         {
@@ -173,19 +172,19 @@ namespace SoftmakeAll.SDK.Communication
       }
       catch (System.Exception ex)
       {
-        this._HasRequestErrors = true;
+        this.HasRequestErrors = true;
         this._StatusCode = System.Net.HttpStatusCode.InternalServerError;
         Result = new { Error = true, Message = ex.Message }.ToJsonElement();
       }
 
       return Result;
     }
-    public async System.Threading.Tasks.Task<System.Text.Json.JsonElement> SendFilesAsync(System.Collections.Generic.Dictionary<System.String, SoftmakeAll.SDK.Communication.REST.File> FormData)
+    public async System.Threading.Tasks.Task<System.Text.Json.JsonElement> SendFilesAsync(System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.List<SoftmakeAll.SDK.Communication.REST.File>> FormData)
     {
       if (System.String.IsNullOrWhiteSpace(this.URL))
         throw new System.Exception(SoftmakeAll.SDK.Communication.REST.EmptyURLErrorMessage);
 
-      this._HasRequestErrors = false;
+      this.HasRequestErrors = false;
 
       using (System.Net.Http.HttpClient HttpClient = new System.Net.Http.HttpClient())
       {
@@ -197,26 +196,35 @@ namespace SoftmakeAll.SDK.Communication
         using (System.Net.Http.MultipartFormDataContent MultipartFormDataContent = new System.Net.Http.MultipartFormDataContent())
         {
           if ((FormData != null) && (FormData.Count > 0))
-            foreach (System.Collections.Generic.KeyValuePair<System.String, SoftmakeAll.SDK.Communication.REST.File> Item in FormData)
-              if ((System.String.IsNullOrWhiteSpace(Item.Key)) || (Item.Value == null))
-                continue;
-              else
-                MultipartFormDataContent.Add(new System.Net.Http.ByteArrayContent(Item.Value.Contents), Item.Key, Item.Value.Name);
+            foreach (System.Collections.Generic.KeyValuePair<System.String, System.Collections.Generic.List<SoftmakeAll.SDK.Communication.REST.File>> Item in FormData)
+              if ((!(System.String.IsNullOrWhiteSpace(Item.Key))) && (Item.Value != null) && (Item.Value.Any()))
+                foreach (SoftmakeAll.SDK.Communication.REST.File File in Item.Value)
+                {
+                  System.Net.Http.ByteArrayContent ByteArrayContent = new System.Net.Http.ByteArrayContent(File.Contents);
+                  if (!(System.String.IsNullOrWhiteSpace(File.ContentType)))
+                    ByteArrayContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(File.ContentType);
+                  MultipartFormDataContent.Add(ByteArrayContent, Item.Key, File.Name);
+                }
 
           if (this.Timeout > 0)
             HttpClient.Timeout = System.TimeSpan.FromMilliseconds(this.Timeout);
 
-          System.Net.Http.HttpResponseMessage HttpResponseMessage = await HttpClient.PostAsync(this.URL, MultipartFormDataContent);
           try
           {
+            System.Net.Http.HttpResponseMessage HttpResponseMessage = await HttpClient.PostAsync(this.URL, MultipartFormDataContent);
+            this._StatusCode = HttpResponseMessage.StatusCode;
+            this.HasRequestErrors = false;
+
             System.Byte[] APIResult = await HttpResponseMessage.Content.ReadAsByteArrayAsync();
             if (APIResult == null)
               return new System.Text.Json.JsonElement();
 
             return System.Text.Encoding.UTF8.GetString(APIResult).ToJsonElement();
           }
-          catch
+          catch (System.Exception ex)
           {
+            this.HasRequestErrors = ex.InnerException == null;
+            this._StatusCode = System.Net.HttpStatusCode.InternalServerError;
             return new System.Text.Json.JsonElement();
           }
         }
@@ -227,7 +235,7 @@ namespace SoftmakeAll.SDK.Communication
       if (System.String.IsNullOrWhiteSpace(this.URL))
         throw new System.Exception(SoftmakeAll.SDK.Communication.REST.EmptyURLErrorMessage);
 
-      this._HasRequestErrors = false;
+      this.HasRequestErrors = false;
 
       this.Method = SoftmakeAll.SDK.Communication.REST.DefaultMethod;
 
@@ -288,7 +296,7 @@ namespace SoftmakeAll.SDK.Communication
       }
       catch (System.Net.WebException ex)
       {
-        this._HasRequestErrors = true;
+        this.HasRequestErrors = true;
         System.Net.HttpWebResponse HttpWebResponse = ex.Response as System.Net.HttpWebResponse;
         if (HttpWebResponse == null)
         {
@@ -301,7 +309,7 @@ namespace SoftmakeAll.SDK.Communication
       }
       catch
       {
-        this._HasRequestErrors = true;
+        this.HasRequestErrors = true;
         this._StatusCode = System.Net.HttpStatusCode.InternalServerError;
         Result = null;
       }
@@ -351,7 +359,7 @@ namespace SoftmakeAll.SDK.Communication
       this.AuthorizationBearerToken = null;
       this.Body = new System.Text.Json.JsonElement();
       this.Timeout = 0;
-      this._HasRequestErrors = false;
+      this.HasRequestErrors = false;
       this._StatusCode = System.Net.HttpStatusCode.OK;
     }
     private void AddAuthorizationHeader(System.Net.HttpWebRequest HttpWebRequest)
