@@ -20,10 +20,10 @@
 . Este pacote fornece apoio para administração de BLOBS no Azure Storage.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
-    <FileVersion>1.0.2.0</FileVersion>
-    <Version>1.0.2</Version>
-    <PackageReleaseNotes>Atualização das dependências e alteração do Root Namespace.</PackageReleaseNotes>
+    <AssemblyVersion>1.0.3.0</AssemblyVersion>
+    <FileVersion>1.0.3.0</FileVersion>
+    <Version>1.0.3</Version>
+    <PackageReleaseNotes>Atualização das dependências.</PackageReleaseNotes>
     <AssemblyName>SoftmakeAll.SDK.CloudStorage.Azure</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK.CloudStorage.Azure</RootNamespace>
   </PropertyGroup>
@@ -40,7 +40,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.6.0" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.7.0" />
   </ItemGroup>
 
   <ItemGroup>
