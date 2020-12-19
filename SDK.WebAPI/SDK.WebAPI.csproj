@@ -20,10 +20,10 @@
 Este pacote fornece apoio para a construção de APIs de serviços que serão consumidas pelo Softmake All.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-    <PackageReleaseNotes>Inclusão do método ImportAsync na interface ICRUDOperations.</PackageReleaseNotes>
-    <AssemblyVersion>1.0.12.0</AssemblyVersion>
-    <FileVersion>1.0.12.0</FileVersion>
-    <Version>1.0.12</Version>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <AssemblyVersion>1.0.13.0</AssemblyVersion>
+    <FileVersion>1.0.13.0</FileVersion>
+    <Version>1.0.13</Version>
     <AssemblyName>SoftmakeAll.SDK.WebAPI</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK.WebAPI</RootNamespace>
   </PropertyGroup>
