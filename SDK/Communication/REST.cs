@@ -145,7 +145,7 @@ namespace SoftmakeAll.SDK.Communication
           System.Byte[] BodyBytes = new System.Text.UTF8Encoding().GetBytes(Body.ToString());
           HttpWebRequest.ContentType = SoftmakeAll.SDK.Communication.REST.DefaultContentType;
           HttpWebRequest.ContentLength = BodyBytes.Length;
-          HttpWebRequest.GetRequestStream().Write(BodyBytes, 0, BodyBytes.Length);
+          await (await HttpWebRequest.GetRequestStreamAsync()).WriteAsync(BodyBytes, 0, BodyBytes.Length);
         }
 
         if (this.Timeout > 0)
@@ -258,7 +258,7 @@ namespace SoftmakeAll.SDK.Communication
           HttpWebRequest.ContentType = SoftmakeAll.SDK.Communication.REST.DefaultContentType;
           HttpWebRequest.ContentLength = BodyBytes.Length;
           System.IO.Stream RequestStream = await HttpWebRequest.GetRequestStreamAsync();
-          RequestStream.Write(BodyBytes, 0, BodyBytes.Length);
+          await RequestStream.WriteAsync(BodyBytes, 0, BodyBytes.Length);
         }
 
         if (this.Timeout > 0)
