@@ -21,9 +21,9 @@ Este pacote fornece apoio para a construção de APIs de serviços que serão co
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
     <PackageReleaseNotes></PackageReleaseNotes>
-    <AssemblyVersion>1.0.13.0</AssemblyVersion>
-    <FileVersion>1.0.13.0</FileVersion>
-    <Version>1.0.13</Version>
+    <AssemblyVersion>1.0.14.0</AssemblyVersion>
+    <FileVersion>1.0.14.0</FileVersion>
+    <Version>1.0.14</Version>
     <AssemblyName>SoftmakeAll.SDK.WebAPI</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK.WebAPI</RootNamespace>
   </PropertyGroup>
