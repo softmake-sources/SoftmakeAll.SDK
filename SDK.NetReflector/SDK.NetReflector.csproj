@@ -38,45 +38,114 @@ Este pacote fornece apoio para Reflection e compilação de código dinâmico de
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="DefaultAssemblies\Microsoft.AspNetCore.Authentication.dll" />
+    <None Remove="DefaultAssemblies\Microsoft.AspNetCore.Authorization.dll" />
+    <None Remove="DefaultAssemblies\Microsoft.AspNetCore.Http.Abstractions.dll" />
+    <None Remove="DefaultAssemblies\Microsoft.AspNetCore.Http.dll" />
+    <None Remove="DefaultAssemblies\Microsoft.AspNetCore.Http.Extensions.dll" />
+    <None Remove="DefaultAssemblies\Microsoft.AspNetCore.Http.Features.dll" />
+    <None Remove="DefaultAssemblies\Microsoft.AspNetCore.Mvc.Abstractions.dll" />
+    <None Remove="DefaultAssemblies\Microsoft.AspNetCore.Mvc.Core.dll" />
+    <None Remove="DefaultAssemblies\Microsoft.Extensions.Hosting.Abstractions.dll" />
+    <None Remove="DefaultAssemblies\Microsoft.Extensions.Primitives.dll" />
+    <None Remove="DefaultAssemblies\mscorlib.dll" />
+    <None Remove="DefaultAssemblies\netstandard.dll" />
+    <None Remove="DefaultAssemblies\Newtonsoft.Json.Bson.dll" />
+    <None Remove="DefaultAssemblies\Newtonsoft.Json.dll" />
+    <None Remove="DefaultAssemblies\SoftmakeAll.SDK.Asterisk.dll" />
+    <None Remove="DefaultAssemblies\SoftmakeAll.SDK.CloudStorage.Azure.dll" />
+    <None Remove="DefaultAssemblies\SoftmakeAll.SDK.DataAccess.SQLServer.dll" />
+    <None Remove="DefaultAssemblies\SoftmakeAll.SDK.dll" />
+    <None Remove="DefaultAssemblies\SoftmakeAll.SDK.MailServices.dll" />
+    <None Remove="DefaultAssemblies\SoftmakeAll.SDK.NetReflector.dll" />
+    <None Remove="DefaultAssemblies\SoftmakeAll.SDK.WebAPI.dll" />
+    <None Remove="DefaultAssemblies\System.Data.SqlClient.dll" />
+    <None Remove="DefaultAssemblies\System.Runtime.dll" />
+    <None Remove="DefaultAssemblies\System.Text.Json.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="DefaultAssemblies\Microsoft.AspNetCore.Authentication.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\Microsoft.AspNetCore.Authorization.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\Microsoft.AspNetCore.Http.Abstractions.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\Microsoft.AspNetCore.Http.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\Microsoft.AspNetCore.Http.Extensions.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\Microsoft.AspNetCore.Http.Features.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\Microsoft.AspNetCore.Mvc.Abstractions.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\Microsoft.AspNetCore.Mvc.Core.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\Microsoft.Extensions.Hosting.Abstractions.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\Microsoft.Extensions.Primitives.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\mscorlib.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\netstandard.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\Newtonsoft.Json.Bson.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\Newtonsoft.Json.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\SoftmakeAll.SDK.Asterisk.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\SoftmakeAll.SDK.CloudStorage.Azure.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\SoftmakeAll.SDK.DataAccess.SQLServer.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\SoftmakeAll.SDK.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\SoftmakeAll.SDK.MailServices.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\SoftmakeAll.SDK.NetReflector.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\SoftmakeAll.SDK.WebAPI.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\System.Data.SqlClient.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\System.Runtime.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\System.Text.Json.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.7.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.7.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SDK\SDK.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="DefaultAssemblies\Microsoft.AspNetCore.Authorization.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="DefaultAssemblies\Microsoft.AspNetCore.Http.Abstractions.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="DefaultAssemblies\Microsoft.AspNetCore.Http.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="DefaultAssemblies\Microsoft.AspNetCore.Http.Features.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="DefaultAssemblies\Microsoft.AspNetCore.Mvc.Abstractions.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="DefaultAssemblies\Microsoft.AspNetCore.Mvc.Core.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="DefaultAssemblies\mscorlib.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="DefaultAssemblies\netstandard.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="DefaultAssemblies\Newtonsoft.Json.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="DefaultAssemblies\System.Text.Json.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <ItemGroup>

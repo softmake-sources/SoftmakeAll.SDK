@@ -10,6 +10,7 @@
     #region Constructor
     public BackgroundServiceBase() : base() { }
     public BackgroundServiceBase(SoftmakeAll.SDK.DataAccess.ConnectorBase DatabaseInstanceContext) => this.DatabaseInstance = DatabaseInstanceContext;
+    public BackgroundServiceBase(SoftmakeAll.SDK.WebAPI.INotificationEmitter INotificationEmitterContext) => this.INotificationEmitter = INotificationEmitterContext;
     public BackgroundServiceBase(SoftmakeAll.SDK.DataAccess.ConnectorBase DatabaseInstanceContext, SoftmakeAll.SDK.WebAPI.INotificationEmitter INotificationEmitterContext)
     {
       this.DatabaseInstance = DatabaseInstanceContext;
