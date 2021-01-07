@@ -46,6 +46,10 @@ Este pacote fornece apoio para Reflection e compilação de código dinâmico de
     <None Remove="DefaultAssemblies\Microsoft.AspNetCore.Http.Features.dll" />
     <None Remove="DefaultAssemblies\Microsoft.AspNetCore.Mvc.Abstractions.dll" />
     <None Remove="DefaultAssemblies\Microsoft.AspNetCore.Mvc.Core.dll" />
+    <None Remove="DefaultAssemblies\Microsoft.Bot.Builder.dll" />
+    <None Remove="DefaultAssemblies\Microsoft.Bot.Builder.Integration.AspNet.Core.dll" />
+    <None Remove="DefaultAssemblies\Microsoft.Bot.Connector.dll" />
+    <None Remove="DefaultAssemblies\Microsoft.Bot.Schema.dll" />
     <None Remove="DefaultAssemblies\Microsoft.Extensions.Hosting.Abstractions.dll" />
     <None Remove="DefaultAssemblies\Microsoft.Extensions.Primitives.dll" />
     <None Remove="DefaultAssemblies\mscorlib.dll" />
@@ -61,6 +65,7 @@ Este pacote fornece apoio para Reflection e compilação de código dinâmico de
     <None Remove="DefaultAssemblies\SoftmakeAll.SDK.WebAPI.dll" />
     <None Remove="DefaultAssemblies\System.Data.SqlClient.dll" />
     <None Remove="DefaultAssemblies\System.Runtime.dll" />
+    <None Remove="DefaultAssemblies\System.Security.Claims.dll" />
     <None Remove="DefaultAssemblies\System.Text.Json.dll" />
   </ItemGroup>
 
@@ -87,6 +92,18 @@ Este pacote fornece apoio para Reflection e compilação de código dinâmico de
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="DefaultAssemblies\Microsoft.AspNetCore.Mvc.Core.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\Microsoft.Bot.Builder.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\Microsoft.Bot.Builder.Integration.AspNet.Core.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\Microsoft.Bot.Connector.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\Microsoft.Bot.Schema.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="DefaultAssemblies\Microsoft.Extensions.Hosting.Abstractions.dll">
@@ -132,6 +149,9 @@ Este pacote fornece apoio para Reflection e compilação de código dinâmico de
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="DefaultAssemblies\System.Runtime.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultAssemblies\System.Security.Claims.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="DefaultAssemblies\System.Text.Json.dll">
