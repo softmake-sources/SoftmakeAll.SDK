@@ -28,10 +28,10 @@ Não deixe de consultar os pacotes adicionais.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <AssemblyVersion>1.0.10.0</AssemblyVersion>
-    <FileVersion>1.0.10.0</FileVersion>
-    <Version>1.0.10</Version>
-    <PackageReleaseNotes>Atualização da bilbioteca System.Text.Json para .NET 5.0</PackageReleaseNotes>
+    <AssemblyVersion>1.0.11.0</AssemblyVersion>
+    <FileVersion>1.0.11.0</FileVersion>
+    <Version>1.0.11</Version>
+    <PackageReleaseNotes>Mudança da Regex de reconhecimento de colunas em arquivos CSV</PackageReleaseNotes>
     <AssemblyName>SoftmakeAll.SDK</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK</RootNamespace>
   </PropertyGroup>

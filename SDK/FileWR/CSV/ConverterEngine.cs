@@ -49,7 +49,8 @@ namespace SoftmakeAll.SDK.FileWR.CSV
     public async System.Threading.Tasks.Task<System.Data.DataTable> ConvertToDataTableAsync(System.IO.Stream Stream)
     {
       System.Data.DataTable Result = new System.Data.DataTable();
-      const System.String RegexSplit = "(?:,|\\n|^)(\"(?:(?:\"\")*[^\"]*)*\"|[^\",\\n]*|(?:\\n|$))";
+      //const System.String RegexSplit = "(?:,|\\n|^)(\"(?:(?:\"\")*[^\"]*)*\"|[^\",\\n]*|(?:\\n|$))"; // Regex for: "column";"column";"column"     column,column,column
+      const System.String RegexSplit = "(?:;|,|\\||\\n|^)(\"(?:(?:\"\")*[^\"]*)*\"|[^\";,|\\n]*|(?:\\n|$))"; // Regex for: "column";"column";"column"     column,column,column     column;column;column     column|column|column
 
       if (FileColumns.Count == 0)
       {
