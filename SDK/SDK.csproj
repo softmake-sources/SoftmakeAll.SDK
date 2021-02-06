@@ -34,6 +34,7 @@ Não deixe de consultar os pacotes adicionais.</Description>
     <PackageReleaseNotes>Mudança da Regex de reconhecimento de colunas em arquivos CSV</PackageReleaseNotes>
     <AssemblyName>SoftmakeAll.SDK</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK</RootNamespace>
+    <UserSecretsId>5a7d13dc-c109-4ae5-8678-43dd3813e8ea</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -48,7 +49,7 @@ Não deixe de consultar os pacotes adicionais.</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="5.0.0" />
+    <PackageReference Include="System.Text.Json" Version="5.0.1" />
   </ItemGroup>
 
   <ItemGroup>
