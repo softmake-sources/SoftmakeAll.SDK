@@ -27,6 +27,8 @@
     <AssemblyName>SoftmakeAll.SDK.DataAccess.MySQL</AssemblyName>
 
     <RootNamespace>SoftmakeAll.SDK.DataAccess.MySQL</RootNamespace>
+
+    <PackageProjectUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</PackageProjectUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

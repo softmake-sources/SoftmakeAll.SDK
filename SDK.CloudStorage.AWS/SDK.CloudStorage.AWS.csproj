@@ -27,6 +27,8 @@
     <AssemblyName>SoftmakeAll.SDK.CloudStorage.AWS</AssemblyName>
 
     <RootNamespace>SoftmakeAll.SDK.CloudStorage.AWS</RootNamespace>
+
+    <PackageProjectUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</PackageProjectUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

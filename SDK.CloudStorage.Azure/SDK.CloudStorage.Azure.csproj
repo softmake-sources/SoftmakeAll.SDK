@@ -26,6 +26,7 @@
     <PackageReleaseNotes>Atualização das dependências.</PackageReleaseNotes>
     <AssemblyName>SoftmakeAll.SDK.CloudStorage.Azure</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK.CloudStorage.Azure</RootNamespace>
+    <PackageProjectUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</PackageProjectUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

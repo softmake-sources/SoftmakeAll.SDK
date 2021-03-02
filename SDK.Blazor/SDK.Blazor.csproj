@@ -28,6 +28,7 @@ Este pacote fornece apoio para:
     <AssemblyName>SoftmakeAll.SDK.Blazor</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK.Blazor</RootNamespace>
     <PackageReleaseNotes>Atualização das dependências e alteração do Root Namespace.</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</PackageProjectUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

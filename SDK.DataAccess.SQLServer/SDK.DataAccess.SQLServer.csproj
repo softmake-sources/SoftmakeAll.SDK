@@ -27,6 +27,8 @@ Este pacote fornece apoio para acesso à dados quando o banco de dados é SQL Se
     <AssemblyName>SoftmakeAll.SDK.DataAccess.SQLServer</AssemblyName>
 
     <RootNamespace>SoftmakeAll.SDK.DataAccess.SQLServer</RootNamespace>
+
+    <PackageProjectUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</PackageProjectUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

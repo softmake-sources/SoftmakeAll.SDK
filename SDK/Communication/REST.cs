@@ -211,7 +211,26 @@ namespace SoftmakeAll.SDK.Communication
 
           try
           {
-            System.Net.Http.HttpResponseMessage HttpResponseMessage = await HttpClient.PostAsync(this.URL, MultipartFormDataContent);
+            System.Net.Http.HttpResponseMessage HttpResponseMessage;
+            switch (this.Method)
+            {
+              case "PATCH":
+                {
+                  HttpResponseMessage = await HttpClient.PatchAsync(this.URL, MultipartFormDataContent);
+                  break;
+                }
+              case "POST":
+                {
+                  HttpResponseMessage = await HttpClient.PostAsync(this.URL, MultipartFormDataContent);
+                  break;
+                }
+              case "PUT":
+                {
+                  HttpResponseMessage = await HttpClient.PutAsync(this.URL, MultipartFormDataContent);
+                  break;
+                }
+              default: throw new System.NotSupportedException($"Method {this.Method} is not supported for sending files. Plese use PATCH, POST or PUT.");
+            }
             this._StatusCode = HttpResponseMessage.StatusCode;
             this.HasRequestErrors = false;
 

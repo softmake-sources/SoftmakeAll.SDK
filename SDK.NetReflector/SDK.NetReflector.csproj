@@ -24,6 +24,7 @@ Este pacote fornece apoio para Reflection e compilação de código dinâmico de
     <Version>1.0.6</Version>
     <PackageReleaseNotes>Atualização das dependências.</PackageReleaseNotes>
     <AssemblyName>SoftmakeAll.SDK.NetReflector</AssemblyName>
+    <PackageProjectUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</PackageProjectUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
