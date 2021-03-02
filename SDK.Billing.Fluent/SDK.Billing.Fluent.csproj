@@ -21,6 +21,7 @@
     <PackageId>SoftmakeAll.SDK.Billing.Fluent</PackageId>
     <AssemblyName>SoftmakeAll.SDK.Billing.Fluent</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK.Billing.Fluent</RootNamespace>
+    <PackageProjectUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</PackageProjectUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

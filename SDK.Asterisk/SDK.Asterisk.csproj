@@ -24,6 +24,7 @@ Este pacote é um clone do repositório AsterNET.ARI com algumas modificações 
     <AssemblyName>SoftmakeAll.SDK.Asterisk</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK.Asterisk</RootNamespace>
     <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</PackageProjectUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -25,6 +25,7 @@
     <PackageReleaseNotes>Atualização das dependências e alteração do Root Namespace.</PackageReleaseNotes>
     <AssemblyName>SoftmakeAll.SDK.DataAccess.PostgreSQL</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK.DataAccess.PostgreSQL</RootNamespace>
+    <PackageProjectUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</PackageProjectUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
