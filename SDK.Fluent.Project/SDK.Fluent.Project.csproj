@@ -9,7 +9,7 @@
     <RepositoryUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</RepositoryUrl>
     <PackageIcon>Cubes.png</PackageIcon>
     <RepositoryType>Public C# (.NET Standard) Repository</RepositoryType>
-    <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2020</Copyright>
+    <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2021</Copyright>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Description>Este pacote é parte do pacote SoftmakeAll.SDK</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -18,9 +18,9 @@
     <FileVersion>1.0.0.0</FileVersion>
     <Version>1.0.0</Version>
     <PackageTags>SoftmakeAll SDK</PackageTags>
-    <PackageId>SoftmakeAll.SDK.Fiscal.Fluent</PackageId>
-    <AssemblyName>SoftmakeAll.SDK.Fiscal.Fluent</AssemblyName>
-    <RootNamespace>SoftmakeAll.SDK.Fiscal.Fluent</RootNamespace>
+    <PackageId>SoftmakeAll.SDK.Fluent.Project</PackageId>
+    <AssemblyName>SoftmakeAll.SDK.Fluent.Project</AssemblyName>
+    <RootNamespace>SoftmakeAll.SDK.Fluent.Project</RootNamespace>
     <PackageProjectUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</PackageProjectUrl>
   </PropertyGroup>
 
@@ -36,12 +36,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SDK.Fluent\SDK.Fluent.csproj" />
-    <ProjectReference Include="..\SDK\SDK.csproj" />
+    <Compile Remove="Entities\**" />
+    <EmbeddedResource Remove="Entities\**" />
+    <None Remove="Entities\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\" />
+    <ProjectReference Include="..\SDK.Fluent\SDK.Fluent.csproj" />
+    <ProjectReference Include="..\SDK\SDK.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,6 +51,10 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
 
 </Project>

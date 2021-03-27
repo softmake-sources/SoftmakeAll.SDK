@@ -37,25 +37,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Development", "Development"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fluents", "Fluents", "{57CE63F5-1E04-4B21-AC48-BA9029C0F8B0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDK.Core.Fluent", "SDK.Core.Fluent\SDK.Core.Fluent.csproj", "{3077C710-8E8E-4C08-865D-50E79DFD5163}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDK.Fluent.Core", "SDK.Fluent.Core\SDK.Fluent.Core.csproj", "{3077C710-8E8E-4C08-865D-50E79DFD5163}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDK.Billing.Fluent", "SDK.Billing.Fluent\SDK.Billing.Fluent.csproj", "{73C21266-0E2C-44A0-BC3D-74D8178EFE5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDK.Fluent.Billing", "SDK.Fluent.Billing\SDK.Fluent.Billing.csproj", "{73C21266-0E2C-44A0-BC3D-74D8178EFE5A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDK.Sale.Fluent", "SDK.Sale.Fluent\SDK.Sale.Fluent.csproj", "{BF486A5A-02F4-4C14-900D-76EC32B604E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDK.Fluent.Sale", "SDK.Fluent.Sale\SDK.Fluent.Sale.csproj", "{BF486A5A-02F4-4C14-900D-76EC32B604E6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDK.Communication.Fluent", "SDK.Communication.Fluent\SDK.Communication.Fluent.csproj", "{B9218049-F0D4-4CAD-BDA5-EA3EF1B394C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDK.Fluent.Communication", "SDK.Fluent.Communication\SDK.Fluent.Communication.csproj", "{B9218049-F0D4-4CAD-BDA5-EA3EF1B394C1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDK.Geo.Fluent", "SDK.Geo.Fluent\SDK.Geo.Fluent.csproj", "{627BEB6D-0B77-4463-84F9-F1754D8637D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDK.Fluent.Geo", "SDK.Fluent.Geo\SDK.Fluent.Geo.csproj", "{627BEB6D-0B77-4463-84F9-F1754D8637D9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDK.Lottery.Fluent", "SDK.Lottery.Fluent\SDK.Lottery.Fluent.csproj", "{F0029C95-6F5E-4CAD-80ED-D0DF8465DA24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDK.Fluent.Lottery", "SDK.Fluent.Lottery\SDK.Fluent.Lottery.csproj", "{F0029C95-6F5E-4CAD-80ED-D0DF8465DA24}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDK.Fiscal.Fluent", "SDK.Fiscal.Fluent\SDK.Fiscal.Fluent.csproj", "{3F540CC2-EDEE-42A2-8CE6-53169D7899BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDK.Fluent.Fiscal", "SDK.Fluent.Fiscal\SDK.Fluent.Fiscal.csproj", "{3F540CC2-EDEE-42A2-8CE6-53169D7899BA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDK.Fluent", "SDK.Fluent\SDK.Fluent.csproj", "{F6221632-480A-4618-9BCE-A14834C29101}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Base", "_Base", "{E3E0FFE6-E6DF-4627-8E9B-2C31A85C3C2F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDK.Project.Fluent", "SDK.Project.Fluent\SDK.Project.Fluent.csproj", "{CF17A0AE-9309-4A11-AD9E-AAE862D71966}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDK.Fluent.Project", "SDK.Fluent.Project\SDK.Fluent.Project.csproj", "{CF17A0AE-9309-4A11-AD9E-AAE862D71966}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Blazor", "Blazor", "{EEF6F07A-2309-4E84-984A-B033D0727FC9}"
 EndProject
