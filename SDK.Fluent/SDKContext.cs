@@ -8,6 +8,8 @@ namespace SoftmakeAll.SDK.Fluent
     private static Microsoft.Identity.Client.IPublicClientApplication PublicClientApplication = null;
     private static Microsoft.Identity.Client.AuthenticationResult AuthenticationResult = null;
     private static SoftmakeAll.SDK.Fluent.Authentication.ICredentials Credentials = null;
+
+    public static readonly SoftmakeAll.SDK.OperationResult LastOperationResult = new SoftmakeAll.SDK.OperationResult();
     #endregion
 
     #region Methods
