@@ -26,6 +26,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>D:\Projetos\Softmake\SoftmakeAll\SDK\SDK.Fluent\SoftmakeAll.SDK.Fluent.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -33,6 +34,7 @@
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <DebugSymbols>false</DebugSymbols>
+    <DocumentationFile>D:\Projetos\Softmake\SoftmakeAll\SDK\SDK.Fluent\SoftmakeAll.SDK.Fluent.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -40,6 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
     <None Include="..\Cubes.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
@@ -48,6 +51,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Identity.Client" Version="4.28.1" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>
 
 </Project>
