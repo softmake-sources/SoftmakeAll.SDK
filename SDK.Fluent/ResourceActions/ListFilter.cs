@@ -1,4 +1,4 @@
-﻿namespace SoftmakeAll.SDK.Fluent
+﻿namespace SoftmakeAll.SDK.Fluent.ResourceActions
 {
   public class ListFilter
   {
@@ -11,7 +11,7 @@
     public System.String Field { get; set; }
     public System.String Operator { get; set; }
     public System.Object Value { get; set; }
-    public System.Collections.Generic.List<SoftmakeAll.SDK.Fluent.ListFilter> Predicates { get; set; }
+    public System.Collections.Generic.List<SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter> Predicates { get; set; }
     #endregion
   }
 }

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SoftmakeAll.SDK.Fluent</name>
+    </assembly>
+    <members>
+        <member name="T:SoftmakeAll.SDK.Fluent.Resource">
+            <summary>
+            The base class of the Softmake Resource.
+            </summary>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.Resource.#ctor">
+            <summary>
+            The base class of the Softmake Resource.
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.Resource.UniqueID">
+            <summary>
+            The unique identifier for the Resource.
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.Resource.RowVersion">
+            <summary>
+            The current version for the database row.
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.Resource.Inserted">
+            <summary>
+            The date the record was created.
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.Resource.Updated">
+            <summary>
+            The date the record was updated.
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.Resource.JSONData">
+            <summary>
+            Field for storing unstructured data.
+            </summary>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.Resource.Validate">
+            <summary>
+            Validates all properties of the current object.
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

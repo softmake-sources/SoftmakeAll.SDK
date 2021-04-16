@@ -1,10 +1,14 @@
 ﻿using SoftmakeAll.SDK.Helpers.JSON.Extensions;
 using System.Linq;
 
-namespace SoftmakeAll.SDK.Fluent
+namespace SoftmakeAll.SDK.Fluent.ResourceActions
 {
-  public partial class CRUD<T>
+  public class SupportsDeleting<T> : SoftmakeAll.SDK.Fluent.ResourceActions.SupportsBase<T>, SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting<T>
   {
+    #region Constructor
+    public SupportsDeleting() { }
+    #endregion
+
     #region Methods
     public void Delete(System.Byte ID) => this.Delete(ID.ToString());
     public void Delete(System.Int16 ID) => this.Delete(ID.ToString());
@@ -20,7 +24,7 @@ namespace SoftmakeAll.SDK.Fluent
     public void Delete(System.String[] IDs)
     {
       if ((IDs != null) && (IDs.Any()))
-        this.SetLastOperationResult(SoftmakeAll.SDK.Fluent.SDKContext.MakeRESTRequest<T>(new SoftmakeAll.SDK.Communication.REST() { Method = "DELETE", URL = this.GenerateBaseURL(), Body = IDs.ToJsonElement() }));
+        base.SetLastOperationResult(SoftmakeAll.SDK.Fluent.SDKContext.MakeRESTRequest<T>(new SoftmakeAll.SDK.Communication.REST() { Method = "DELETE", URL = base.GenerateBaseURL(), Body = IDs.ToJsonElement() }));
     }
 
     public async System.Threading.Tasks.Task DeleteAsync(System.Byte ID) => await this.DeleteAsync(ID.ToString());
@@ -37,7 +41,7 @@ namespace SoftmakeAll.SDK.Fluent
     public async System.Threading.Tasks.Task DeleteAsync(System.String[] IDs)
     {
       if ((IDs != null) && (IDs.Any()))
-        this.SetLastOperationResult(await SoftmakeAll.SDK.Fluent.SDKContext.MakeRESTRequestAsync<T>(new SoftmakeAll.SDK.Communication.REST() { Method = "DELETE", URL = this.GenerateBaseURL(), Body = IDs.ToJsonElement() }));
+        base.SetLastOperationResult(await SoftmakeAll.SDK.Fluent.SDKContext.MakeRESTRequestAsync<T>(new SoftmakeAll.SDK.Communication.REST() { Method = "DELETE", URL = base.GenerateBaseURL(), Body = IDs.ToJsonElement() }));
     }
     #endregion
   }

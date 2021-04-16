@@ -26,6 +26,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>D:\Projetos\Softmake\SoftmakeAll\SDK\SDK.Fluent.Core\SoftmakeAll.SDK.Fluent.Core.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -33,6 +34,7 @@
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <DebugSymbols>false</DebugSymbols>
+    <DocumentationFile>D:\Projetos\Softmake\SoftmakeAll\SDK\SDK.Fluent.Core\SoftmakeAll.SDK.Fluent.Core.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -48,7 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.DataAnnotations" Version="2.2.0" />
   </ItemGroup>
 
 </Project>
