@@ -7,7 +7,7 @@
     <Company>Softmake - Software &amp; Automação</Company>
     <PackageId>SoftmakeAll.SDK.CloudStorage.AWS</PackageId>
     <Product>SoftmakeAll.SDK.CloudStorage.AWS</Product>
-    <PackageTags>SoftmakeAll SDK AWS Storage</PackageTags>
+    <PackageTags>SoftmakeAll SDK AWS S3 Storage</PackageTags>
     <NeutralLanguage>English (United States)</NeutralLanguage>
     <RepositoryUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</RepositoryUrl>
     <RepositoryType>Public C# (.NET Standard) Repository</RepositoryType>
@@ -18,11 +18,11 @@
 
 . Este pacote fornece apoio para administração de arquivos no AWS S3.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <AssemblyVersion>1.0.5.0</AssemblyVersion>
-    <FileVersion>1.0.5.0</FileVersion>
-    <Version>1.0.5</Version>
+    <AssemblyVersion>1.0.6.0</AssemblyVersion>
+    <FileVersion>1.0.6.0</FileVersion>
+    <Version>1.0.6</Version>
 
-    <PackageReleaseNotes>Atualização das dependências.</PackageReleaseNotes>
+    <PackageReleaseNotes>Inclusão dos métodos para copia de arquivos.</PackageReleaseNotes>
 
     <AssemblyName>SoftmakeAll.SDK.CloudStorage.AWS</AssemblyName>
 
@@ -43,7 +43,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.S3" Version="3.7.0.8" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.0.15" />
   </ItemGroup>
 
   <ItemGroup>
