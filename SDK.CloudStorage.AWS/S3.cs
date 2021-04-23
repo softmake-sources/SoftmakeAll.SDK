@@ -77,21 +77,24 @@ namespace SoftmakeAll.SDK.CloudStorage.AWS
         }
         else
         {
-          System.Threading.SemaphoreSlim SemaphoreSlim = new System.Threading.SemaphoreSlim(StorageFileNames.Count);
-          System.Collections.Generic.List<System.Threading.Tasks.Task> DownloadTasks = new System.Collections.Generic.List<System.Threading.Tasks.Task>();
-          foreach (System.Collections.Generic.KeyValuePair<System.String, System.String> StorageFileName in StorageFileNames)
+          using (System.Threading.SemaphoreSlim SemaphoreSlim = new System.Threading.SemaphoreSlim(StorageFileNames.Count))
           {
-            await SemaphoreSlim.WaitAsync();
-            DownloadTasks.Add(System.Threading.Tasks.Task.Run(async () =>
+            System.Collections.Generic.List<System.Threading.Tasks.Task> DownloadTasks = new System.Collections.Generic.List<System.Threading.Tasks.Task>();
+            foreach (System.Collections.Generic.KeyValuePair<System.String, System.String> StorageFileName in StorageFileNames)
             {
-              Amazon.S3.Model.GetObjectRequest GetObjectRequest = new Amazon.S3.Model.GetObjectRequest { BucketName = BucketName, Key = StorageFileName.Key };
-              using (Amazon.S3.Model.GetObjectResponse GetObjectResponse = await SoftmakeAll.SDK.CloudStorage.AWS.Environment._S3Client.GetObjectAsync(GetObjectRequest))
-                await GetObjectResponse.WriteResponseStreamToFileAsync(StorageFileName.Key, false, new System.Threading.CancellationToken());
-              SemaphoreSlim.Release();
-            }));
+              await SemaphoreSlim.WaitAsync();
+              DownloadTasks.Add(System.Threading.Tasks.Task.Run(async () =>
+              {
+                Amazon.S3.Model.GetObjectRequest GetObjectRequest = new Amazon.S3.Model.GetObjectRequest { BucketName = BucketName, Key = StorageFileName.Key };
+                using (Amazon.S3.Model.GetObjectResponse GetObjectResponse = await SoftmakeAll.SDK.CloudStorage.AWS.Environment._S3Client.GetObjectAsync(GetObjectRequest))
+                  await GetObjectResponse.WriteResponseStreamToFileAsync(StorageFileName.Key, false, new System.Threading.CancellationToken());
+                SemaphoreSlim.Release();
+              }));
+            }
+
+            if (DownloadTasks.Any())
+              await System.Threading.Tasks.Task.WhenAll(DownloadTasks);
           }
-          await System.Threading.Tasks.Task.WhenAll(DownloadTasks);
-          SemaphoreSlim.Dispose();
 
           OperationResult.Data = SoftmakeAll.SDK.Files.Compression.CreateZipArchive(StorageFileNames);
 
@@ -136,6 +139,64 @@ namespace SoftmakeAll.SDK.CloudStorage.AWS
       try
       {
         await SoftmakeAll.SDK.CloudStorage.AWS.Environment._S3Client.DeleteObjectsAsync(DeleteObjectsRequest);
+      }
+      catch (System.Exception ex)
+      {
+        OperationResult.Message = ex.Message;
+        return OperationResult;
+      }
+
+      OperationResult.ExitCode = 0;
+      return OperationResult;
+    }
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> CopyAsync(System.String SourceBucketName, System.String SourceStorageFileName, System.String TargetStorageFileName, System.Boolean Overwrite)
+    {
+      return await this.CopyAsync(SourceBucketName, new System.String[] { SourceStorageFileName }, SourceBucketName, new System.String[] { TargetStorageFileName }, Overwrite);
+    }
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> CopyAsync(System.String SourceBucketName, System.String[] SourceStorageFileNames, System.String[] TargetStorageFileNames, System.Boolean Overwrite)
+    {
+      return await this.CopyAsync(SourceBucketName, SourceStorageFileNames, SourceBucketName, TargetStorageFileNames, Overwrite);
+    }
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> CopyAsync(System.String SourceBucketName, System.String SourceStorageFileName, System.String TargetBucketName, System.String TargetStorageFileName, System.Boolean Overwrite)
+    {
+      return await this.CopyAsync(SourceBucketName, new System.String[] { SourceStorageFileName }, TargetBucketName, new System.String[] { TargetStorageFileName }, Overwrite);
+    }
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> CopyAsync(System.String SourceBucketName, System.String[] SourceStorageFileNames, System.String TargetBucketName, System.String[] TargetStorageFileNames, System.Boolean Overwrite)
+    {
+      SoftmakeAll.SDK.CloudStorage.AWS.Environment.Validate();
+
+      SoftmakeAll.SDK.OperationResult OperationResult = new SoftmakeAll.SDK.OperationResult();
+
+      if ((System.String.IsNullOrWhiteSpace(SourceBucketName)) || (SourceStorageFileNames == null) || (SourceStorageFileNames.Length == 0) || (System.String.IsNullOrWhiteSpace(TargetBucketName)) || (TargetStorageFileNames == null) || (TargetStorageFileNames.Length == 0))
+      {
+        OperationResult.Message = "The SourceBucketName, SourceStorageFileNames, TargetBucketName and TargetStorageFileNames cannot be null.";
+        return OperationResult;
+      }
+
+      if (SourceStorageFileNames.Length != TargetStorageFileNames.Length)
+      {
+        OperationResult.Message = "The SourceStorageFileNames and TargetStorageFileNames must be the same length.";
+        return OperationResult;
+      }
+
+      try
+      {
+        using (System.Threading.SemaphoreSlim SemaphoreSlim = new System.Threading.SemaphoreSlim(SourceStorageFileNames.Length))
+        {
+          System.Collections.Generic.List<System.Threading.Tasks.Task> CopyTasks = new System.Collections.Generic.List<System.Threading.Tasks.Task>();
+          for (System.Int32 i = 0; i < SourceStorageFileNames.Length; i++)
+          {
+            await SemaphoreSlim.WaitAsync();
+            CopyTasks.Add(System.Threading.Tasks.Task.Run(async () =>
+            {
+              await SoftmakeAll.SDK.CloudStorage.AWS.Environment._S3Client.CopyObjectAsync(new Amazon.S3.Model.CopyObjectRequest { SourceBucket = SourceBucketName, SourceKey = SourceStorageFileNames[i], DestinationBucket = TargetBucketName, DestinationKey = TargetStorageFileNames[i] });
+              SemaphoreSlim.Release();
+            }));
+          }
+
+          if (CopyTasks.Any())
+            await System.Threading.Tasks.Task.WhenAll(CopyTasks);
+        }
       }
       catch (System.Exception ex)
       {

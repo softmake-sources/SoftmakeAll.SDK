@@ -28,10 +28,10 @@ Não deixe de consultar os pacotes adicionais.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <AssemblyVersion>1.0.13.0</AssemblyVersion>
-    <FileVersion>1.0.13.0</FileVersion>
-    <Version>1.0.13</Version>
-    <PackageReleaseNotes>Alteração do método de envio de arquivos para uma API REST. Antes só aceitava POST, mesmo informando PATCH ou PUT. O método foi tratado e agora aceita os 2 novos métodos.</PackageReleaseNotes>
+    <AssemblyVersion>1.0.14.0</AssemblyVersion>
+    <FileVersion>1.0.14.0</FileVersion>
+    <Version>1.0.14</Version>
+    <PackageReleaseNotes>Inclusão dos métodos para copia de arquivos (Azure Blob Storage ou AWS S3) na interface IFile.</PackageReleaseNotes>
     <AssemblyName>SoftmakeAll.SDK</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK</RootNamespace>
     <UserSecretsId>5a7d13dc-c109-4ae5-8678-43dd3813e8ea</UserSecretsId>
@@ -50,7 +50,7 @@ Não deixe de consultar os pacotes adicionais.</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="5.0.1" />
+    <PackageReference Include="System.Text.Json" Version="5.0.2" />
   </ItemGroup>
 
   <ItemGroup>

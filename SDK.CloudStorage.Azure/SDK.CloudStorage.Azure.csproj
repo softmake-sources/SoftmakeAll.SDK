@@ -6,7 +6,7 @@
     <Authors>Arthur Mattos</Authors>
     <Company>Softmake - Software &amp; Automação</Company>
     <PackageId>SoftmakeAll.SDK.CloudStorage.Azure</PackageId>
-    <PackageTags>SoftmakeAll SDK Azure Storage</PackageTags>
+    <PackageTags>SoftmakeAll SDK Azure Blob Storage</PackageTags>
     <NeutralLanguage>English (United States)</NeutralLanguage>
     <Product>SoftmakeAll.SDK.CloudStorage.Azure</Product>
     <RepositoryUrl>https://github.com/softmake-sources/softmakeall.sdk</RepositoryUrl>
@@ -17,13 +17,13 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Este pacote é parte do pacote SoftmakeAll.SDK
 
-. Este pacote fornece apoio para administração de BLOBS no Azure Storage.</Description>
+. Este pacote fornece apoio para administração de arquivos no Azure Blob Storage e Azure Files Share.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-    <AssemblyVersion>1.0.3.0</AssemblyVersion>
-    <FileVersion>1.0.3.0</FileVersion>
-    <Version>1.0.3</Version>
-    <PackageReleaseNotes>Atualização das dependências.</PackageReleaseNotes>
+    <AssemblyVersion>1.0.4.0</AssemblyVersion>
+    <FileVersion>1.0.4.0</FileVersion>
+    <Version>1.0.4</Version>
+    <PackageReleaseNotes>Inclusão dos métodos para copia de arquivos.</PackageReleaseNotes>
     <AssemblyName>SoftmakeAll.SDK.CloudStorage.Azure</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK.CloudStorage.Azure</RootNamespace>
     <PackageProjectUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</PackageProjectUrl>
@@ -42,6 +42,7 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.8.1" />
+    <PackageReference Include="Azure.Storage.Files.Shares" Version="12.6.1" />
   </ItemGroup>
 
   <ItemGroup>
