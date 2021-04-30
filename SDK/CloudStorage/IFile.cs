@@ -13,6 +13,8 @@
     System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> CopyAsync(System.String SourceContainerName, System.String[] SourceStorageFileNames, System.String[] TargetStorageFileNames, System.Boolean Overwrite);
     System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> CopyAsync(System.String SourceContainerName, System.String SourceStorageFileName, System.String TargetContainerName, System.String TargetStorageFileName, System.Boolean Overwrite);
     System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> CopyAsync(System.String SourceContainerName, System.String[] SourceStorageFileNames, System.String TargetContainerName, System.String[] TargetStorageFileNames, System.Boolean Overwrite);
+    System.String GenerateDownloadURL(System.String ShareName, System.String StorageFileName, System.String OriginalName);
+    System.String GenerateDownloadURL(System.String ShareName, System.String StorageFileName, System.String OriginalName, System.DateTimeOffset ExpirationDateTime);
     #endregion
   }
 }

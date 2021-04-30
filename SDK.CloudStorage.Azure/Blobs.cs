@@ -238,6 +238,35 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
       OperationResult.ExitCode = 0;
       return OperationResult;
     }
+    public System.String GenerateDownloadURL(System.String ShareName, System.String StorageFileName, System.String OriginalName) => this.GenerateDownloadURL(ShareName, StorageFileName, OriginalName, System.DateTimeOffset.UtcNow.AddMinutes(5));
+    public System.String GenerateDownloadURL(System.String ShareName, System.String StorageFileName, System.String OriginalName, System.DateTimeOffset ExpirationDateTime)
+    {
+      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate();
+
+      if (SoftmakeAll.SDK.Helpers.String.Extensions.StringExtensions.IsNullOrWhiteSpace(ShareName, StorageFileName, OriginalName))
+        return null;
+
+      global::Azure.Storage.Sas.BlobSasBuilder ShareSasBuilder = new global::Azure.Storage.Sas.BlobSasBuilder();
+      ShareSasBuilder.BlobContainerName = ShareName;
+      ShareSasBuilder.Resource = "b";
+      ShareSasBuilder.BlobName = StorageFileName;
+      ShareSasBuilder.ExpiresOn = ExpirationDateTime;
+      ShareSasBuilder.ContentDisposition = $"attachment; filename={OriginalName}";
+      ShareSasBuilder.SetPermissions(global::Azure.Storage.Sas.BlobSasPermissions.Read);
+
+      System.String DefaultEndpointsProtocol = SoftmakeAll.SDK.CloudStorage.Azure.Environment.GetConnectionStringPropertyValue("DefaultEndpointsProtocol");
+      System.String EndpointSuffix = SoftmakeAll.SDK.CloudStorage.Azure.Environment.GetConnectionStringPropertyValue("EndpointSuffix");
+      System.String AccountName = SoftmakeAll.SDK.CloudStorage.Azure.Environment.GetConnectionStringPropertyValue("AccountName");
+      System.String AccountKey = SoftmakeAll.SDK.CloudStorage.Azure.Environment.GetConnectionStringPropertyValue("AccountKey");
+
+      try
+      {
+        return new System.UriBuilder($"{DefaultEndpointsProtocol}://{AccountName}.file.{EndpointSuffix}/{ShareName}/{StorageFileName}") { Query = ShareSasBuilder.ToSasQueryParameters(new global::Azure.Storage.StorageSharedKeyCredential(AccountName, AccountKey)).ToString() }.Uri.AbsoluteUri;
+      }
+      catch { }
+
+      return null;
+    }
     #endregion
   }
 }
