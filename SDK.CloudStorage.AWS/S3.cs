@@ -207,6 +207,20 @@ namespace SoftmakeAll.SDK.CloudStorage.AWS
       OperationResult.ExitCode = 0;
       return OperationResult;
     }
+    public System.String GenerateDownloadURL(System.String BucketName, System.String StorageFileName, System.String OriginalName) => this.GenerateDownloadURL(BucketName, StorageFileName, OriginalName, System.DateTimeOffset.UtcNow.AddMinutes(5));
+    public System.String GenerateDownloadURL(System.String BucketName, System.String StorageFileName, System.String OriginalName, System.DateTimeOffset ExpirationDateTime)
+    {
+      SoftmakeAll.SDK.CloudStorage.AWS.Environment.Validate();
+
+      if (!(SoftmakeAll.SDK.Helpers.String.Extensions.StringExtensions.IsNullOrWhiteSpace(BucketName, StorageFileName)))
+        try
+        {
+          return SoftmakeAll.SDK.CloudStorage.AWS.Environment._S3Client.GetPreSignedURL(new Amazon.S3.Model.GetPreSignedUrlRequest { BucketName = BucketName, Key = StorageFileName, Expires = System.Convert.ToDateTime(ExpirationDateTime) });
+        }
+        catch { }
+
+      return null;
+    }
     #endregion
   }
 }

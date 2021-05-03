@@ -1,4 +1,6 @@
-﻿namespace SoftmakeAll.SDK.CloudStorage.Azure
+﻿using System.Linq;
+
+namespace SoftmakeAll.SDK.CloudStorage.Azure
 {
   public static class Environment
   {
@@ -18,6 +20,21 @@
     {
       if (System.String.IsNullOrWhiteSpace(SoftmakeAll.SDK.CloudStorage.Azure.Environment._ConnectionString))
         throw new System.Exception("Call SoftmakeAll.SDK.CloudStorage.Azure.Environment.Configure(...) to configure the SDK.");
+    }
+    internal static System.String GetConnectionStringPropertyValue(System.String PropertyName)
+    {
+      if ((System.String.IsNullOrWhiteSpace(SoftmakeAll.SDK.CloudStorage.Azure.Environment._ConnectionString)) || (System.String.IsNullOrWhiteSpace(PropertyName)))
+        return null;
+
+      System.String[] Properties = SoftmakeAll.SDK.CloudStorage.Azure.Environment._ConnectionString.Split(';');
+      if ((Properties == null) || (!(Properties.Any())))
+        return null;
+
+      System.String Value = Properties.FirstOrDefault(p => p.StartsWith($"{PropertyName}="));
+      if (System.String.IsNullOrWhiteSpace(Value))
+        return null;
+
+      return Value[(PropertyName.Length + 1)..^0];
     }
     #endregion
   }

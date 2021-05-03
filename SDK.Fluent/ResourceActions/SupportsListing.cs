@@ -5,7 +5,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
   public class SupportsListing<T> : SoftmakeAll.SDK.Fluent.ResourceActions.SupportsBase<T>, SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsListing<T>
   {
     #region Constructor
-    public SupportsListing() { }
+    public SupportsListing(System.String Route) : base(Route) { }
     #endregion
 
     #region Methods
@@ -18,7 +18,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
       System.Int32 Skip = 0, System.Int32 Take = 20
       )
     {
-      System.String URL = $"{base.GenerateBaseURL()}?skip={Skip}&take={Take}";
+      System.String URL = $"{base.Route}?skip={Skip}&take={Take}";
 
       if ((Parameters != null) && (Parameters.Any())) URL = $"{URL}&{System.String.Join('&', Parameters.Select(p => $"{p.Key}={p.Value}"))}";
       if ((Fields != null) && (Fields.Any())) URL = $"{URL}&fields={System.String.Join(',', Fields)}";
@@ -36,7 +36,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
       System.Collections.Generic.Dictionary<System.String, System.Boolean> Sort = null,
       System.Int32 Skip = 0, System.Int32 Take = 20
       )
-      => base.ProcessOperationResult(SoftmakeAll.SDK.Fluent.SDKContext.MakeRESTRequest<T>(new SoftmakeAll.SDK.Communication.REST() { Method = "GET", URL = this.GenerateListURL(Parameters, Fields, Filter, Group, Sort, Skip, Take) }));
+      => base.ProcessOperationResult(SoftmakeAll.SDK.Fluent.SDKContext.MakeRESTRequest(new SoftmakeAll.SDK.Communication.REST() { Method = "GET", URL = this.GenerateListURL(Parameters, Fields, Filter, Group, Sort, Skip, Take) }));
 
     public async System.Threading.Tasks.Task<SoftmakeAll.SDK.Fluent.ResourceList<T>> ListAsync(
       System.Collections.Generic.Dictionary<System.String, System.String> Parameters = null,
@@ -46,7 +46,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
       System.Collections.Generic.Dictionary<System.String, System.Boolean> Sort = null,
       System.Int32 Skip = 0, System.Int32 Take = 20
       )
-      => base.ProcessOperationResult(await SoftmakeAll.SDK.Fluent.SDKContext.MakeRESTRequestAsync<T>(new SoftmakeAll.SDK.Communication.REST() { Method = "GET", URL = this.GenerateListURL(Parameters, Fields, Filter, Group, Sort, Skip, Take) }));
+      => base.ProcessOperationResult(await SoftmakeAll.SDK.Fluent.SDKContext.MakeRESTRequestAsync(new SoftmakeAll.SDK.Communication.REST() { Method = "GET", URL = this.GenerateListURL(Parameters, Fields, Filter, Group, Sort, Skip, Take) }));
 
     public T Show(System.Byte ID) => this.Show(ID.ToString());
     public T Show(System.Int16 ID) => this.Show(ID.ToString());
@@ -56,7 +56,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
     public T Show(System.String ID)
     {
       if (!(System.String.IsNullOrWhiteSpace(ID)))
-        return base.ProcessOperationResult(SoftmakeAll.SDK.Fluent.SDKContext.MakeRESTRequest<T>(new SoftmakeAll.SDK.Communication.REST() { Method = "GET", URL = $"{base.GenerateBaseURL()}/{ID}" }), default);
+        return base.ProcessOperationResult(SoftmakeAll.SDK.Fluent.SDKContext.MakeRESTRequest(new SoftmakeAll.SDK.Communication.REST() { Method = "GET", URL = $"{base.Route}/{ID}" }), default);
 
       return default;
     }
@@ -69,7 +69,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
     public async System.Threading.Tasks.Task<T> ShowAsync(System.String ID)
     {
       if (!(System.String.IsNullOrWhiteSpace(ID)))
-        return base.ProcessOperationResult(await SoftmakeAll.SDK.Fluent.SDKContext.MakeRESTRequestAsync<T>(new SoftmakeAll.SDK.Communication.REST() { Method = "GET", URL = $"{base.GenerateBaseURL()}/{ID}" }), default);
+        return base.ProcessOperationResult(await SoftmakeAll.SDK.Fluent.SDKContext.MakeRESTRequestAsync(new SoftmakeAll.SDK.Communication.REST() { Method = "GET", URL = $"{base.Route}/{ID}" }), default);
 
       return default;
     }
