@@ -1,6 +1,6 @@
 ﻿namespace SoftmakeAll.SDK.Fluent.ResourceActions
 {
-  public class ActionRU<T> : SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsListing<T>, SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating<T>
+  public class ActionRU<T> : SoftmakeAll.SDK.Fluent.ResourceActions.SupportsBase<T>, SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsListing<T>, SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating<T>
   {
     #region Fields
     private readonly SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsListing<T> SupportsListing;
@@ -8,10 +8,10 @@
     #endregion
 
     #region Constructor
-    public ActionRU()
+    public ActionRU(System.String Route) : base(Route)
     {
-      this.SupportsListing = new SoftmakeAll.SDK.Fluent.ResourceActions.SupportsListing<T>();
-      this.SupportsUpdating = new SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating<T>();
+      this.SupportsListing = new SoftmakeAll.SDK.Fluent.ResourceActions.SupportsListing<T>(Route);
+      this.SupportsUpdating = new SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating<T>(Route);
     }
     #endregion
 

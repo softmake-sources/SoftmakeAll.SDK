@@ -4,21 +4,15 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
 {
   public abstract class SupportsBase<T>
   {
+    #region Fields
+    protected readonly System.String Route;
+    #endregion
+
     #region Constructor
-    public SupportsBase() { }
+    public SupportsBase(System.String Route) => this.Route = Route;
     #endregion
 
     #region Methods
-    protected internal System.String GenerateBaseURL()
-    {
-      const System.String BaseAddress = "API/v";
-      System.Type Type = typeof(T);
-      System.String Module = Type.FullName.Split('.')[3].ToLower();
-      SoftmakeAll.SDK.Fluent.DataAnnotations.EntryPoint EntryPoint = SoftmakeAll.SDK.Fluent.DataAnnotations.EntryPoint.FromType(Type);
-      if (EntryPoint != null)
-        return $"{BaseAddress}{EntryPoint.Version}/{Module}/{EntryPoint.Name}";
-      return $"{BaseAddress}1/{Module}/{Type.Name}";
-    }
     protected internal void SetLastOperationResult(SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> OperationResult)
     {
       SoftmakeAll.SDK.Fluent.SDKContext.LastOperationResult.ExitCode = OperationResult.ExitCode;
@@ -42,7 +36,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
       if ((OperationResult.Success) && (OperationResult.Data.IsValid()))
         return OperationResult.Data.ToObject<SoftmakeAll.SDK.Fluent.ResourceList<T>>();
 
-      return null;
+      return new SoftmakeAll.SDK.Fluent.ResourceList<T>();
     }
     #endregion
   }

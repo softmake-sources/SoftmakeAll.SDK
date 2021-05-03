@@ -8,10 +8,10 @@
     #endregion
 
     #region Constructor
-    public ActionCR()
+    public ActionCR(System.String Route) : base(Route)
     {
-      this.SupportsCreating = new SoftmakeAll.SDK.Fluent.ResourceActions.SupportsCreating<T>();
-      this.SupportsListing = new SoftmakeAll.SDK.Fluent.ResourceActions.SupportsListing<T>();
+      this.SupportsCreating = new SoftmakeAll.SDK.Fluent.ResourceActions.SupportsCreating<T>(Route);
+      this.SupportsListing = new SoftmakeAll.SDK.Fluent.ResourceActions.SupportsListing<T>(Route);
     }
     #endregion
 

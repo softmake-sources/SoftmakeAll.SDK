@@ -1,6 +1,6 @@
 ﻿namespace SoftmakeAll.SDK.Fluent.ResourceActions
 {
-  public class ActionCUD<T> : SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsCreating<T>, SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating<T>, SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting<T>
+  public class ActionCUD<T> : SoftmakeAll.SDK.Fluent.ResourceActions.SupportsBase<T>, SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsCreating<T>, SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating<T>, SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting<T>
   {
     #region Fields
     private readonly SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsCreating<T> SupportsCreating;
@@ -9,11 +9,11 @@
     #endregion
 
     #region Constructor
-    public ActionCUD()
+    public ActionCUD(System.String Route) : base(Route)
     {
-      this.SupportsCreating = new SoftmakeAll.SDK.Fluent.ResourceActions.SupportsCreating<T>();
-      this.SupportsUpdating = new SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating<T>();
-      this.SupportsDeleting = new SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting<T>();
+      this.SupportsCreating = new SoftmakeAll.SDK.Fluent.ResourceActions.SupportsCreating<T>(Route);
+      this.SupportsUpdating = new SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating<T>(Route);
+      this.SupportsDeleting = new SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting<T>(Route);
     }
     #endregion
 

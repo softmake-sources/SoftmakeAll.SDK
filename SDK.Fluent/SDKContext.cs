@@ -5,6 +5,7 @@ namespace SoftmakeAll.SDK.Fluent
   public static class SDKContext
   {
     #region Fields
+    internal static System.String APIBaseAddress = "https://smallservices01.azurewebsites.net";
     private static Microsoft.Identity.Client.IPublicClientApplication PublicClientApplication = null;
     private static Microsoft.Identity.Client.AuthenticationResult AuthenticationResult = null;
     private static SoftmakeAll.SDK.Fluent.Authentication.ICredentials Credentials = null;
@@ -83,33 +84,53 @@ namespace SoftmakeAll.SDK.Fluent
         Credentials.Authorization = $"Bearer {SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken}";
       }
     }
-    internal static SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> MakeRESTRequest<T>(SoftmakeAll.SDK.Communication.REST REST)
+    public static SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> MakeRESTRequest(SoftmakeAll.SDK.Communication.REST REST)
     {
-      try
-      {
-        SoftmakeAll.SDK.Fluent.SDKContext.Authenticate(SoftmakeAll.SDK.Fluent.SDKContext.Credentials);
-        REST.Headers.Add("Authorization", SoftmakeAll.SDK.Fluent.SDKContext.Credentials.Authorization);
-      }
-      catch { }
-      REST.URL = $"https://smallservices01.azurewebsites.net/{REST.URL}";
+      if (REST == null)
+        return null;
+
+      System.Boolean RemoveAuthorization = false;
+      if ((REST.Headers != null) && (!(REST.Headers.ContainsKey("Authorization"))))
+        try
+        {
+          SoftmakeAll.SDK.Fluent.SDKContext.Authenticate(SoftmakeAll.SDK.Fluent.SDKContext.Credentials);
+          REST.Headers.Add("Authorization", SoftmakeAll.SDK.Fluent.SDKContext.Credentials.Authorization);
+          RemoveAuthorization = true;
+        }
+        catch { }
+
+      REST.URL = $"{SoftmakeAll.SDK.Fluent.SDKContext.APIBaseAddress}/API/{REST.URL}";
       System.Text.Json.JsonElement RESTResult = REST.Send();
 
-      return SoftmakeAll.SDK.Fluent.SDKContext.ProcessRESTRequestResult<T>(REST, RESTResult);
+      if (RemoveAuthorization)
+        REST.Headers.Remove("Authorization");
+
+      return SoftmakeAll.SDK.Fluent.SDKContext.ProcessRESTRequestResult(REST, RESTResult);
     }
-    internal static async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> MakeRESTRequestAsync<T>(SoftmakeAll.SDK.Communication.REST REST)
+    public static async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> MakeRESTRequestAsync(SoftmakeAll.SDK.Communication.REST REST)
     {
-      try
-      {
-        await SoftmakeAll.SDK.Fluent.SDKContext.AuthenticateAsync(SoftmakeAll.SDK.Fluent.SDKContext.Credentials);
-        REST.Headers.Add("Authorization", SoftmakeAll.SDK.Fluent.SDKContext.Credentials.Authorization);
-      }
-      catch { }
-      REST.URL = $"https://smallservices01.azurewebsites.net/{REST.URL}";
+      if (REST == null)
+        return null;
+
+      System.Boolean RemoveAuthorization = false;
+      if ((REST.Headers != null) && (!(REST.Headers.ContainsKey("Authorization"))))
+        try
+        {
+          await SoftmakeAll.SDK.Fluent.SDKContext.AuthenticateAsync(SoftmakeAll.SDK.Fluent.SDKContext.Credentials);
+          REST.Headers.Add("Authorization", SoftmakeAll.SDK.Fluent.SDKContext.Credentials.Authorization);
+          RemoveAuthorization = true;
+        }
+        catch { }
+
+      REST.URL = $"{SoftmakeAll.SDK.Fluent.SDKContext.APIBaseAddress}/API/{REST.URL}";
       System.Text.Json.JsonElement RESTResult = await REST.SendAsync();
 
-      return SoftmakeAll.SDK.Fluent.SDKContext.ProcessRESTRequestResult<T>(REST, RESTResult);
+      if (RemoveAuthorization)
+        REST.Headers.Remove("Authorization");
+
+      return SoftmakeAll.SDK.Fluent.SDKContext.ProcessRESTRequestResult(REST, RESTResult);
     }
-    private static SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ProcessRESTRequestResult<T>(SoftmakeAll.SDK.Communication.REST REST, System.Text.Json.JsonElement RESTResult)
+    private static SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ProcessRESTRequestResult(SoftmakeAll.SDK.Communication.REST REST, System.Text.Json.JsonElement RESTResult)
     {
       SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> Result = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
       Result.ExitCode = RESTResult.GetInt32("ExitCode");
