@@ -84,13 +84,13 @@ namespace SoftmakeAll.SDK.Fluent
         Credentials.Authorization = $"Bearer {SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken}";
       }
     }
-    public static SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> MakeRESTRequest(SoftmakeAll.SDK.Communication.REST REST)
+    public static SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> MakeRESTRequest(SoftmakeAll.SDK.Communication.REST REST, System.Boolean SkipAuthorizationHeader = false)
     {
       if (REST == null)
         return null;
 
       System.Boolean RemoveAuthorization = false;
-      if ((REST.Headers != null) && (!(REST.Headers.ContainsKey("Authorization"))))
+      if ((!(SkipAuthorizationHeader)) && (REST.Headers != null) && (!(REST.Headers.ContainsKey("Authorization"))))
         try
         {
           SoftmakeAll.SDK.Fluent.SDKContext.Authenticate(SoftmakeAll.SDK.Fluent.SDKContext.Credentials);
@@ -98,6 +98,8 @@ namespace SoftmakeAll.SDK.Fluent
           RemoveAuthorization = true;
         }
         catch { }
+      else if ((SkipAuthorizationHeader) && (REST.Headers != null) && (REST.Headers.ContainsKey("Authorization")))
+        REST.Headers.Remove("Authorization");
 
       REST.URL = $"{SoftmakeAll.SDK.Fluent.SDKContext.APIBaseAddress}/API/{REST.URL}";
       System.Text.Json.JsonElement RESTResult = REST.Send();
@@ -107,13 +109,13 @@ namespace SoftmakeAll.SDK.Fluent
 
       return SoftmakeAll.SDK.Fluent.SDKContext.ProcessRESTRequestResult(REST, RESTResult);
     }
-    public static async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> MakeRESTRequestAsync(SoftmakeAll.SDK.Communication.REST REST)
+    public static async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> MakeRESTRequestAsync(SoftmakeAll.SDK.Communication.REST REST, System.Boolean SkipAuthorizationHeader = false)
     {
       if (REST == null)
         return null;
 
       System.Boolean RemoveAuthorization = false;
-      if ((REST.Headers != null) && (!(REST.Headers.ContainsKey("Authorization"))))
+      if ((!(SkipAuthorizationHeader)) && (REST.Headers != null) && (!(REST.Headers.ContainsKey("Authorization"))))
         try
         {
           await SoftmakeAll.SDK.Fluent.SDKContext.AuthenticateAsync(SoftmakeAll.SDK.Fluent.SDKContext.Credentials);
@@ -121,6 +123,8 @@ namespace SoftmakeAll.SDK.Fluent
           RemoveAuthorization = true;
         }
         catch { }
+      else if ((SkipAuthorizationHeader) && (REST.Headers != null) && (REST.Headers.ContainsKey("Authorization")))
+        REST.Headers.Remove("Authorization");
 
       REST.URL = $"{SoftmakeAll.SDK.Fluent.SDKContext.APIBaseAddress}/API/{REST.URL}";
       System.Text.Json.JsonElement RESTResult = await REST.SendAsync();
