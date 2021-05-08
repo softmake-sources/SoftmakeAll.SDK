@@ -1,13 +1,13 @@
 ﻿namespace SoftmakeAll.SDK.Fluent
 {
   /// <summary>
-  /// The base class of the Softmake Resource.
+  /// The base class of the Softmake All Resource.
   /// </summary>
   public abstract class Resource
   {
     #region Constructor
     /// <summary>
-    /// The base class of the Softmake Resource.
+    /// The base class of the Softmake All Resource.
     /// </summary>
     public Resource() { }
     #endregion

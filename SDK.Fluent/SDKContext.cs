@@ -2,19 +2,54 @@
 
 namespace SoftmakeAll.SDK.Fluent
 {
+  /// <summary>
+  /// The SDK Context to authenticate and perform requests.
+  /// </summary>
   public static class SDKContext
   {
     #region Fields
+    /// <summary>
+    /// The Softmake All API base address.
+    /// </summary>
     internal static System.String APIBaseAddress = "https://smallservices01.azurewebsites.net";
+
+    /// <summary>
+    /// PublicClientApplication to perform Authentication.
+    /// </summary>
     private static Microsoft.Identity.Client.IPublicClientApplication PublicClientApplication = null;
+
+    /// <summary>
+    /// Authentication result from PublicClientApplication.
+    /// </summary>
     private static Microsoft.Identity.Client.AuthenticationResult AuthenticationResult = null;
+
+    /// <summary>
+    /// 
+    /// </summary>
     private static SoftmakeAll.SDK.Fluent.Authentication.ICredentials Credentials = null;
 
+    /// <summary>
+    /// The last resource operation result. This object will be changed when action is performed. Actions: List, Show, Create, Modify, Replace and Delete.
+    /// </summary>
     public static readonly SoftmakeAll.SDK.OperationResult LastOperationResult = new SoftmakeAll.SDK.OperationResult();
     #endregion
 
     #region Methods
+    /// <summary>
+    /// Creates a PublicClientApplication.
+    /// </summary>
+    /// <param name="ContextIdentifier">Your Public Application Client ID.</param>
+    /// <param name="PolicyName">The Azure AD B2C policy name.</param>
+    /// <returns>A PublicClientApplication.</returns>
     private static Microsoft.Identity.Client.IPublicClientApplication CreatePublicClientApplication(System.Guid ContextIdentifier, System.String PolicyName) => SoftmakeAll.SDK.Fluent.SDKContext.CreatePublicClientApplication(ContextIdentifier, PolicyName, null);
+
+    /// <summary>
+    /// Creates a PublicClientApplication with redirect URI.
+    /// </summary>
+    /// <param name="ContextIdentifier">Your Public Application Client ID.</param>
+    /// <param name="PolicyName">The Azure AD B2C policy name.</param>
+    /// <param name="RedirectURI">URI to redirect after login succeeded.</param>
+    /// <returns>A PublicClientApplication.</returns>
     private static Microsoft.Identity.Client.IPublicClientApplication CreatePublicClientApplication(System.Guid ContextIdentifier, System.String PolicyName, System.String RedirectURI)
       => Microsoft.Identity.Client.PublicClientApplicationBuilder
       .Create(ContextIdentifier.ToString())
@@ -22,7 +57,16 @@ namespace SoftmakeAll.SDK.Fluent
       .WithRedirectUri(RedirectURI)
       .Build();
 
+    /// <summary>
+    /// Authenticate user/application using Credentials.
+    /// </summary>
+    /// <param name="Credentials">Credentials to use during authentication process.</param>
     public static void Authenticate(SoftmakeAll.SDK.Fluent.Authentication.ICredentials Credentials) => SoftmakeAll.SDK.Fluent.SDKContext.AuthenticateAsync(Credentials).Wait();
+
+    /// <summary>
+    /// Authenticate user/application using Credentials.
+    /// </summary>
+    /// <param name="Credentials">Credentials to use during authentication process.</param>
     public static async System.Threading.Tasks.Task AuthenticateAsync(SoftmakeAll.SDK.Fluent.Authentication.ICredentials Credentials)
     {
       if (SoftmakeAll.SDK.Fluent.SDKContext.Credentials?.ObjectID != Credentials.ObjectID)
@@ -84,7 +128,14 @@ namespace SoftmakeAll.SDK.Fluent
         Credentials.Authorization = $"Bearer {SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken}";
       }
     }
-    public static SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> MakeRESTRequest(SoftmakeAll.SDK.Communication.REST REST, System.Boolean SkipAuthorizationHeader = false)
+
+    /// <summary>
+    /// Perform the HTTP Request based on REST object information.
+    /// </summary>
+    /// <param name="REST">REST object that contains the HTTP Request information.</param>
+    /// <param name="SkipAuthorizationHeader">Removes the Authentication Header before sending. The default value is false.</param>
+    /// <returns>A OperationResult with JSON property Data.</returns>
+    public static SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> PerformRESTRequest(SoftmakeAll.SDK.Communication.REST REST, System.Boolean SkipAuthorizationHeader = false)
     {
       if (REST == null)
         return null;
@@ -109,7 +160,14 @@ namespace SoftmakeAll.SDK.Fluent
 
       return SoftmakeAll.SDK.Fluent.SDKContext.ProcessRESTRequestResult(REST, RESTResult);
     }
-    public static async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> MakeRESTRequestAsync(SoftmakeAll.SDK.Communication.REST REST, System.Boolean SkipAuthorizationHeader = false)
+
+    /// <summary>
+    /// Perform the HTTP Request based on REST object information.
+    /// </summary>
+    /// <param name="REST">REST object that contains the HTTP Request information.</param>
+    /// <param name="SkipAuthorizationHeader">Removes the Authentication Header before sending. The default value is false.</param>
+    /// <returns>A OperationResult with JSON property Data.</returns>
+    public static async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> PerformRESTRequestAsync(SoftmakeAll.SDK.Communication.REST REST, System.Boolean SkipAuthorizationHeader = false)
     {
       if (REST == null)
         return null;
@@ -134,6 +192,13 @@ namespace SoftmakeAll.SDK.Fluent
 
       return SoftmakeAll.SDK.Fluent.SDKContext.ProcessRESTRequestResult(REST, RESTResult);
     }
+
+    /// <summary>
+    /// Creates a OperationResult object based on HTTP Request.
+    /// </summary>
+    /// <param name="REST">REST object that contains the HTTP Request information.</param>
+    /// <param name="RESTResult">The output of Send method.</param>
+    /// <returns>A OperationResult with JSON property Data.</returns>
     private static SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ProcessRESTRequestResult(SoftmakeAll.SDK.Communication.REST REST, System.Text.Json.JsonElement RESTResult)
     {
       SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> Result = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();

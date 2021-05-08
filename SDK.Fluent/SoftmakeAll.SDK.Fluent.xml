@@ -6,12 +6,12 @@
     <members>
         <member name="T:SoftmakeAll.SDK.Fluent.Resource">
             <summary>
-            The base class of the Softmake Resource.
+            The base class of the Softmake All Resource.
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Resource.#ctor">
             <summary>
-            The base class of the Softmake Resource.
+            The base class of the Softmake All Resource.
             </summary>
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Resource.UniqueID">
@@ -44,6 +44,110 @@
             Validates all properties of the current object.
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceList`1">
+            <summary>
+            A generic list of resources. Used to catch the List methods output.
+            </summary>
+            <typeparam name="T">Resource.</typeparam>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceList`1.#ctor">
+            <summary>
+            A generic list of resources. Used to catch the List methods output.
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.ResourceList`1.Aggregates">
+            <summary>
+            The list of aggregates about the resources. E.g.: The AVG/COUNT/SUM of specific property.
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.ResourceList`1.Result">
+            <summary>
+            The list of resources.
+            </summary>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.SDKContext">
+            <summary>
+            The SDK Context to authenticate and perform requests.
+            </summary>
+        </member>
+        <member name="F:SoftmakeAll.SDK.Fluent.SDKContext.APIBaseAddress">
+            <summary>
+            The Softmake All API base address.
+            </summary>
+        </member>
+        <member name="F:SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication">
+            <summary>
+            PublicClientApplication to perform Authentication.
+            </summary>
+        </member>
+        <member name="F:SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult">
+            <summary>
+            Authentication result from PublicClientApplication.
+            </summary>
+        </member>
+        <member name="F:SoftmakeAll.SDK.Fluent.SDKContext.Credentials">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:SoftmakeAll.SDK.Fluent.SDKContext.LastOperationResult">
+            <summary>
+            The last resource operation result. This object will be changed when action is performed. Actions: List, Show, Create, Modify, Replace and Delete.
+            </summary>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.CreatePublicClientApplication(System.Guid,System.String)">
+            <summary>
+            Creates a PublicClientApplication.
+            </summary>
+            <param name="ContextIdentifier">Your Public Application Client ID.</param>
+            <param name="PolicyName">The Azure AD B2C policy name.</param>
+            <returns>A PublicClientApplication.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.CreatePublicClientApplication(System.Guid,System.String,System.String)">
+            <summary>
+            Creates a PublicClientApplication with redirect URI.
+            </summary>
+            <param name="ContextIdentifier">Your Public Application Client ID.</param>
+            <param name="PolicyName">The Azure AD B2C policy name.</param>
+            <param name="RedirectURI">URI to redirect after login succeeded.</param>
+            <returns>A PublicClientApplication.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.Authenticate(SoftmakeAll.SDK.Fluent.Authentication.ICredentials)">
+            <summary>
+            Authenticate user/application using Credentials.
+            </summary>
+            <param name="Credentials">Credentials to use during authentication process.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.AuthenticateAsync(SoftmakeAll.SDK.Fluent.Authentication.ICredentials)">
+            <summary>
+            Authenticate user/application using Credentials.
+            </summary>
+            <param name="Credentials">Credentials to use during authentication process.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequest(SoftmakeAll.SDK.Communication.REST,System.Boolean)">
+            <summary>
+            Perform the HTTP Request based on REST object information.
+            </summary>
+            <param name="REST">REST object that contains the HTTP Request information.</param>
+            <param name="SkipAuthorizationHeader">Removes the Authentication Header before sending.</param>
+            <returns>A OperationResult with JSON property Data.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequestAsync(SoftmakeAll.SDK.Communication.REST,System.Boolean)">
+            <summary>
+            Perform the HTTP Request based on REST object information.
+            </summary>
+            <param name="REST">REST object that contains the HTTP Request information.</param>
+            <param name="SkipAuthorizationHeader">Removes the Authentication Header before sending.</param>
+            <returns>A OperationResult with JSON property Data.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.ProcessRESTRequestResult(SoftmakeAll.SDK.Communication.REST,System.Text.Json.JsonElement)">
+            <summary>
+            Creates a OperationResult object based on HTTP Request.
+            </summary>
+            <param name="REST">REST object that contains the HTTP Request information.</param>
+            <param name="RESTResult">The output of Send method.</param>
+            <returns>A OperationResult with JSON property Data.</returns>
         </member>
     </members>
 </doc>

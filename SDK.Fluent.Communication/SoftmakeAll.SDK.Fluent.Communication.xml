@@ -4,94 +4,14 @@
         <name>SoftmakeAll.SDK.Fluent.Communication</name>
     </assembly>
     <members>
-        <member name="T:SoftmakeAll.SDK.Fluent.Communication.ResourceActions.ARI">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:SoftmakeAll.SDK.Fluent.Communication.ResourceActions.ARI.#ctor">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="T:SoftmakeAll.SDK.Fluent.Communication.ResourceActions.AsteriskCDRs">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:SoftmakeAll.SDK.Fluent.Communication.ResourceActions.AsteriskCDRs.#ctor">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="T:SoftmakeAll.SDK.Fluent.Communication.ResourceActions.AsteriskFiles">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:SoftmakeAll.SDK.Fluent.Communication.ResourceActions.AsteriskFiles.#ctor">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="T:SoftmakeAll.SDK.Fluent.Communication.ResourceActions.AsteriskQueueLogs">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:SoftmakeAll.SDK.Fluent.Communication.ResourceActions.AsteriskQueueLogs.#ctor">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="T:SoftmakeAll.SDK.Fluent.Communication.ResourceActions.Audio">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:SoftmakeAll.SDK.Fluent.Communication.ResourceActions.Audio.#ctor">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="T:SoftmakeAll.SDK.Fluent.Communication.ResourceActions.BotChannels">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:SoftmakeAll.SDK.Fluent.Communication.ResourceActions.BotChannels.#ctor">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="T:SoftmakeAll.SDK.Fluent.Communication.ResourceActions.BranchStates">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:SoftmakeAll.SDK.Fluent.Communication.ResourceActions.BranchStates.#ctor">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="T:SoftmakeAll.SDK.Fluent.Communication.ResourceActions.SyncServices">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:SoftmakeAll.SDK.Fluent.Communication.ResourceActions.SyncServices.#ctor">
-            <summary>
-            
-            </summary>
-        </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.ResourceManager">
             <summary>
-            @ClassDocumentation
+            The module resource manager.
             </summary>
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.ResourceManager.Instances">
             <summary>
-            
+            Aplicações que podem ser executadas através do plano de discagem do Asterisk
             </summary>
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.ResourceManager.Branches">
@@ -196,7 +116,7 @@
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.ResourceManager.AsteriskCDRs">
             <summary>
-            
+            Registro de todas as chamadas trafegadas pelo Asterisk
             </summary>
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.ResourceManager.AsteriskProcessedCDRs">
@@ -285,11 +205,6 @@
             </summary>
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.ResourceManager.AvailableExtensions">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:SoftmakeAll.SDK.Fluent.Communication.ResourceManager.Licenses">
             <summary>
             
             </summary>
@@ -401,7 +316,7 @@
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.ResourceManager.Applications">
             <summary>
-            
+            Aplicações que podem ser executadas através do plano de discagem do Asterisk
             </summary>
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.ResourceManager.AvailableQueueShortcuts">
@@ -419,132 +334,141 @@
             
             </summary>
         </member>
-        <member name="P:SoftmakeAll.SDK.Fluent.Communication.ResourceManager.ARIActions">
-            <summary>
-            
-            </summary>
-        </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.ResourceManager.AsteriskCDRActions">
             <summary>
-            
+            The AsteriskCDRs actions.
             </summary>
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.ResourceManager.AsteriskFileActions">
             <summary>
-            
+            The AsteriskFiles actions.
             </summary>
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.ResourceManager.AsteriskQueueLogActions">
             <summary>
-            
+            The AsteriskQueueLogs actions.
             </summary>
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.ResourceManager.AudioActions">
             <summary>
-            
+            The Audio actions.
             </summary>
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.ResourceManager.BotChannelActions">
             <summary>
-            
+            The BotChannels actions.
             </summary>
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.ResourceManager.BranchStateActions">
             <summary>
-            
+            The BranchStates actions.
             </summary>
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.ResourceManager.SyncServiceActions">
             <summary>
-            
+            The SyncServices actions.
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.Communication.ResourceManager.TwilioWhatsAppActions">
+            <summary>
+            The TwilioWhatsApp actions.
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.Communication.ResourceManager.CallCenterActions">
+            <summary>
+            The CallCenter actions.
             </summary>
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.Application">
             <summary>
-            @ClassDocumentation
+            Aplicações que podem ser executadas através do plano de discagem do Asterisk
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.Application.#ctor">
             <summary>
-            
+            Aplicações que podem ser executadas através do plano de discagem do Asterisk
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.Application.#ctor(System.String,System.Byte,System.Byte)">
             <summary>
-            
+            Aplicações que podem ser executadas através do plano de discagem do Asterisk
             </summary>
-            <param name="Name"></param>
-            <param name="TrueFlowActionsID"></param>
-            <param name="FalseFlowActionsID"></param>
+            <param name="Name">Nome da aplicação</param>
+            <param name="TrueFlowActionsID">Executa uma ação em caso de êxito de execução da aplicação.</param>
+            <param name="FalseFlowActionsID">Executa uma ação em caso de falha de execução da aplicação.</param>
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.Application.ID">
             <summary>
-            
+            ID da aplicação
             </summary>
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.Application.Activated">
             <summary>
-            
+            Indica se a aplicação está ativada
             </summary>
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.Application.ExtensionsID">
             <summary>
-            
+            ID da extensão da aplicação
             </summary>
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.Application.Name">
             <summary>
-            
+            Nome da aplicação
             </summary>
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.Application.TrueFlowActionsID">
             <summary>
-            
+            Executa uma ação em caso de êxito de execução da aplicação.
             </summary>
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.Application.TrueExtensionsID">
             <summary>
-            
+            Extensão para encaminhamento da chamada em caso de êxito de execução da aplicação
             </summary>
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.Application.TrueDestiny">
             <summary>
-            
+            Número específico para encaminhamento da chamada em caso de êxito de execução da aplicação.
             </summary>
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.Application.FalseFlowActionsID">
             <summary>
-            
+            Executa uma ação em caso de falha de execução da aplicação.
             </summary>
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.Application.FalseExtensionsID">
             <summary>
-            
+            Extensão para encaminhamento da chamada em caso de falha de execução da aplicação
             </summary>
         </member>
         <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.Application.FalseDestiny">
             <summary>
-            
+            Número específico para encaminhamento da chamada em caso de falha de execução da aplicação.
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.Application.Validate">
             <summary>
             Validates all properties of the current object.
             </summary>
+            
+            <returns>
+            Exemplo da Tag Returns
+            </returns>
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.AsteriskCDR">
             <summary>
-            @ClassDocumentation
+            Registro de todas as chamadas trafegadas pelo Asterisk
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.AsteriskCDR.#ctor">
             <summary>
-            
+            Registro de todas as chamadas trafegadas pelo Asterisk
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.AsteriskCDR.#ctor(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.DateTimeOffset,System.DateTimeOffset,System.Int32,System.String,System.String,System.String,System.Int32)">
             <summary>
-            
+            Registro de todas as chamadas trafegadas pelo Asterisk
             </summary>
             <param name="AccountCode"></param>
             <param name="SourceExten"></param>
@@ -675,7 +599,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.AsteriskProcessedCDR">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.AsteriskProcessedCDR.#ctor">
@@ -770,7 +694,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.AsteriskProcessedQueueLog">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.AsteriskProcessedQueueLog.#ctor">
@@ -933,7 +857,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.AsteriskQueueLog">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.AsteriskQueueLog.#ctor">
@@ -1094,7 +1018,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.AsteriskQueueLogEventType">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.AsteriskQueueLogEventType.#ctor">
@@ -1140,7 +1064,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.AudioFile">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.AudioFile.#ctor">
@@ -1201,7 +1125,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.AudioFileAction">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.AudioFileAction.#ctor">
@@ -1264,7 +1188,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.AudioPlaylist">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.AudioPlaylist.#ctor">
@@ -1300,7 +1224,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.AudioPlaylistAudioFile">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.AudioPlaylistAudioFile.#ctor">
@@ -1337,7 +1261,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.AvailableQueueShortcut">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.AvailableQueueShortcut.#ctor">
@@ -1362,7 +1286,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.BaseMemberStatus">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.BaseMemberStatus.#ctor">
@@ -1410,7 +1334,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.Branch">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.Branch.#ctor">
@@ -1592,7 +1516,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.CallDirection">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.CallDirection.#ctor">
@@ -1629,7 +1553,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.CallDisposition">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.CallDisposition.#ctor">
@@ -1666,7 +1590,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.CallGroup">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.CallGroup.#ctor">
@@ -1702,7 +1626,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.CallGroupBranch">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.CallGroupBranch.#ctor">
@@ -1744,7 +1668,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.Campaign">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.Campaign.#ctor">
@@ -1798,7 +1722,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.CampaignMailing">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.CampaignMailing.#ctor">
@@ -1840,7 +1764,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.ClassificationForm">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.ClassificationForm.#ctor">
@@ -1891,7 +1815,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.ClassificationFormValue">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.ClassificationFormValue.#ctor">
@@ -1940,7 +1864,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.ConferenceRoom">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.ConferenceRoom.#ctor">
@@ -2023,7 +1947,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.Conversation">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.Conversation.#ctor">
@@ -2088,7 +2012,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.ConversationSummary">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.ConversationSummary.#ctor">
@@ -2128,7 +2052,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.DeviceState">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.DeviceState.#ctor">
@@ -2165,7 +2089,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.DTMFMode">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.DTMFMode.#ctor">
@@ -2196,7 +2120,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.EnvironmentContractModuleServiceExtension">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.EnvironmentContractModuleServiceExtension.#ctor">
@@ -2236,7 +2160,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.Extension">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.Extension.#ctor">
@@ -2344,7 +2268,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.ExtensionType">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.ExtensionType.#ctor">
@@ -2401,7 +2325,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.ExternalNumberType">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.ExternalNumberType.#ctor">
@@ -2459,7 +2383,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.FlowAction">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.FlowAction.#ctor">
@@ -2500,7 +2424,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.InboundRoute">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.InboundRoute.#ctor">
@@ -2621,7 +2545,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.Instance">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.Instance.#ctor">
@@ -2702,7 +2626,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.Interval">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.Interval.#ctor">
@@ -2798,7 +2722,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.IntervalCondition">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.IntervalCondition.#ctor">
@@ -2877,7 +2801,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.ISMAELExtension">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.ISMAELExtension.#ctor">
@@ -2959,7 +2883,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.ISMAELLicense">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.ISMAELLicense.#ctor">
@@ -2994,7 +2918,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.IVR">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.IVR.#ctor">
@@ -3298,95 +3222,9 @@
             Validates all properties of the current object.
             </summary>
         </member>
-        <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.License">
-            <summary>
-            @ClassDocumentation
-            </summary>
-        </member>
-        <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.License.#ctor">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.License.#ctor(System.Int32)">
-            <summary>
-            
-            </summary>
-            <param name="CoreLicensesID"></param>
-        </member>
-        <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.License.ID">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.License.Activated">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.License.CoreLicensesID">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.License.InstancesID">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.License.DNSRecordID">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.License.EnvironmentUniqueID">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.License.InstanceID">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.License.SystemAccountEmail">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.License.OldInstanceID">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.License.OldSystemAccountEmail">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.License.PublicIPv4">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.License.CloudflareAuthorization">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.License.CloudflareZoneIdentifier">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.License.Validate">
-            <summary>
-            Validates all properties of the current object.
-            </summary>
-        </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.LicenseService">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.LicenseService.#ctor">
@@ -3434,7 +3272,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.Mailing">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.Mailing.#ctor">
@@ -3465,7 +3303,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.MailingContact">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.MailingContact.#ctor">
@@ -3508,7 +3346,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.MemberStatus">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.MemberStatus.#ctor">
@@ -3560,7 +3398,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.NumberGroup">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.NumberGroup.#ctor">
@@ -3611,7 +3449,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.NumberGroupNumber">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.NumberGroupNumber.#ctor">
@@ -3654,7 +3492,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.NumberGroupPrefix">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.NumberGroupPrefix.#ctor">
@@ -3707,7 +3545,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.OutboundRoute">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.OutboundRoute.#ctor">
@@ -3813,7 +3651,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.PickupGroupBranch">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.PickupGroupBranch.#ctor">
@@ -3855,7 +3693,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.Protocol">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.Protocol.#ctor">
@@ -3896,7 +3734,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.Queue">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.Queue.#ctor">
@@ -4093,7 +3931,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.QueueMember">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.QueueMember.#ctor">
@@ -4161,7 +3999,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.QueueMemberStats">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.QueueMemberStats.#ctor">
@@ -4286,7 +4124,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.QueueMonitor">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.QueueMonitor.#ctor">
@@ -4431,7 +4269,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.QueueStats">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.QueueStats.#ctor">
@@ -4563,7 +4401,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.QueueStatsDetail">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.QueueStatsDetail.#ctor">
@@ -4653,7 +4491,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.RingGroup">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.RingGroup.#ctor">
@@ -4715,7 +4553,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.RingGroupBranch">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.RingGroupBranch.#ctor">
@@ -4757,7 +4595,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.RingStrategy">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.RingStrategy.#ctor">
@@ -4792,9 +4630,24 @@
             Validates all properties of the current object.
             </summary>
         </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.Rules.Branch">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.Rules.Branch.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.Communication.Resources.Rules.Branch.ExtensionsID">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.ServiceNumber">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.ServiceNumber.#ctor">
@@ -4837,7 +4690,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.SIPWebRegister">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.SIPWebRegister.#ctor">
@@ -4894,7 +4747,7 @@
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Communication.Resources.Trunk">
             <summary>
-            @ClassDocumentation
+            
             </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.Communication.Resources.Trunk.#ctor">

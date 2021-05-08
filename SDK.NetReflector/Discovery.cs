@@ -18,13 +18,11 @@ namespace SoftmakeAll.SDK.NetReflector
     #endregion
 
     #region Methods
-    public System.Boolean TryLoadAssembly(System.Byte[] RawAssembly)
+    public System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Namespace> TryLoadAssembly(System.Byte[] RawAssembly) => this.TryLoadAssembly(RawAssembly, out _);
+    public System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Namespace> TryLoadAssembly(System.Byte[] RawAssembly, out System.String ErrorMessage)
     {
-      System.String ErrorMessage = "";
-      return this.TryLoadAssembly(RawAssembly, out ErrorMessage);
-    }
-    public System.Boolean TryLoadAssembly(System.Byte[] RawAssembly, out System.String ErrorMessage)
-    {
+      System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Namespace> Result = new System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Namespace>();
+
       try
       {
         this._Assembly = System.Reflection.Assembly.Load(RawAssembly);
@@ -34,119 +32,88 @@ namespace SoftmakeAll.SDK.NetReflector
       {
         this._Assembly = null;
         ErrorMessage = ex.Message;
-        return false;
+        return Result;
       }
 
-      return true;
-    }
-    public System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Namespace> Discover()
-    {
-      System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Namespace> Namespaces = this.GetExportedNamespaces();
-
-      foreach (SoftmakeAll.SDK.NetReflector.Structures.Namespace Namespace in Namespaces)
-        foreach (SoftmakeAll.SDK.NetReflector.Structures.Object Object in this.GetExportedObjects(Namespace.Name))
-        {
-          System.String FullName = Object.Name;
-          if (!(System.String.IsNullOrWhiteSpace(Namespace.Name)))
-            FullName = System.String.Concat(Namespace.Name, ".", FullName);
-
-          Object.Properties.AddRange(this.GetExportedProperties(FullName));
-          Object.Methods.AddRange(this.GetExportedMethods(FullName));
-          Namespace.Objects.Add(Object);
-        }
-
-      return Namespaces;
-    }
-    public System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Namespace> GetExportedNamespaces()
-    {
-      System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Namespace> Result = new System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Namespace>();
-
-      if (this._Assembly == null)
-        return new System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Namespace>();
-
-      Result.AddRange(
-        this._Assembly.ExportedTypes
-        .Select(t =>
-          new SoftmakeAll.SDK.NetReflector.Structures.Namespace()
-          {
-            Name = t.Namespace,
-            Objects = new System.Collections.Generic.List<Structures.Object>()
-          }
-        ).DistinctBy(n => n.Name));
+      foreach (SoftmakeAll.SDK.NetReflector.Structures.Namespace Namespace in this.GetExportedNamespaces())
+      {
+        Result.Add(Namespace);
+        Namespace.Objects.AddRange(this.GetExportedObjects(Namespace.Name));
+      }
 
       return Result;
     }
-    public System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Object> GetExportedObjects(System.String Namespace)
+    private System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Namespace> GetExportedNamespaces()
+    {
+      if (this._Assembly == null)
+        return new System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Namespace>();
+
+      return this._Assembly.ExportedTypes.Select(t => new SoftmakeAll.SDK.NetReflector.Structures.Namespace() { Name = t.Namespace, Objects = new System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Object>() }).DistinctBy(n => n.Name).ToList();
+    }
+    private System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Object> GetExportedObjects(System.String Namespace)
     {
       if (this._Assembly == null)
         return new System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Object>();
 
-      if (!(System.String.IsNullOrWhiteSpace(Namespace)))
-        Namespace = System.String.Concat(Namespace, ".");
-
       return
-        this._Assembly.ExportedTypes
-        .Where(t => (t.FullName == System.String.Concat(Namespace, t.Name)))
-        .Where(t => ((!(t.IsInterface)) && (((t.IsAbstract) && (t.IsSealed)) || ((!(t.IsAbstract)) || (t.IsDefined(typeof(System.Runtime.CompilerServices.ExtensionAttribute), false))))))
-        .Select(t =>
-          new SoftmakeAll.SDK.NetReflector.Structures.Object()
-          {
-            IsStatic = t.IsAbstract && t.IsSealed,
-            IsClass = t.IsClass,
-            IsStructure = t.IsValueType,
-            Name = t.Name,
-            Properties = new System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Property>(),
-            Methods = new System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Method>()
-          }
-        ).OrderBy(o => o.Name).ToList();
+      this._Assembly.ExportedTypes
+      .Where(t => ((t.FullName == $"{Namespace}.{t.Name}") && ((!(t.IsInterface)) && (((t.IsAbstract) && (t.IsSealed)) || ((!(t.IsAbstract)) || (t.IsDefined(typeof(System.Runtime.CompilerServices.ExtensionAttribute), false)))))))
+      .Select(t =>
+        new SoftmakeAll.SDK.NetReflector.Structures.Object()
+        {
+          Name = t.Name,
+          IsStatic = t.IsAbstract && t.IsSealed,
+          IsClass = t.IsClass,
+          IsStructure = t.IsValueType,
+          InheritanceLevel = (System.Byte)(this.GetInheritanceLevel(t) - 1),
+          BaseObjectName = this.IsValidType(t.BaseType) ? t.BaseType.FullName : null,
+          CustomAttributes = t.CustomAttributes.Select(ca => ca.ToString()).ToList(),
+          Properties = this.GetExportedProperties(t),
+          Methods = this.GetExportedMethods(t),
+        }
+      ).OrderBy(o => o.Name).ToList();
     }
-    public System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Property> GetExportedProperties(System.String FullName)
+    private System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Property> GetExportedProperties(System.Type Type)
     {
       System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Property> Result = new System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Property>();
-
-      if ((this._Assembly == null) || (System.String.IsNullOrWhiteSpace(FullName)))
-        return Result;
-
-      System.Type Type = this._Assembly.ExportedTypes.Where(t => t.FullName == FullName).FirstOrDefault();
       if (Type == null)
         return Result;
 
       Result.AddRange(
-        Type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
-        .Select(p =>
-          new SoftmakeAll.SDK.NetReflector.Structures.Property()
-          {
-            IsStatic = true,
-            TypeDescription = p.PropertyType.ToString(),
-            Name = p.Name,
-            CanRead = p.CanRead,
-            CanWrite = p.CanWrite
-          }
-        ));
+      Type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
+      .Select(p =>
+        new SoftmakeAll.SDK.NetReflector.Structures.Property()
+        {
+          Name = p.Name,
+          IsStatic = true,
+          CanRead = p.CanRead,
+          CanWrite = p.CanWrite,
+          InheritanceLevel = (System.Byte)(this.GetInheritanceLevel(p.DeclaringType) - 1),
+          TypeDescription = p.PropertyType.ToString(),
+          CustomAttributes = p.CustomAttributes.Select(ca => ca.ToString()).ToList()
+        }
+      ));
 
       Result.AddRange(
         Type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)
         .Select(p =>
           new SoftmakeAll.SDK.NetReflector.Structures.Property()
           {
-            IsStatic = false,
-            TypeDescription = p.PropertyType.ToString(),
             Name = p.Name,
+            IsStatic = false,
             CanRead = p.CanRead,
-            CanWrite = p.CanWrite
+            CanWrite = p.CanWrite,
+            InheritanceLevel = (System.Byte)(this.GetInheritanceLevel(p.DeclaringType) - 1),
+            TypeDescription = p.PropertyType.ToString(),
+            CustomAttributes = p.CustomAttributes.Select(ca => ca.ToString()).ToList()
           }
         ));
 
       return Result.OrderBy(p => p.Name).ToList();
     }
-    public System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Method> GetExportedMethods(System.String FullName)
+    private System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Method> GetExportedMethods(System.Type Type)
     {
       System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Method> Result = new System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Method>();
-
-      if ((this._Assembly == null) || (System.String.IsNullOrWhiteSpace(FullName)))
-        return Result;
-
-      System.Type Type = this._Assembly.ExportedTypes.Where(t => t.FullName == FullName).FirstOrDefault();
       if (Type == null)
         return Result;
 
@@ -157,34 +124,47 @@ namespace SoftmakeAll.SDK.NetReflector
         .Select(m =>
           new SoftmakeAll.SDK.NetReflector.Structures.Method()
           {
+            Name = m.Name,
             IsConstructor = m.IsConstructor,
             IsStatic = m.IsStatic,
             IsAsync = m.IsDefined(typeof(System.Runtime.CompilerServices.AsyncStateMachineAttribute), false),
+            InheritanceLevel = (System.Byte)(this.GetInheritanceLevel(m.DeclaringType) - 1),
             TypeDescription = m.ReturnType.ToString(),
-            Name = m.Name,
-            Parameters = this.GetMethodParameters(m)
+            Parameters = this.GetMethodParameters(m),
+            CustomAttributes = m.CustomAttributes.Select(ca => ca.ToString()).Where(ca => (!(ca.Contains(".AsyncStateMachineAttribute"))) && (!(ca.Contains(".DebuggerStepThroughAttribute")))).ToList()
           }
         ));
 
       return Result.OrderBy(m => m.Name).ToList();
     }
-    public System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Parameter> GetMethodParameters(System.Reflection.MethodInfo MethodInfo)
+    private System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Parameter> GetMethodParameters(System.Reflection.MethodInfo MethodInfo)
     {
+      if (MethodInfo == null)
+        return new System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Parameter>();
+
       return
         MethodInfo.GetParameters()
         .Select(p =>
           new SoftmakeAll.SDK.NetReflector.Structures.Parameter()
           {
-            Position = p.Position,
-            TypeDescription = p.ParameterType.ToString(),
             Name = p.Name,
             IsOutput = p.IsOut,
             IsReference = ((!(p.IsOut)) && (p.ParameterType.ToString().EndsWith('&'))),
             IsParamArray = p.IsDefined(typeof(System.ParamArrayAttribute), false),
-            IsOptional = p.IsOptional
+            IsOptional = p.IsOptional,
+            Position = p.Position,
+            TypeDescription = p.ParameterType.ToString(),
+            DefaultValue = p.DefaultValue,
+            CustomAttributes = p.CustomAttributes.Select(ca => ca.ToString()).ToList()
           }
         ).OrderBy(p => p.Position).ToList();
     }
+
+    #region Helpers
+    private System.Byte GetInheritanceLevel(System.Type Type) => this.GetInheritanceLevel(Type, 0);
+    private System.Byte GetInheritanceLevel(System.Type Type, System.Byte CurrentLevel) => this.IsValidType(Type) ? this.GetInheritanceLevel(Type.BaseType, ++CurrentLevel) : CurrentLevel;
+    private System.Boolean IsValidType(System.Type Type) => Type != null && Type.FullName != "System.Object";
+    #endregion
     #endregion
   }
 }
