@@ -24,7 +24,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
     public void Delete(System.String[] IDs)
     {
       if ((IDs != null) && (IDs.Any()))
-        base.SetLastOperationResult(SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequest(new SoftmakeAll.SDK.Communication.REST() { Method = "DELETE", URL = base.Route, Body = IDs.ToJsonElement() }));
+        SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequest(new SoftmakeAll.SDK.Communication.REST() { Method = "DELETE", URL = base.Route, Body = IDs.ToJsonElement() });
     }
 
     public async System.Threading.Tasks.Task DeleteAsync(System.Byte ID) => await this.DeleteAsync(ID.ToString());
@@ -41,7 +41,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
     public async System.Threading.Tasks.Task DeleteAsync(System.String[] IDs)
     {
       if ((IDs != null) && (IDs.Any()))
-        base.SetLastOperationResult(await SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequestAsync(new SoftmakeAll.SDK.Communication.REST() { Method = "DELETE", URL = base.Route, Body = IDs.ToJsonElement() }));
+        await SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequestAsync(new SoftmakeAll.SDK.Communication.REST() { Method = "DELETE", URL = base.Route, Body = IDs.ToJsonElement() });
     }
     #endregion
   }

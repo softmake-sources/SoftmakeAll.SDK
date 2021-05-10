@@ -202,14 +202,23 @@ namespace SoftmakeAll.SDK.Fluent
     private static SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ProcessRESTRequestResult(SoftmakeAll.SDK.Communication.REST REST, System.Text.Json.JsonElement RESTResult)
     {
       SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> Result = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
-      Result.ExitCode = RESTResult.GetInt32("ExitCode");
-      Result.Message = RESTResult.GetString("Message");
-      Result.ID = RESTResult.GetString("ID");
-      Result.Count = RESTResult.GetInt32("Count");
-      Result.Data = RESTResult.GetJsonElement("Data").ToObject<System.Text.Json.JsonElement>();
-
-      if ((REST.HasRequestErrors) && (Result.ExitCode == 0))
+      if (REST.HasRequestErrors)
         Result.ExitCode = (int)REST.StatusCode;
+      else
+        Result.ExitCode = RESTResult.GetInt32("ExitCode");
+
+      if (RESTResult.IsValid())
+      {
+        Result.Message = RESTResult.GetString("Message");
+        Result.ID = RESTResult.GetString("ID");
+        Result.Count = RESTResult.GetInt32("Count");
+        Result.Data = RESTResult.GetJsonElement("Data").ToObject<System.Text.Json.JsonElement>();
+      }
+
+      SoftmakeAll.SDK.Fluent.SDKContext.LastOperationResult.ExitCode = Result.ExitCode;
+      SoftmakeAll.SDK.Fluent.SDKContext.LastOperationResult.Message = Result.Message;
+      SoftmakeAll.SDK.Fluent.SDKContext.LastOperationResult.Count = Result.Count;
+      SoftmakeAll.SDK.Fluent.SDKContext.LastOperationResult.ID = Result.ID;
 
       return Result;
     }

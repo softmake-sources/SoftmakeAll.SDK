@@ -21,8 +21,6 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
 
       SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> OperationResult = SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequest(new SoftmakeAll.SDK.Communication.REST() { Method = "PATCH", URL = $"{base.Route}/{ID}", Body = Model.ToJsonElement() });
 
-      base.SetLastOperationResult(OperationResult);
-
       if ((OperationResult.Success) && (OperationResult.Data.IsValid()))
         return OperationResult.Data[0].ToObject<T>();
 
@@ -40,8 +38,6 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
         return default;
 
       SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> OperationResult = await SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequestAsync(new SoftmakeAll.SDK.Communication.REST() { Method = "PATCH", URL = $"{base.Route}/{ID}", Body = Model.ToJsonElement() });
-
-      base.SetLastOperationResult(OperationResult);
 
       if ((OperationResult.Success) && (OperationResult.Data.IsValid()))
         return OperationResult.Data[0].ToObject<T>();

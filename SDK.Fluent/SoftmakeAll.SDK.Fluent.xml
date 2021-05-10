@@ -130,7 +130,7 @@
             Perform the HTTP Request based on REST object information.
             </summary>
             <param name="REST">REST object that contains the HTTP Request information.</param>
-            <param name="SkipAuthorizationHeader">Removes the Authentication Header before sending.</param>
+            <param name="SkipAuthorizationHeader">Removes the Authentication Header before sending. The default value is false.</param>
             <returns>A OperationResult with JSON property Data.</returns>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequestAsync(SoftmakeAll.SDK.Communication.REST,System.Boolean)">
@@ -138,7 +138,7 @@
             Perform the HTTP Request based on REST object information.
             </summary>
             <param name="REST">REST object that contains the HTTP Request information.</param>
-            <param name="SkipAuthorizationHeader">Removes the Authentication Header before sending.</param>
+            <param name="SkipAuthorizationHeader">Removes the Authentication Header before sending. The default value is false.</param>
             <returns>A OperationResult with JSON property Data.</returns>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.ProcessRESTRequestResult(SoftmakeAll.SDK.Communication.REST,System.Text.Json.JsonElement)">

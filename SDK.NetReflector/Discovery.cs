@@ -6,11 +6,16 @@ namespace SoftmakeAll.SDK.NetReflector
   public class Discovery
   {
     #region Constructor
-    public Discovery() { }
+    public Discovery() : this(true) { }
+    public Discovery(System.Boolean LoadStructuresWithTheSameInheritanceLevelOnly) => this.LoadStructuresWithTheSameInheritanceLevelOnly = LoadStructuresWithTheSameInheritanceLevelOnly;
     #endregion
 
     #region Objects
     private System.Reflection.Assembly _Assembly;
+    #endregion
+
+    #region Fields
+    private System.Boolean LoadStructuresWithTheSameInheritanceLevelOnly;
     #endregion
 
     #region Properties
@@ -59,83 +64,101 @@ namespace SoftmakeAll.SDK.NetReflector
       this._Assembly.ExportedTypes
       .Where(t => ((t.FullName == $"{Namespace}.{t.Name}") && ((!(t.IsInterface)) && (((t.IsAbstract) && (t.IsSealed)) || ((!(t.IsAbstract)) || (t.IsDefined(typeof(System.Runtime.CompilerServices.ExtensionAttribute), false)))))))
       .Select(t =>
+      {
+        System.Byte InheritanceLevel = (System.Byte)(this.GetInheritanceLevel(t) - 1);
+
+        return
         new SoftmakeAll.SDK.NetReflector.Structures.Object()
         {
           Name = t.Name,
           IsStatic = t.IsAbstract && t.IsSealed,
           IsClass = t.IsClass,
           IsStructure = t.IsValueType,
-          InheritanceLevel = (System.Byte)(this.GetInheritanceLevel(t) - 1),
+          InheritanceLevel = InheritanceLevel,
           BaseObjectName = this.IsValidType(t.BaseType) ? t.BaseType.FullName : null,
           CustomAttributes = t.CustomAttributes.Select(ca => ca.ToString()).ToList(),
-          Properties = this.GetExportedProperties(t),
-          Methods = this.GetExportedMethods(t),
-        }
+          Properties = this.GetExportedProperties(t, InheritanceLevel),
+          Methods = this.GetExportedMethods(t, InheritanceLevel),
+        };
+      }
       ).OrderBy(o => o.Name).ToList();
     }
-    private System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Property> GetExportedProperties(System.Type Type)
+    private System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Property> GetExportedProperties(System.Type Type, System.Byte ParentInheritanceLevel)
     {
       System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Property> Result = new System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Property>();
       if (Type == null)
         return Result;
 
+
       Result.AddRange(
       Type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
       .Select(p =>
+      {
+        System.Byte InheritanceLevel = (System.Byte)(this.GetInheritanceLevel(p.DeclaringType) - 1);
+        return ((this.LoadStructuresWithTheSameInheritanceLevelOnly) && (InheritanceLevel != ParentInheritanceLevel)) ? default :
         new SoftmakeAll.SDK.NetReflector.Structures.Property()
         {
           Name = p.Name,
           IsStatic = true,
           CanRead = p.CanRead,
           CanWrite = p.CanWrite,
-          InheritanceLevel = (System.Byte)(this.GetInheritanceLevel(p.DeclaringType) - 1),
+          InheritanceLevel = InheritanceLevel,
           TypeDescription = p.PropertyType.ToString(),
           CustomAttributes = p.CustomAttributes.Select(ca => ca.ToString()).ToList()
-        }
-      ));
+        };
+      })
+      .Where(m => (!(System.String.IsNullOrWhiteSpace(m.Name)))));
+
 
       Result.AddRange(
-        Type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)
-        .Select(p =>
-          new SoftmakeAll.SDK.NetReflector.Structures.Property()
-          {
-            Name = p.Name,
-            IsStatic = false,
-            CanRead = p.CanRead,
-            CanWrite = p.CanWrite,
-            InheritanceLevel = (System.Byte)(this.GetInheritanceLevel(p.DeclaringType) - 1),
-            TypeDescription = p.PropertyType.ToString(),
-            CustomAttributes = p.CustomAttributes.Select(ca => ca.ToString()).ToList()
-          }
-        ));
+      Type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)
+      .Select(p =>
+      {
+        System.Byte InheritanceLevel = (System.Byte)(this.GetInheritanceLevel(p.DeclaringType) - 1);
+        return ((this.LoadStructuresWithTheSameInheritanceLevelOnly) && (InheritanceLevel != ParentInheritanceLevel)) ? default :
+        new SoftmakeAll.SDK.NetReflector.Structures.Property()
+        {
+          Name = p.Name,
+          IsStatic = false,
+          CanRead = p.CanRead,
+          CanWrite = p.CanWrite,
+          InheritanceLevel = InheritanceLevel,
+          TypeDescription = p.PropertyType.ToString(),
+          CustomAttributes = p.CustomAttributes.Select(ca => ca.ToString()).ToList()
+        };
+      })
+      .Where(m => (!(System.String.IsNullOrWhiteSpace(m.Name)))));
+
 
       return Result.OrderBy(p => p.Name).ToList();
     }
-    private System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Method> GetExportedMethods(System.Type Type)
+    private System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Method> GetExportedMethods(System.Type Type, System.Byte ParentInheritanceLevel)
     {
-      System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Method> Result = new System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Method>();
       if (Type == null)
-        return Result;
+        return new System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Method>();
 
-      Result.AddRange(
-        Type.GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Instance)
+      return
+      Type.GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Instance)
         .Where(m => (!(m.Attributes.HasFlag(System.Reflection.MethodAttributes.SpecialName))))
         .Where(m => (!(typeof(System.Object).GetMethods().Select(om => om.Name).Contains(m.Name))))
         .Select(m =>
+        {
+          System.Byte InheritanceLevel = (System.Byte)(this.GetInheritanceLevel(m.DeclaringType) - 1);
+          return ((this.LoadStructuresWithTheSameInheritanceLevelOnly) && (InheritanceLevel != ParentInheritanceLevel)) ? default :
           new SoftmakeAll.SDK.NetReflector.Structures.Method()
           {
             Name = m.Name,
             IsConstructor = m.IsConstructor,
             IsStatic = m.IsStatic,
             IsAsync = m.IsDefined(typeof(System.Runtime.CompilerServices.AsyncStateMachineAttribute), false),
-            InheritanceLevel = (System.Byte)(this.GetInheritanceLevel(m.DeclaringType) - 1),
+            InheritanceLevel = InheritanceLevel,
             TypeDescription = m.ReturnType.ToString(),
             Parameters = this.GetMethodParameters(m),
             CustomAttributes = m.CustomAttributes.Select(ca => ca.ToString()).Where(ca => (!(ca.Contains(".AsyncStateMachineAttribute"))) && (!(ca.Contains(".DebuggerStepThroughAttribute")))).ToList()
-          }
-        ));
-
-      return Result.OrderBy(m => m.Name).ToList();
+          };
+        })
+        .Where(m => (!(System.String.IsNullOrWhiteSpace(m.Name))))
+        .OrderBy(m => m.Name).ToList();
     }
     private System.Collections.Generic.List<SoftmakeAll.SDK.NetReflector.Structures.Parameter> GetMethodParameters(System.Reflection.MethodInfo MethodInfo)
     {
