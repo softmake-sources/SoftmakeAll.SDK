@@ -12,8 +12,7 @@ namespace SoftmakeAll.SDK.NetReflector
       this.OutputFileName = "DynamicallyLinkedLibrary";
       this.CodeFiles = new System.Collections.Generic.Dictionary<System.String, System.String>();
       this.IndentSize = 2;
-      this.ReferencedFiles = new System.Collections.Generic.List<System.String>();
-      this.LoadDefaultReferences = true;
+      this.AdditionalReferences = new System.Collections.Generic.List<System.String>();
       this.OutputKind = SoftmakeAll.SDK.NetReflector.Compiler.OutputKinds.DynamicallyLinkedLibrary;
       this.Platform = SoftmakeAll.SDK.NetReflector.Compiler.Platforms.AnyCpu;
     }
@@ -47,10 +46,10 @@ namespace SoftmakeAll.SDK.NetReflector
 
     #region Properties
     public System.String OutputFileName { get; set; }
-    public System.Collections.Generic.Dictionary<System.String, System.String> CodeFiles { get; set; }
+    public System.Collections.Generic.Dictionary<System.String, System.String> CodeFiles { get; }
     public System.Byte IndentSize { get; set; }
-    public System.Collections.Generic.List<System.String> ReferencedFiles { get; set; }
-    public System.Boolean LoadDefaultReferences { get; set; }
+    public System.String DefaultReferencesDirectoryPath { get; set; }
+    public System.Collections.Generic.List<System.String> AdditionalReferences { get; }
     public System.Boolean OmitCompilationHiddenSeverity { get; set; }
     public System.Boolean OmitCompilationInfoSeverity { get; set; }
     public System.Boolean OmitCompilationWarningSeverity { get; set; }
@@ -86,13 +85,19 @@ namespace SoftmakeAll.SDK.NetReflector
       SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> CompileResult = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
 
       System.Collections.Generic.List<Microsoft.CodeAnalysis.MetadataReference> CurrentReferences = new System.Collections.Generic.List<Microsoft.CodeAnalysis.MetadataReference>();
-      if ((this.ReferencedFiles != null) && (this.ReferencedFiles.Any()))
-        foreach (System.String ReferencedFile in this.ReferencedFiles)
+      if (!(System.String.IsNullOrWhiteSpace(this.DefaultReferencesDirectoryPath)))
+      {
+        if (!(System.IO.Directory.Exists(this.DefaultReferencesDirectoryPath)))
+          throw new System.IO.DirectoryNotFoundException();
+        else
+          foreach (System.String ReferencedFile in System.IO.Directory.GetFiles(this.DefaultReferencesDirectoryPath, "*.*", System.IO.SearchOption.AllDirectories))
+            CurrentReferences.Add(Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(ReferencedFile));
+      }
+
+      if ((this.AdditionalReferences != null) && (this.AdditionalReferences.Any()))
+        foreach (System.String ReferencedFile in this.AdditionalReferences)
           CurrentReferences.Add(Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(ReferencedFile));
 
-      if (LoadDefaultReferences)
-        foreach (System.String ReferencedFile in System.IO.Directory.GetFiles(System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "DefaultAssemblies")))
-          CurrentReferences.Add(Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(ReferencedFile));
 
       Microsoft.CodeAnalysis.CSharp.CSharpCompilationOptions CSharpCompilationOptions = new Microsoft.CodeAnalysis.CSharp.CSharpCompilationOptions
         (

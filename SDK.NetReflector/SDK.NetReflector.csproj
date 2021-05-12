@@ -16,13 +16,27 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Este pacote é parte do pacote SoftmakeAll.SDK
 
+
 Este pacote fornece apoio para Reflection e compilação de código dinâmico de bibliotecas .NET Standard.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-    <AssemblyVersion>1.0.6.0</AssemblyVersion>
-    <FileVersion>1.0.6.0</FileVersion>
-    <Version>1.0.6</Version>
-    <PackageReleaseNotes>Atualização das dependências.</PackageReleaseNotes>
+    <AssemblyVersion>1.0.7.0</AssemblyVersion>
+    <FileVersion>1.0.7.0</FileVersion>
+    <Version>1.0.7</Version>
+    <PackageReleaseNotes>Compiler:
+Foram removidas as referências que eram carregadas junto com este pacote e foi adicionada uma propriedade chamada DefaultReferencesDirectoryPath, para que seja indicado o diretório das DLLs a serem utilizadas na construção do Assembly a partir do código.
+
+Discovery:
+Os métodos TryLoadAssembly agora retornam os Namespaces e toda árvore de objetos disponíveis, não sendo necessário chamar outro método.
+
+As estruturas ganharam 3 novas propriedades: InheritanceLevel, BaseTypeName e CustomAttributes.
+
+InheritanceLevel informa qual é o nível do objeto dentro da cadeia da heranças. Ex.: Se a classe A herda a classe B e classe B não herda nenhuma outra classe, o resultado é: InheritanceLevel de A = 1 e InheritanceLevel de B = 0
+
+BaseTypeName informa o nome da classe base.
+CustomAttributes contém os atributos informados nas classes, propriedades, métodos e parâmetros.
+
+Com a inclusão de InheritanceLevel, agora é possível filtrar somente as propriedades e métodos que são implementados na classe principal, reduzindo o número de objetos no output.</PackageReleaseNotes>
     <AssemblyName>SoftmakeAll.SDK.NetReflector</AssemblyName>
     <PackageProjectUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</PackageProjectUrl>
   </PropertyGroup>

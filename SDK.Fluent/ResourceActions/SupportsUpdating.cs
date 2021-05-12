@@ -19,9 +19,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
       if (System.String.IsNullOrWhiteSpace(ID))
         return default;
 
-      SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> OperationResult = SoftmakeAll.SDK.Fluent.SDKContext.MakeRESTRequest(new SoftmakeAll.SDK.Communication.REST() { Method = "PATCH", URL = $"{base.Route}/{ID}", Body = Model.ToJsonElement() });
-
-      base.SetLastOperationResult(OperationResult);
+      SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> OperationResult = SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequest(new SoftmakeAll.SDK.Communication.REST() { Method = "PATCH", URL = $"{base.Route}/{ID}", Body = Model.ToJsonElement() });
 
       if ((OperationResult.Success) && (OperationResult.Data.IsValid()))
         return OperationResult.Data[0].ToObject<T>();
@@ -39,9 +37,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
       if (System.String.IsNullOrWhiteSpace(ID))
         return default;
 
-      SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> OperationResult = await SoftmakeAll.SDK.Fluent.SDKContext.MakeRESTRequestAsync(new SoftmakeAll.SDK.Communication.REST() { Method = "PATCH", URL = $"{base.Route}/{ID}", Body = Model.ToJsonElement() });
-
-      base.SetLastOperationResult(OperationResult);
+      SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> OperationResult = await SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequestAsync(new SoftmakeAll.SDK.Communication.REST() { Method = "PATCH", URL = $"{base.Route}/{ID}", Body = Model.ToJsonElement() });
 
       if ((OperationResult.Success) && (OperationResult.Data.IsValid()))
         return OperationResult.Data[0].ToObject<T>();
@@ -59,7 +55,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
       if (System.String.IsNullOrWhiteSpace(ID))
         return default;
 
-      return base.ProcessOperationResult(SoftmakeAll.SDK.Fluent.SDKContext.MakeRESTRequest(new SoftmakeAll.SDK.Communication.REST() { Method = "PUT", URL = $"{base.Route}/{ID}", Body = Model.ToJsonElement() }), Model);
+      return base.ProcessOperationResult(SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequest(new SoftmakeAll.SDK.Communication.REST() { Method = "PUT", URL = $"{base.Route}/{ID}", Body = Model.ToJsonElement() }), Model);
     }
 
     public async System.Threading.Tasks.Task<T> ReplaceAsync(System.Byte ID, T Model) => await this.ReplaceAsync(ID.ToString(), Model);
@@ -72,7 +68,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
       if (System.String.IsNullOrWhiteSpace(ID))
         return default;
 
-      return base.ProcessOperationResult(await SoftmakeAll.SDK.Fluent.SDKContext.MakeRESTRequestAsync(new SoftmakeAll.SDK.Communication.REST() { Method = "PUT", URL = $"{base.Route}/{ID}", Body = Model.ToJsonElement() }), Model);
+      return base.ProcessOperationResult(await SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequestAsync(new SoftmakeAll.SDK.Communication.REST() { Method = "PUT", URL = $"{base.Route}/{ID}", Body = Model.ToJsonElement() }), Model);
     }
     #endregion
   }

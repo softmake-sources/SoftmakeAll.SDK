@@ -9,8 +9,8 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
     #endregion
 
     #region Methods
-    public T Create(T Model) => base.ProcessOperationResult(SoftmakeAll.SDK.Fluent.SDKContext.MakeRESTRequest(new SoftmakeAll.SDK.Communication.REST() { Method = "POST", URL = base.Route, Body = Model.ToJsonElement() }), Model);
-    public async System.Threading.Tasks.Task<T> CreateAsync(T Model) => base.ProcessOperationResult(await SoftmakeAll.SDK.Fluent.SDKContext.MakeRESTRequestAsync(new SoftmakeAll.SDK.Communication.REST() { Method = "POST", URL = base.Route, Body = Model.ToJsonElement() }), Model);
+    public T Create(T Model) => base.ProcessOperationResult(SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequest(new SoftmakeAll.SDK.Communication.REST() { Method = "POST", URL = base.Route, Body = Model.ToJsonElement() }), Model);
+    public async System.Threading.Tasks.Task<T> CreateAsync(T Model) => base.ProcessOperationResult(await SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequestAsync(new SoftmakeAll.SDK.Communication.REST() { Method = "POST", URL = base.Route, Body = Model.ToJsonElement() }), Model);
     #endregion
   }
 }
