@@ -1,10 +1,11 @@
-﻿namespace SoftmakeAll.SDK.Fluent.Authentication
+﻿using SoftmakeAll.SDK.Helpers.JSON.Extensions;
+
+namespace SoftmakeAll.SDK.Fluent.Authentication
 {
   internal class Credentials : SoftmakeAll.SDK.Fluent.Authentication.ICredentials
   {
     #region Fields
     private readonly SoftmakeAll.SDK.Fluent.Authentication.ICredentials CredentialsContext;
-    private readonly System.Guid _ObjectID = System.Guid.NewGuid();
     #endregion
 
     #region Constructor
@@ -25,12 +26,16 @@
     #endregion
 
     #region Properties
-    System.Guid SoftmakeAll.SDK.Fluent.Authentication.ICredentials.ObjectID => this._ObjectID;
     System.Guid SoftmakeAll.SDK.Fluent.Authentication.ICredentials.ContextIdentifier { get; set; }
     System.String SoftmakeAll.SDK.Fluent.Authentication.ICredentials.ClientID { get; set; }
     System.String SoftmakeAll.SDK.Fluent.Authentication.ICredentials.ClientSecret { get; set; }
     System.Char SoftmakeAll.SDK.Fluent.Authentication.ICredentials.AuthType { get; set; }
     System.String SoftmakeAll.SDK.Fluent.Authentication.ICredentials.Authorization { get; set; }
+    #endregion
+
+    #region Methods
+    void SoftmakeAll.SDK.Fluent.Authentication.ICredentials.Store() => SoftmakeAll.SDK.Fluent.GeneralCacheHelper.WriteString(new { this.CredentialsContext.AuthType, this.CredentialsContext.Authorization, this.CredentialsContext.ClientID, this.CredentialsContext.ContextIdentifier }.ToJsonElement().ToRawText());
+    void SoftmakeAll.SDK.Fluent.Authentication.ICredentials.Delete() => SoftmakeAll.SDK.Fluent.GeneralCacheHelper.Clear();
     #endregion
   }
 }

@@ -71,9 +71,24 @@
             The SDK Context to authenticate and perform requests.
             </summary>
         </member>
+        <member name="F:SoftmakeAll.SDK.Fluent.SDKContext.DefaultServer">
+            <summary>
+            The Softmake All server address.
+            </summary>
+        </member>
         <member name="F:SoftmakeAll.SDK.Fluent.SDKContext.APIBaseAddress">
             <summary>
             The Softmake All API base address.
+            </summary>
+        </member>
+        <member name="F:SoftmakeAll.SDK.Fluent.SDKContext.WebSocketBaseAddress">
+            <summary>
+            The Softmake All WebSocket base address.
+            </summary>
+        </member>
+        <member name="F:SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials">
+            <summary>
+            Credentials to use after authentication process.
             </summary>
         </member>
         <member name="F:SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication">
@@ -86,9 +101,9 @@
             Authentication result from PublicClientApplication.
             </summary>
         </member>
-        <member name="F:SoftmakeAll.SDK.Fluent.SDKContext.Credentials">
+        <member name="F:SoftmakeAll.SDK.Fluent.SDKContext.WebSocket">
             <summary>
-            
+            Softmake All WebSocket Connection.
             </summary>
         </member>
         <member name="F:SoftmakeAll.SDK.Fluent.SDKContext.LastOperationResult">
@@ -113,17 +128,32 @@
             <param name="RedirectURI">URI to redirect after login succeeded.</param>
             <returns>A PublicClientApplication.</returns>
         </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.Authenticate">
+            <summary>
+            Authenticate user/application using stored cache Credentials.
+            </summary>
+        </member>
         <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.Authenticate(SoftmakeAll.SDK.Fluent.Authentication.ICredentials)">
             <summary>
             Authenticate user/application using Credentials.
             </summary>
             <param name="Credentials">Credentials to use during authentication process.</param>
         </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.AuthenticateAsync">
+            <summary>
+            Authenticate user/application using stored cache Credentials.
+            </summary>
+        </member>
         <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.AuthenticateAsync(SoftmakeAll.SDK.Fluent.Authentication.ICredentials)">
             <summary>
             Authenticate user/application using Credentials.
             </summary>
             <param name="Credentials">Credentials to use during authentication process.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.SignOut">
+            <summary>
+            Clear the authentication objects and cache data.
+            </summary>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequest(SoftmakeAll.SDK.Communication.REST,System.Boolean)">
             <summary>

@@ -1,4 +1,5 @@
 ﻿using SoftmakeAll.SDK.Helpers.JSON.Extensions;
+using System.Linq;
 
 namespace SoftmakeAll.SDK.Fluent
 {
@@ -9,9 +10,24 @@ namespace SoftmakeAll.SDK.Fluent
   {
     #region Fields
     /// <summary>
+    /// The Softmake All server address.
+    /// </summary>
+    private static System.String DefaultServer = "smallservices01.azurewebsites.net";
+
+    /// <summary>
     /// The Softmake All API base address.
     /// </summary>
-    internal static System.String APIBaseAddress = "https://smallservices01.azurewebsites.net";
+    internal static System.String APIBaseAddress = $"https://{DefaultServer}";
+
+    /// <summary>
+    /// The Softmake All WebSocket base address.
+    /// </summary>
+    internal static System.String WebSocketBaseAddress = $"wss://{DefaultServer}/nhb";
+
+    /// <summary>
+    /// Credentials to use after authentication process.
+    /// </summary>
+    private static SoftmakeAll.SDK.Fluent.Authentication.ICredentials InMemoryCredentials = null;
 
     /// <summary>
     /// PublicClientApplication to perform Authentication.
@@ -24,9 +40,9 @@ namespace SoftmakeAll.SDK.Fluent
     private static Microsoft.Identity.Client.AuthenticationResult AuthenticationResult = null;
 
     /// <summary>
-    /// 
+    /// Softmake All WebSocket Connection.
     /// </summary>
-    private static SoftmakeAll.SDK.Fluent.Authentication.ICredentials Credentials = null;
+    public static readonly SoftmakeAll.SDK.Fluent.SoftmakeWS WebSocket = new SoftmakeAll.SDK.Fluent.SoftmakeWS();
 
     /// <summary>
     /// The last resource operation result. This object will be changed when action is performed. Actions: List, Show, Create, Modify, Replace and Delete.
@@ -51,11 +67,20 @@ namespace SoftmakeAll.SDK.Fluent
     /// <param name="RedirectURI">URI to redirect after login succeeded.</param>
     /// <returns>A PublicClientApplication.</returns>
     private static Microsoft.Identity.Client.IPublicClientApplication CreatePublicClientApplication(System.Guid ContextIdentifier, System.String PolicyName, System.String RedirectURI)
-      => Microsoft.Identity.Client.PublicClientApplicationBuilder
-      .Create(ContextIdentifier.ToString())
-      .WithB2CAuthority($"https://softmakeb2c.b2clogin.com/tfp/softmakeb2c.onmicrosoft.com/B2C_1{PolicyName}")
-      .WithRedirectUri(RedirectURI)
-      .Build();
+    {
+      Microsoft.Identity.Client.IPublicClientApplication PublicClientApplication = Microsoft.Identity.Client.PublicClientApplicationBuilder
+        .Create(ContextIdentifier.ToString())
+        .WithB2CAuthority($"https://softmakeb2c.b2clogin.com/tfp/softmakeb2c.onmicrosoft.com/B2C_1{PolicyName}")
+        .WithRedirectUri(RedirectURI)
+        .Build();
+      SoftmakeAll.SDK.Fluent.TokenCacheHelper.EnableSerialization(PublicClientApplication.UserTokenCache);
+      return PublicClientApplication;
+    }
+
+    /// <summary>
+    /// Authenticate user/application using stored cache Credentials.
+    /// </summary>
+    public static void Authenticate() => SoftmakeAll.SDK.Fluent.SDKContext.Authenticate(null);
 
     /// <summary>
     /// Authenticate user/application using Credentials.
@@ -64,69 +89,162 @@ namespace SoftmakeAll.SDK.Fluent
     public static void Authenticate(SoftmakeAll.SDK.Fluent.Authentication.ICredentials Credentials) => SoftmakeAll.SDK.Fluent.SDKContext.AuthenticateAsync(Credentials).Wait();
 
     /// <summary>
+    /// Authenticate user/application using stored cache Credentials.
+    /// </summary>
+    public static async System.Threading.Tasks.Task AuthenticateAsync() => await SoftmakeAll.SDK.Fluent.SDKContext.AuthenticateAsync(null);
+
+    /// <summary>
     /// Authenticate user/application using Credentials.
     /// </summary>
     /// <param name="Credentials">Credentials to use during authentication process.</param>
     public static async System.Threading.Tasks.Task AuthenticateAsync(SoftmakeAll.SDK.Fluent.Authentication.ICredentials Credentials)
     {
-      if (SoftmakeAll.SDK.Fluent.SDKContext.Credentials?.ObjectID != Credentials.ObjectID)
+      if (Credentials != null)
       {
-        SoftmakeAll.SDK.Fluent.SDKContext.Credentials = Credentials;
-        SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult = null;
-        SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication = null;
+        SoftmakeAll.SDK.Fluent.SDKContext.SignOut();
+        SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials = Credentials;
 
-        if (Credentials.AuthType == 'A') // FromAccessKey
-          Credentials.Authorization = $"Basic {System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{Credentials.ClientID}:{Credentials.ClientSecret}"))}";
-      }
-
-      if ((Credentials.AuthType != 'A') && ((SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult == null) || (SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.ExpiresOn.Subtract(System.DateTimeOffset.UtcNow).TotalMinutes <= 5.0D)))
-      {
-        System.String[] Scopes = new System.String[] { "openid", "https://softmakeb2c.onmicrosoft.com/48512da7-b030-4e62-be61-9e19b2c52d8a/user_impersonation" };
-
-        if (Credentials.AuthType == 'C') // FromCredentials
+        // From AccessKey
+        if (Credentials.AuthType == 'A')
         {
-          System.Security.SecureString Password = new System.Security.SecureString();
-          foreach (System.Char Char in Credentials.ClientSecret)
-            Password.AppendChar(Char);
-          Password.MakeReadOnly();
-
-          if (SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication == null)
-            SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication = SoftmakeAll.SDK.Fluent.SDKContext.CreatePublicClientApplication(Credentials.ContextIdentifier, "_ROPC");
-
-          try
-          {
-            SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult = await SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication.AcquireTokenByUsernamePassword(Scopes, Credentials.ClientID, Password).ExecuteAsync();
-            Password?.Dispose();
-            Password = null;
-          }
-          catch
-          {
-            Password?.Dispose();
-            Password = null;
-            SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication = null;
-            SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult = null;
+          SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization = $"Basic {System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{Credentials.ClientID}:{Credentials.ClientSecret}"))}";
+          SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Store();
+          await SoftmakeAll.SDK.Fluent.SDKContext.WebSocket.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization);
+          return;
+        }
+      }
+      else if (SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials == null)
+      {
+        try
+        {
+          System.Text.Json.JsonElement CacheData = SoftmakeAll.SDK.Fluent.GeneralCacheHelper.ReadString().ToJsonElement();
+          if (!(CacheData.IsValid()))
             throw new System.Exception();
+
+          // From AccessKey
+          if (CacheData.GetString("AuthType") == "A")
+          {
+            SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials = new SoftmakeAll.SDK.Fluent.Authentication.Credentials(CacheData.GetGuid("ContextIdentifier"), CacheData.GetString("ClientID"), null, CacheData.GetString("AuthType")[0]);
+            SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization = CacheData.GetString("Authorization");
+            if (System.String.IsNullOrWhiteSpace(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization))
+              throw new System.Exception();
+
+            await SoftmakeAll.SDK.Fluent.SDKContext.WebSocket.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization);
+            return;
+          }
+          else
+          {
+            SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials = new SoftmakeAll.SDK.Fluent.Authentication.Credentials(CacheData.GetJsonElement("AppMetadata").EnumerateObject().First().Value.GetGuid("client_id"));
+            SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.AuthType = 'I';
           }
         }
-        else if (Credentials.AuthType == 'I') // FromInteractive
-        {
-          if (SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication == null)
-            SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication = SoftmakeAll.SDK.Fluent.SDKContext.CreatePublicClientApplication(Credentials.ContextIdentifier, "A_signup_signin", "http://localhost:1435");
+        catch { }
+      }
 
+      if (SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials == null)
+      {
+        SoftmakeAll.SDK.Fluent.SDKContext.SignOut();
+        throw new System.Exception("Invalid Credentials from cache.");
+      }
+
+
+      // From AccessKey
+      if (SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.AuthType == 'A')
+        return;
+
+
+      // From Public Client Application
+      if ((SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult == null) || (SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.ExpiresOn.Subtract(System.DateTimeOffset.UtcNow).TotalMinutes <= 5.0D))
+      {
+        System.String[] Scopes = new System.String[] { "openid", "https://softmakeb2c.onmicrosoft.com/48512da7-b030-4e62-be61-9e19b2c52d8a/user_impersonation" };
+        if (SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication == null)
+        {
+          if (SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.AuthType == 'I') // From Interactive
+            SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication = SoftmakeAll.SDK.Fluent.SDKContext.CreatePublicClientApplication(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.ContextIdentifier, "A_signup_signin", "http://localhost:1435");
+          else if (SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.AuthType == 'C') // From Username and Password
+            SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication = SoftmakeAll.SDK.Fluent.SDKContext.CreatePublicClientApplication(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.ContextIdentifier, "_ROPC");
+          else
+            throw new System.Exception("Invalid authentication type.");
+        }
+
+        // Getting existing Account in cache
+        try
+        {
+          System.Collections.Generic.IEnumerable<Microsoft.Identity.Client.IAccount> Accounts = await SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication.GetAccountsAsync();
+          if (Accounts.Any())
+          {
+            SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult = await SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication.AcquireTokenSilent(Scopes, Accounts.FirstOrDefault()).ExecuteAsync();
+            if (SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult != null)
+            {
+              SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization = $"Bearer {SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken}";
+              await SoftmakeAll.SDK.Fluent.SDKContext.WebSocket.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken);
+              return;
+            }
+          }
+        }
+        catch
+        {
+          SoftmakeAll.SDK.Fluent.GeneralCacheHelper.Clear();
+        }
+
+
+        if (SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.AuthType == 'I') // From Interactive
+        {
           try
           {
             SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult = await SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication.AcquireTokenInteractive(Scopes).WithPrompt(Microsoft.Identity.Client.Prompt.ForceLogin).ExecuteAsync();
           }
+          catch { }
+        }
+        else if (SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.AuthType == 'C') // From Username and Password
+        {
+          if (System.String.IsNullOrWhiteSpace(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.ClientSecret))
+          {
+            SoftmakeAll.SDK.Fluent.SDKContext.SignOut();
+            throw new System.Exception("Authentication aborted. Please, re-enter credentials.");
+          }
+
+          System.Security.SecureString Password = new System.Security.SecureString();
+          foreach (System.Char Char in SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.ClientSecret)
+            Password.AppendChar(Char);
+          Password.MakeReadOnly();
+
+          try
+          {
+            SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult = await SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication.AcquireTokenByUsernamePassword(Scopes, SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.ClientID, Password).ExecuteAsync();
+            Password.Dispose();
+          }
           catch
           {
-            SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication = null;
-            SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult = null;
-            throw new System.Exception();
+            Password.Dispose();
+            SoftmakeAll.SDK.Fluent.SDKContext.SignOut();
+            throw new System.Exception("Invalid username or password.");
           }
         }
 
-        Credentials.Authorization = $"Bearer {SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken}";
+        if (SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult == null)
+        {
+          SoftmakeAll.SDK.Fluent.SDKContext.SignOut();
+          throw new System.Exception("Authentication aborted.");
+        }
+
+
+        SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization = $"Bearer {SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken}";
+        await SoftmakeAll.SDK.Fluent.SDKContext.WebSocket.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken);
+        return;
       }
+    }
+
+    /// <summary>
+    /// Clear the authentication objects and cache data.
+    /// </summary>
+    public static void SignOut()
+    {
+      SoftmakeAll.SDK.Fluent.GeneralCacheHelper.Clear();
+      SoftmakeAll.SDK.Fluent.SDKContext.WebSocket.DestroyAsync().ConfigureAwait(false);
+      SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials = null;
+      SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult = null;
+      SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication = null;
     }
 
     /// <summary>
@@ -144,8 +262,8 @@ namespace SoftmakeAll.SDK.Fluent
       if ((!(SkipAuthorizationHeader)) && (REST.Headers != null) && (!(REST.Headers.ContainsKey("Authorization"))))
         try
         {
-          SoftmakeAll.SDK.Fluent.SDKContext.Authenticate(SoftmakeAll.SDK.Fluent.SDKContext.Credentials);
-          REST.Headers.Add("Authorization", SoftmakeAll.SDK.Fluent.SDKContext.Credentials.Authorization);
+          SoftmakeAll.SDK.Fluent.SDKContext.Authenticate();
+          REST.Headers.Add("Authorization", SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization);
           RemoveAuthorization = true;
         }
         catch { }
@@ -176,8 +294,8 @@ namespace SoftmakeAll.SDK.Fluent
       if ((!(SkipAuthorizationHeader)) && (REST.Headers != null) && (!(REST.Headers.ContainsKey("Authorization"))))
         try
         {
-          await SoftmakeAll.SDK.Fluent.SDKContext.AuthenticateAsync(SoftmakeAll.SDK.Fluent.SDKContext.Credentials);
-          REST.Headers.Add("Authorization", SoftmakeAll.SDK.Fluent.SDKContext.Credentials.Authorization);
+          await SoftmakeAll.SDK.Fluent.SDKContext.AuthenticateAsync();
+          REST.Headers.Add("Authorization", SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization);
           RemoveAuthorization = true;
         }
         catch { }
