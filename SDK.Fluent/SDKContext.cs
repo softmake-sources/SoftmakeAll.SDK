@@ -107,7 +107,7 @@ namespace SoftmakeAll.SDK.Fluent
         // From AccessKey
         if (Credentials.AuthType == 'A')
         {
-          SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization = $"Basic {System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{Credentials.ClientID}:{Credentials.ClientSecret}"))}";
+          SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization = $"Basic {System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{Credentials.ClientID}@{Credentials.ContextIdentifier.ToString().ToLower()}:{Credentials.ClientSecret}"))}";
           SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Store();
           await SoftmakeAll.SDK.Fluent.SDKContext.WebSocket.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization);
           return;
