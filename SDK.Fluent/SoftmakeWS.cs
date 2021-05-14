@@ -9,6 +9,7 @@ namespace SoftmakeAll.SDK.Fluent
     #region Fields
     private Microsoft.AspNetCore.SignalR.Client.HubConnection WSConnection;
     private System.Action<System.Text.Json.JsonElement> OnMessageReceivedAction;
+    private System.Action<System.Text.Json.JsonElement> OnConnectionStateChangedAction;
     #endregion
 
     #region Constructor
@@ -18,6 +19,9 @@ namespace SoftmakeAll.SDK.Fluent
     #region Events and Actions
     public event System.EventHandler<System.Text.Json.JsonElement> MessageReceived;
     public void OnMessageReceived(System.Action<System.Text.Json.JsonElement> Action) => this.OnMessageReceivedAction = Action;
+
+    public event System.EventHandler<System.Text.Json.JsonElement> ConnectionStateChanged;
+    public void OnConnectionStateChanged(System.Action<System.Text.Json.JsonElement> Action) => this.OnConnectionStateChangedAction = Action;
     #endregion
 
     #region Properties
@@ -43,32 +47,58 @@ namespace SoftmakeAll.SDK.Fluent
        .WithAutomaticReconnect()
        .Build();
 
+      this.WSConnection.Closed += this.WSConnection_Closed;
+      this.WSConnection.Reconnecting += this.WSConnection_Reconnecting;
+      this.WSConnection.Reconnected += this.WSConnection_Reconnected;
+
       try
       {
-        await WSConnection.StartAsync();
+        await this.WSConnection.StartAsync();
+        await this.InvokeConnectionStateChangedEvents("Connected", null, null);
       }
       catch
       {
         this.WSConnection = null;
       }
 
-      WSConnection.On<System.Text.Json.JsonElement>("_mReceived", JSONMessage =>
+      this.WSConnection.On<System.Text.Json.JsonElement>("_mReceived", JSONMessage =>
       {
         if (!(JSONMessage.IsValid())) return;
         try { this.MessageReceived?.Invoke(null, JSONMessage); } catch { }
         try { this.OnMessageReceivedAction?.Invoke(JSONMessage); } catch { }
       });
+
+    }
+    private System.Threading.Tasks.Task InvokeConnectionStateChangedEvents(System.String Event, System.String Arguments, System.Exception Exception)
+    {
+      System.Text.Json.JsonElement Message = new { Event, Arguments, Exception?.Message }.ToJsonElement();
+      try { this.ConnectionStateChanged?.Invoke(null, Message); } catch { }
+      try { this.OnConnectionStateChangedAction?.Invoke(Message); } catch { }
+      return System.Threading.Tasks.Task.CompletedTask;
     }
     internal async System.Threading.Tasks.Task DestroyAsync()
     {
       if (this.WSConnection != null)
+      {
+        this.WSConnection.Reconnecting -= this.WSConnection_Reconnecting;
+        this.WSConnection.Reconnected -= this.WSConnection_Reconnected;
+
         try
         {
-          await WSConnection.StopAsync();
-          await WSConnection.DisposeAsync();
+          await this.WSConnection.StopAsync();
+          this.WSConnection.Closed -= this.WSConnection_Closed;
+
+          await this.WSConnection.DisposeAsync();
         }
         catch { }
+      }
     }
+    #endregion
+
+    #region Event Handlers
+    private System.Threading.Tasks.Task WSConnection_Reconnected(System.String Arguments) => this.InvokeConnectionStateChangedEvents("Reconnected", Arguments, null);
+    private System.Threading.Tasks.Task WSConnection_Reconnecting(System.Exception Exception) => this.InvokeConnectionStateChangedEvents("Reconnecting", null, Exception);
+    private System.Threading.Tasks.Task WSConnection_Closed(System.Exception Exception) => this.InvokeConnectionStateChangedEvents("Closed", null, Exception);
     #endregion
   }
 }
