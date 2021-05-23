@@ -42,7 +42,7 @@ namespace SoftmakeAll.SDK.Fluent
     /// <summary>
     /// Softmake All WebSocket Connection.
     /// </summary>
-    public static readonly SoftmakeAll.SDK.Fluent.SoftmakeWS WebSocket = new SoftmakeAll.SDK.Fluent.SoftmakeWS();
+    public static readonly SoftmakeAll.SDK.Fluent.ClientSignalRWebSocket WebSocketClient = new SoftmakeAll.SDK.Fluent.ClientSignalRWebSocket();
 
     /// <summary>
     /// The last resource operation result. This object will be changed when action is performed. Actions: List, Show, Create, Modify, Replace and Delete.
@@ -109,7 +109,7 @@ namespace SoftmakeAll.SDK.Fluent
         {
           SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization = $"Basic {System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{Credentials.ClientID}@{Credentials.ContextIdentifier.ToString().ToLower()}:{Credentials.ClientSecret}"))}";
           SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Store();
-          await SoftmakeAll.SDK.Fluent.SDKContext.WebSocket.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization);
+          await SoftmakeAll.SDK.Fluent.SDKContext.WebSocketClient.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization);
           return;
         }
       }
@@ -129,7 +129,7 @@ namespace SoftmakeAll.SDK.Fluent
             if (System.String.IsNullOrWhiteSpace(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization))
               throw new System.Exception();
 
-            await SoftmakeAll.SDK.Fluent.SDKContext.WebSocket.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization);
+            await SoftmakeAll.SDK.Fluent.SDKContext.WebSocketClient.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization);
             return;
           }
           else
@@ -177,7 +177,7 @@ namespace SoftmakeAll.SDK.Fluent
             if (SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult != null)
             {
               SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization = $"Bearer {SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken}";
-              await SoftmakeAll.SDK.Fluent.SDKContext.WebSocket.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken);
+              await SoftmakeAll.SDK.Fluent.SDKContext.WebSocketClient.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken);
               return;
             }
           }
@@ -230,21 +230,9 @@ namespace SoftmakeAll.SDK.Fluent
 
 
         SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization = $"Bearer {SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken}";
-        await SoftmakeAll.SDK.Fluent.SDKContext.WebSocket.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken);
+        await SoftmakeAll.SDK.Fluent.SDKContext.WebSocketClient.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken);
         return;
       }
-    }
-
-    /// <summary>
-    /// Clear the authentication objects and cache data.
-    /// </summary>
-    public static void SignOut()
-    {
-      SoftmakeAll.SDK.Fluent.GeneralCacheHelper.Clear();
-      SoftmakeAll.SDK.Fluent.SDKContext.WebSocket.DestroyAsync().ConfigureAwait(false);
-      SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials = null;
-      SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult = null;
-      SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication = null;
     }
 
     /// <summary>
@@ -339,6 +327,18 @@ namespace SoftmakeAll.SDK.Fluent
       SoftmakeAll.SDK.Fluent.SDKContext.LastOperationResult.ID = Result.ID;
 
       return Result;
+    }
+
+    /// <summary>
+    /// Clear the authentication objects and cache data.
+    /// </summary>
+    public static void SignOut()
+    {
+      SoftmakeAll.SDK.Fluent.GeneralCacheHelper.Clear();
+      SoftmakeAll.SDK.Fluent.SDKContext.WebSocketClient.DisposeAsync().ConfigureAwait(false);
+      SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials = null;
+      SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult = null;
+      SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication = null;
     }
     #endregion
   }

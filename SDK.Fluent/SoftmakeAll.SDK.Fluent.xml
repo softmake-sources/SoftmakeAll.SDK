@@ -101,7 +101,7 @@
             Authentication result from PublicClientApplication.
             </summary>
         </member>
-        <member name="F:SoftmakeAll.SDK.Fluent.SDKContext.WebSocket">
+        <member name="F:SoftmakeAll.SDK.Fluent.SDKContext.WebSocketClient">
             <summary>
             Softmake All WebSocket Connection.
             </summary>
@@ -150,11 +150,6 @@
             </summary>
             <param name="Credentials">Credentials to use during authentication process.</param>
         </member>
-        <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.SignOut">
-            <summary>
-            Clear the authentication objects and cache data.
-            </summary>
-        </member>
         <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequest(SoftmakeAll.SDK.Communication.REST,System.Boolean)">
             <summary>
             Perform the HTTP Request based on REST object information.
@@ -178,6 +173,11 @@
             <param name="REST">REST object that contains the HTTP Request information.</param>
             <param name="RESTResult">The output of Send method.</param>
             <returns>A OperationResult with JSON property Data.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.SignOut">
+            <summary>
+            Clear the authentication objects and cache data.
+            </summary>
         </member>
     </members>
 </doc>
