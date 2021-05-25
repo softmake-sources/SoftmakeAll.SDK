@@ -1,9 +1,12 @@
 ﻿using SoftmakeAll.SDK.Helpers.JSON.Extensions;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace SoftmakeAll.SDK.Fluent
+namespace SoftmakeAll.SDK.Fluent.Notifications
 {
-  public sealed class ClientSignalRWebSocket
+  /// <summary>
+  /// ClientWebSocket based on SignalR.
+  /// </summary>
+  internal sealed class ClientSignalRWebSocket : SoftmakeAll.SDK.Fluent.Notifications.IClientWebSocket
   {
     #region Fields
     private Microsoft.AspNetCore.SignalR.Client.HubConnection WSConnection;
@@ -12,23 +15,61 @@ namespace SoftmakeAll.SDK.Fluent
     #endregion
 
     #region Constructor
+    /// <summary>
+    /// Creates a new instance of SignalR based client.
+    /// </summary>
     public ClientSignalRWebSocket() { }
     #endregion
 
     #region Events and Actions
+    /// <summary>
+    /// Occurs when a new message is received.
+    /// </summary>
     public event System.EventHandler<System.Text.Json.JsonElement> MessageReceived;
+
+    /// <summary>
+    /// Occurs when a new message is received.
+    /// </summary>
+    /// <param name="Action">The action to be executed when a new message is received.</param>
     public void OnMessageReceived(System.Action<System.Text.Json.JsonElement> Action) => this.OnMessageReceivedAction = Action;
 
+    /// <summary>
+    /// Occurs when the connection state changes.
+    /// </summary>
     public event System.EventHandler<System.Text.Json.JsonElement> ConnectionStateChanged;
+
+    /// <summary>
+    /// Occurs when the connection state changes.
+    /// </summary>
+    /// <param name="Action">The action to be executed when connection state changes.</param>
     public void OnConnectionStateChanged(System.Action<System.Text.Json.JsonElement> Action) => this.OnConnectionStateChangedAction = Action;
     #endregion
 
     #region Properties
-    internal System.Boolean Connected => ((this.WSConnection != null) && (this.WSConnection.State == Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Connected));
+    /// <summary>
+    /// Indicates the current connection state.
+    /// </summary>
+    public System.Boolean Connected => ((this.WSConnection != null) && (this.WSConnection.State == Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Connected));
     #endregion
 
     #region Methods
-    internal async System.Threading.Tasks.Task ConfigureAsync(System.String Authorization)
+    /*
+    /// <summary>
+    /// Sends a new message to the server.
+    /// </summary>
+    /// <param name="Message">The message to be sent.</param>
+    public async System.Threading.Tasks.Task SendAsync(System.Text.Json.JsonElement Message) => await this.WSConnection.SendAsync("_mSended", Message);
+    */
+
+    #region Internal and Private Methods
+    /// <summary>
+    /// Configures the ClientWebSocket.
+    /// </summary>
+    /// <param name="Authorization">Authorization Header.</param>
+    /// <returns>A task to be wait.</returns>
+    /// <example>Basic YourBase64String</example>
+    /// <example>Bearer YourAuthToken</example>
+    async System.Threading.Tasks.Task SoftmakeAll.SDK.Fluent.Notifications.IClientWebSocket.ConfigureAsync(System.String Authorization)
     {
       if (System.String.IsNullOrWhiteSpace(Authorization))
         return;
@@ -66,8 +107,13 @@ namespace SoftmakeAll.SDK.Fluent
         await this.DisposeAsync();
       }
     }
-    internal async System.Threading.Tasks.Task SendAsync(System.Text.Json.JsonElement Message) => await this.WSConnection.SendAsync("_mSended", Message);
-    internal async System.Threading.Tasks.ValueTask DisposeAsync()
+
+    /// <summary>
+    /// Stops and disposes the ClientWebSocket.
+    /// </summary>
+    /// <returns>A task to be wait.</returns>
+    async System.Threading.Tasks.ValueTask SoftmakeAll.SDK.Fluent.Notifications.IClientWebSocket.DisposeAsync() => await this.DisposeAsync();
+    private async System.Threading.Tasks.ValueTask DisposeAsync()
     {
       if (this.WSConnection == null)
         return;
@@ -84,6 +130,7 @@ namespace SoftmakeAll.SDK.Fluent
       }
       catch { }
     }
+    #endregion
     #endregion
 
     #region Event Handlers

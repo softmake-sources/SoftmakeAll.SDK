@@ -1,12 +1,19 @@
 ﻿namespace SoftmakeAll.SDK.Fluent
 {
+  /// <summary>
+  /// PublicClientApplication user tokens serialization.
+  /// </summary>
   internal static class TokenCacheHelper
   {
     #region Methods
-    internal static void EnableSerialization(Microsoft.Identity.Client.ITokenCache ITokenCache)
+    /// <summary>
+    /// Enables serialization of PublicClientApplication user tokens.
+    /// </summary>
+    /// <param name="UserTokenCache">User token cache from PublicClientApplication.</param>
+    internal static void EnableSerialization(Microsoft.Identity.Client.ITokenCache UserTokenCache)
     {
-      ITokenCache.SetBeforeAccess(SoftmakeAll.SDK.Fluent.TokenCacheHelper.BeforeAccessNotification);
-      ITokenCache.SetAfterAccess(SoftmakeAll.SDK.Fluent.TokenCacheHelper.AfterAccessNotification);
+      UserTokenCache.SetBeforeAccess(SoftmakeAll.SDK.Fluent.TokenCacheHelper.BeforeAccessNotification);
+      UserTokenCache.SetAfterAccess(SoftmakeAll.SDK.Fluent.TokenCacheHelper.AfterAccessNotification);
     }
     private static void BeforeAccessNotification(Microsoft.Identity.Client.TokenCacheNotificationArgs TokenCacheNotificationArgs)
     {

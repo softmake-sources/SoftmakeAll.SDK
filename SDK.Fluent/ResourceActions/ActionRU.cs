@@ -1,22 +1,36 @@
 ﻿namespace SoftmakeAll.SDK.Fluent.ResourceActions
 {
-  public class ActionRU<T> : SoftmakeAll.SDK.Fluent.ResourceActions.SupportsBase<T>, SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsListing<T>, SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating<T>
+  /// <summary>
+  /// Supports listing and updating resources.
+  /// </summary>
+  /// <typeparam name="T">The generic object that represents any resource.</typeparam>
+  public class ActionRU<T> : SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating<T>, SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsListing<T>, SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating<T>
   {
     #region Fields
     private readonly SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsListing<T> SupportsListing;
-    private readonly SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating<T> SupportsUpdating;
     #endregion
 
     #region Constructor
-    public ActionRU(System.String Route) : base(Route)
-    {
-      this.SupportsListing = new SoftmakeAll.SDK.Fluent.ResourceActions.SupportsListing<T>(Route);
-      this.SupportsUpdating = new SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating<T>(Route);
-    }
+    /// <summary>
+    /// Supports listing and updating resources.
+    /// </summary>
+    /// <param name="Route">The address of the resources.</param>
+    public ActionRU(System.String Route) : base(Route) => this.SupportsListing = new SoftmakeAll.SDK.Fluent.ResourceActions.SupportsListing<T>(Route);
     #endregion
 
     #region Methods
     #region READ
+    /// <summary>
+    /// Fetch a list of resources.
+    /// </summary>
+    /// <param name="Parameters">Parameters to send as a query string.</param>
+    /// <param name="Fields">List of field names to retrieve.</param>
+    /// <param name="Filter">List of filters to apply.</param>
+    /// <param name="Group">List of field names to group and perform aggregates if available.</param>
+    /// <param name="Sort">List of fields to apply sorting.</param>
+    /// <param name="Skip">Number of records to skip.</param>
+    /// <param name="Take">Number of records to take.</param>
+    /// <returns>The list of the resources.</returns>
     public SoftmakeAll.SDK.Fluent.ResourceList<T> List(
       System.Collections.Generic.Dictionary<System.String, System.String> Parameters = null,
       System.Collections.Generic.List<System.String> Fields = null,
@@ -27,6 +41,17 @@
       )
       => this.SupportsListing.List(Parameters, Fields, Filter, Group, Sort, Skip, Take);
 
+    /// <summary>
+    /// Fetch a list of resources.
+    /// </summary>
+    /// <param name="Parameters">Parameters to send as a query string.</param>
+    /// <param name="Fields">List of field names to retrieve.</param>
+    /// <param name="Filter">List of filters to apply.</param>
+    /// <param name="Group">List of field names to group and perform aggregates if available.</param>
+    /// <param name="Sort">List of fields to apply sorting.</param>
+    /// <param name="Skip">Number of records to skip.</param>
+    /// <param name="Take">Number of records to take.</param>
+    /// <returns>The list of the resources.</returns>
     public async System.Threading.Tasks.Task<SoftmakeAll.SDK.Fluent.ResourceList<T>> ListAsync(
       System.Collections.Generic.Dictionary<System.String, System.String> Parameters = null,
       System.Collections.Generic.List<System.String> Fields = null,
@@ -37,49 +62,90 @@
       )
       => await this.SupportsListing.ListAsync(Parameters, Fields, Filter, Group, Sort, Skip, Take);
 
+
+    /// <summary>
+    /// Gets a single resource by ID.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to show.</param>
+    /// <returns>A resource represented by ID.</returns>
     public T Show(System.Byte ID) => this.SupportsListing.Show(ID);
+
+    /// <summary>
+    /// Gets a single resource by ID.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to show.</param>
+    /// <returns>A resource represented by ID.</returns>
     public T Show(System.Int16 ID) => this.SupportsListing.Show(ID);
+
+    /// <summary>
+    /// Gets a single resource by ID.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to show.</param>
+    /// <returns>A resource represented by ID.</returns>
     public T Show(System.Int32 ID) => this.SupportsListing.Show(ID);
+
+    /// <summary>
+    /// Gets a single resource by ID.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to show.</param>
+    /// <returns>A resource represented by ID.</returns>
     public T Show(System.Int64 ID) => this.SupportsListing.Show(ID);
+
+    /// <summary>
+    /// Gets a single resource by ID.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to show.</param>
+    /// <returns>A resource represented by ID.</returns>
     public T Show(System.Char ID) => this.SupportsListing.Show(ID);
+
+    /// <summary>
+    /// Gets a single resource by ID.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to show.</param>
+    /// <returns>A resource represented by ID.</returns>
     public T Show(System.String ID) => this.SupportsListing.Show(ID);
 
+    /// <summary>
+    /// Gets a single resource by ID.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to show.</param>
+    /// <returns>A resource represented by ID.</returns>
     public async System.Threading.Tasks.Task<T> ShowAsync(System.Byte ID) => await this.SupportsListing.ShowAsync(ID);
+
+    /// <summary>
+    /// Gets a single resource by ID.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to show.</param>
+    /// <returns>A resource represented by ID.</returns>
     public async System.Threading.Tasks.Task<T> ShowAsync(System.Int16 ID) => await this.SupportsListing.ShowAsync(ID);
+
+    /// <summary>
+    /// Gets a single resource by ID.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to show.</param>
+    /// <returns>A resource represented by ID.</returns>
     public async System.Threading.Tasks.Task<T> ShowAsync(System.Int32 ID) => await this.SupportsListing.ShowAsync(ID);
+
+    /// <summary>
+    /// Gets a single resource by ID.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to show.</param>
+    /// <returns>A resource represented by ID.</returns>
     public async System.Threading.Tasks.Task<T> ShowAsync(System.Int64 ID) => await this.SupportsListing.ShowAsync(ID);
+
+    /// <summary>
+    /// Gets a single resource by ID.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to show.</param>
+    /// <returns>A resource represented by ID.</returns>
     public async System.Threading.Tasks.Task<T> ShowAsync(System.Char ID) => await this.SupportsListing.ShowAsync(ID);
+
+    /// <summary>
+    /// Gets a single resource by ID.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to show.</param>
+    /// <returns>A resource represented by ID.</returns>
     public async System.Threading.Tasks.Task<T> ShowAsync(System.String ID) => await this.SupportsListing.ShowAsync(ID);
-    #endregion
-
-    #region UPDATE
-    public T Modify(System.Byte ID, System.Object Model) => this.SupportsUpdating.Modify(ID, Model);
-    public T Modify(System.Int16 ID, System.Object Model) => this.SupportsUpdating.Modify(ID, Model);
-    public T Modify(System.Int32 ID, System.Object Model) => this.SupportsUpdating.Modify(ID, Model);
-    public T Modify(System.Int64 ID, System.Object Model) => this.SupportsUpdating.Modify(ID, Model);
-    public T Modify(System.Char ID, System.Object Model) => this.SupportsUpdating.Modify(ID, Model);
-    public T Modify(System.String ID, System.Object Model) => this.SupportsUpdating.Modify(ID, Model);
-
-    public async System.Threading.Tasks.Task<T> ModifyAsync(System.Byte ID, System.Object Model) => await this.SupportsUpdating.ModifyAsync(ID, Model);
-    public async System.Threading.Tasks.Task<T> ModifyAsync(System.Int16 ID, System.Object Model) => await this.SupportsUpdating.ModifyAsync(ID, Model);
-    public async System.Threading.Tasks.Task<T> ModifyAsync(System.Int32 ID, System.Object Model) => await this.SupportsUpdating.ModifyAsync(ID, Model);
-    public async System.Threading.Tasks.Task<T> ModifyAsync(System.Int64 ID, System.Object Model) => await this.SupportsUpdating.ModifyAsync(ID, Model);
-    public async System.Threading.Tasks.Task<T> ModifyAsync(System.Char ID, System.Object Model) => await this.SupportsUpdating.ModifyAsync(ID, Model);
-    public async System.Threading.Tasks.Task<T> ModifyAsync(System.String ID, System.Object Model) => await this.SupportsUpdating.ModifyAsync(ID, Model);
-
-    public T Replace(System.Byte ID, T Model) => this.SupportsUpdating.Replace(ID, Model);
-    public T Replace(System.Int16 ID, T Model) => this.SupportsUpdating.Replace(ID, Model);
-    public T Replace(System.Int32 ID, T Model) => this.SupportsUpdating.Replace(ID, Model);
-    public T Replace(System.Int64 ID, T Model) => this.SupportsUpdating.Replace(ID, Model);
-    public T Replace(System.Char ID, T Model) => this.SupportsUpdating.Replace(ID, Model);
-    public T Replace(System.String ID, T Model) => this.SupportsUpdating.Replace(ID, Model);
-
-    public async System.Threading.Tasks.Task<T> ReplaceAsync(System.Byte ID, T Model) => await this.SupportsUpdating.ReplaceAsync(ID, Model);
-    public async System.Threading.Tasks.Task<T> ReplaceAsync(System.Int16 ID, T Model) => await this.SupportsUpdating.ReplaceAsync(ID, Model);
-    public async System.Threading.Tasks.Task<T> ReplaceAsync(System.Int32 ID, T Model) => await this.SupportsUpdating.ReplaceAsync(ID, Model);
-    public async System.Threading.Tasks.Task<T> ReplaceAsync(System.Int64 ID, T Model) => await this.SupportsUpdating.ReplaceAsync(ID, Model);
-    public async System.Threading.Tasks.Task<T> ReplaceAsync(System.Char ID, T Model) => await this.SupportsUpdating.ReplaceAsync(ID, Model);
-    public async System.Threading.Tasks.Task<T> ReplaceAsync(System.String ID, T Model) => await this.SupportsUpdating.ReplaceAsync(ID, Model);
     #endregion
     #endregion
   }

@@ -10,7 +10,7 @@
     <PackageIcon>Cubes.png</PackageIcon>
     <RepositoryType>Public C# (.NET Standard) Repository</RepositoryType>
     <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2021</Copyright>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Este pacote é parte do pacote SoftmakeAll.SDK</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
@@ -26,7 +26,9 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>D:\Projetos\Softmake\SoftmakeAll\SDK\SDK.Fluent.Project\SoftmakeAll.SDK.Fluent.Project.xml</DocumentationFile>
+    <DocumentationFile></DocumentationFile>
+    <Optimize>false</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -36,12 +38,6 @@
     <DebugSymbols>false</DebugSymbols>
     <DocumentationFile>D:\Projetos\Softmake\SoftmakeAll\SDK\SDK.Fluent.Project\SoftmakeAll.SDK.Fluent.Project.xml</DocumentationFile>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Entities\**" />
-    <EmbeddedResource Remove="Entities\**" />
-    <None Remove="Entities\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SDK.Fluent\SDK.Fluent.csproj" />
