@@ -11,12 +11,13 @@
 Este pacote contém algumas funcionalidades de apoio ao desenvolvimento de módulos para o Softmake All.
 Principais funcionalidades implementadas:
 - Consumo de serviços REST
+- Comunicação entre cliente e servidor via WebSockets
 - Compressão de arquivos em memória
 - Escrita e Leitura de arquivos com tamanho de colunas delimitados
 - Helpers para as bibliotecas, como System.Text.Json
 
 Não deixe de consultar os pacotes adicionais.</Description>
-    <PackageTags>SoftmakeAll SDK REST File Compression JSON CSV</PackageTags>
+    <PackageTags>SoftmakeAll SDK REST WebSocket File Compression JSON CSV</PackageTags>
     <NeutralLanguage>English (United States)</NeutralLanguage>
     <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
     <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
@@ -28,10 +29,10 @@ Não deixe de consultar os pacotes adicionais.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <AssemblyVersion>1.0.15.0</AssemblyVersion>
-    <FileVersion>1.0.15.0</FileVersion>
-    <Version>1.0.15</Version>
-    <PackageReleaseNotes>Inclusão dos métodos para copia de arquivos (Azure Blob Storage ou AWS S3) na interface IFile.</PackageReleaseNotes>
+    <AssemblyVersion>1.0.16.0</AssemblyVersion>
+    <FileVersion>1.0.16.0</FileVersion>
+    <Version>1.0.16</Version>
+    <PackageReleaseNotes>Inclusão da comunicação via WebSocket (cliente e servidor)</PackageReleaseNotes>
     <AssemblyName>SoftmakeAll.SDK</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK</RootNamespace>
     <UserSecretsId>5a7d13dc-c109-4ae5-8678-43dd3813e8ea</UserSecretsId>

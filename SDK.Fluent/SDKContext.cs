@@ -42,7 +42,7 @@ namespace SoftmakeAll.SDK.Fluent
     /// <summary>
     /// Softmake All WebSocket Connection.
     /// </summary>
-    public static readonly SoftmakeAll.SDK.Fluent.ClientSignalRWebSocket WebSocketClient = new SoftmakeAll.SDK.Fluent.ClientSignalRWebSocket();
+    public static readonly SoftmakeAll.SDK.Fluent.Notifications.IClientWebSocket ClientWebSocket = new SoftmakeAll.SDK.Fluent.Notifications.ClientSignalRWebSocket();
 
     /// <summary>
     /// The last resource operation result. This object will be changed when action is performed. Actions: List, Show, Create, Modify, Replace and Delete.
@@ -105,11 +105,11 @@ namespace SoftmakeAll.SDK.Fluent
         SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials = Credentials;
 
         // From AccessKey
-        if (Credentials.AuthType == 'A')
+        if (Credentials.AuthenticationType == SoftmakeAll.SDK.Fluent.Authentication.AuthenticationTypes.Application)
         {
           SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization = $"Basic {System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{Credentials.ClientID}@{Credentials.ContextIdentifier.ToString().ToLower()}:{Credentials.ClientSecret}"))}";
           SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Store();
-          await SoftmakeAll.SDK.Fluent.SDKContext.WebSocketClient.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization);
+          await SoftmakeAll.SDK.Fluent.SDKContext.ClientWebSocket.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization);
           return;
         }
       }
@@ -122,20 +122,20 @@ namespace SoftmakeAll.SDK.Fluent
             throw new System.Exception();
 
           // From AccessKey
-          if (CacheData.GetString("AuthType") == "A")
+          if (CacheData.GetInt32("AuthType") == (int)SoftmakeAll.SDK.Fluent.Authentication.AuthenticationTypes.Application)
           {
-            SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials = new SoftmakeAll.SDK.Fluent.Authentication.Credentials(CacheData.GetGuid("ContextIdentifier"), CacheData.GetString("ClientID"), null, CacheData.GetString("AuthType")[0]);
+            SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials = new SoftmakeAll.SDK.Fluent.Authentication.Credentials(CacheData.GetGuid("ContextIdentifier"), CacheData.GetString("ClientID"), null, (SoftmakeAll.SDK.Fluent.Authentication.AuthenticationTypes)CacheData.GetInt32("AuthType"));
             SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization = CacheData.GetString("Authorization");
             if (System.String.IsNullOrWhiteSpace(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization))
               throw new System.Exception();
 
-            await SoftmakeAll.SDK.Fluent.SDKContext.WebSocketClient.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization);
+            await SoftmakeAll.SDK.Fluent.SDKContext.ClientWebSocket.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization);
             return;
           }
           else
           {
             SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials = new SoftmakeAll.SDK.Fluent.Authentication.Credentials(CacheData.GetJsonElement("AppMetadata").EnumerateObject().First().Value.GetGuid("client_id"));
-            SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.AuthType = 'I';
+            SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.AuthenticationType = SoftmakeAll.SDK.Fluent.Authentication.AuthenticationTypes.Interactive;
           }
         }
         catch { }
@@ -149,7 +149,7 @@ namespace SoftmakeAll.SDK.Fluent
 
 
       // From AccessKey
-      if (SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.AuthType == 'A')
+      if (SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.AuthenticationType == SoftmakeAll.SDK.Fluent.Authentication.AuthenticationTypes.Application)
         return;
 
 
@@ -159,9 +159,9 @@ namespace SoftmakeAll.SDK.Fluent
         System.String[] Scopes = new System.String[] { "openid", "https://softmakeb2c.onmicrosoft.com/48512da7-b030-4e62-be61-9e19b2c52d8a/user_impersonation" };
         if (SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication == null)
         {
-          if (SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.AuthType == 'I') // From Interactive
+          if (SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.AuthenticationType == SoftmakeAll.SDK.Fluent.Authentication.AuthenticationTypes.Interactive) // From Interactive
             SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication = SoftmakeAll.SDK.Fluent.SDKContext.CreatePublicClientApplication(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.ContextIdentifier, "A_signup_signin", "http://localhost:1435");
-          else if (SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.AuthType == 'C') // From Username and Password
+          else if (SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.AuthenticationType == SoftmakeAll.SDK.Fluent.Authentication.AuthenticationTypes.Credentials) // From Username and Password
             SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication = SoftmakeAll.SDK.Fluent.SDKContext.CreatePublicClientApplication(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.ContextIdentifier, "_ROPC");
           else
             throw new System.Exception("Invalid authentication type.");
@@ -177,7 +177,7 @@ namespace SoftmakeAll.SDK.Fluent
             if (SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult != null)
             {
               SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization = $"Bearer {SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken}";
-              await SoftmakeAll.SDK.Fluent.SDKContext.WebSocketClient.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken);
+              await SoftmakeAll.SDK.Fluent.SDKContext.ClientWebSocket.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken);
               return;
             }
           }
@@ -188,7 +188,7 @@ namespace SoftmakeAll.SDK.Fluent
         }
 
 
-        if (SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.AuthType == 'I') // From Interactive
+        if (SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.AuthenticationType == SoftmakeAll.SDK.Fluent.Authentication.AuthenticationTypes.Interactive) // From Interactive
         {
           try
           {
@@ -196,7 +196,7 @@ namespace SoftmakeAll.SDK.Fluent
           }
           catch { }
         }
-        else if (SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.AuthType == 'C') // From Username and Password
+        else if (SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.AuthenticationType == SoftmakeAll.SDK.Fluent.Authentication.AuthenticationTypes.Credentials) // From Username and Password
         {
           if (System.String.IsNullOrWhiteSpace(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.ClientSecret))
           {
@@ -230,7 +230,7 @@ namespace SoftmakeAll.SDK.Fluent
 
 
         SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization = $"Bearer {SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken}";
-        await SoftmakeAll.SDK.Fluent.SDKContext.WebSocketClient.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken);
+        await SoftmakeAll.SDK.Fluent.SDKContext.ClientWebSocket.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken);
         return;
       }
     }
@@ -330,12 +330,12 @@ namespace SoftmakeAll.SDK.Fluent
     }
 
     /// <summary>
-    /// Clear the authentication objects and cache data.
+    /// Clears the authentication objects and cache data.
     /// </summary>
     public static void SignOut()
     {
       SoftmakeAll.SDK.Fluent.GeneralCacheHelper.Clear();
-      SoftmakeAll.SDK.Fluent.SDKContext.WebSocketClient.DisposeAsync().ConfigureAwait(false);
+      SoftmakeAll.SDK.Fluent.SDKContext.ClientWebSocket.DisposeAsync().ConfigureAwait(false);
       SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials = null;
       SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult = null;
       SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication = null;

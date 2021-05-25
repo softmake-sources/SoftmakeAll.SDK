@@ -4,6 +4,280 @@
         <name>SoftmakeAll.SDK.Fluent</name>
     </assembly>
     <members>
+        <member name="T:SoftmakeAll.SDK.Fluent.Authentication.AuthenticationTypes">
+            <summary>
+            Authentication types. Application uses EnvironmentUniqueID. Credentials and Interactive uses the PublicClientApplication
+            </summary>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.Authentication.Credentials">
+            <summary>
+            Credentials to use in authentication process.
+            </summary>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.Authentication.Credentials.#ctor(System.Guid)">
+            <summary>
+            Creates a new instance of credentials to use in authentication process.
+            </summary>
+            <param name="ContextIdentifier">The PublicClientApplicationID or EnvironmentUniqiueID.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.Authentication.Credentials.#ctor(System.Guid,System.String,System.String,SoftmakeAll.SDK.Fluent.Authentication.AuthenticationTypes)">
+            <summary>
+            Creates a new instance of credentials to use in authentication process.
+            </summary>
+            <param name="ContextIdentifier">The PublicClientApplicationID or EnvironmentUniqiueID.</param>
+            <param name="ClientID">Username.</param>
+            <param name="ClientSecret">Password.</param>
+            <param name="AuthenticationType">Authentication Type.</param>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.Authentication.Credentials.SoftmakeAll#SDK#Fluent#Authentication#ICredentials#ContextIdentifier">
+            <summary>
+            The PublicClientApplicationID or EnvironmentUniqiueID.
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.Authentication.Credentials.SoftmakeAll#SDK#Fluent#Authentication#ICredentials#ClientID">
+            <summary>
+            Username.
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.Authentication.Credentials.SoftmakeAll#SDK#Fluent#Authentication#ICredentials#ClientSecret">
+            <summary>
+            Password.
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.Authentication.Credentials.SoftmakeAll#SDK#Fluent#Authentication#ICredentials#AuthenticationType">
+            <summary>
+            Authentication Type.
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.Authentication.Credentials.SoftmakeAll#SDK#Fluent#Authentication#ICredentials#Authorization">
+            <summary>
+            Authorization Header.
+            </summary>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.Authentication.Credentials.SoftmakeAll#SDK#Fluent#Authentication#ICredentials#Store">
+            <summary>
+            Writes the credentials in local disk.
+            </summary>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.Authentication.Credentials.SoftmakeAll#SDK#Fluent#Authentication#ICredentials#Delete">
+            <summary>
+            Clears local disk credentials data.
+            </summary>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.Authentication.CredentialsFactory">
+            <summary>
+            Provide methods to create Credentials instances.
+            </summary>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.Authentication.CredentialsFactory.FromAccessKey(System.Guid,System.String,System.String)">
+            <summary>
+            Creates a new instance of Credentials using application data.
+            </summary>
+            <param name="EnvironmentUniqueID">The unique identifier from existing Softmake All Environment</param>
+            <param name="ClientID">Username</param>
+            <param name="ClientSecrect">Password</param>
+            <returns>A new instance of Credentials object.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.Authentication.CredentialsFactory.FromCredentials(System.Guid,System.String,System.String)">
+            <summary>
+            Creates a new instance of Credentials using PublicClientApplication data.
+            </summary>
+            <param name="PublicClientApplicationID">The Azure ADB2C PublicClientApplicationID.</param>
+            <param name="ClientID">Username</param>
+            <param name="ClientSecrect">Password</param>
+            <returns>A new instance of Credentials object.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.Authentication.CredentialsFactory.FromInteractive(System.Guid)">
+            <summary>
+            Creates a new instance of Credentials using PublicClientApplication data. The authentication process will be done through the browser.
+            </summary>
+            <param name="PublicClientApplicationID">The Azure ADB2C PublicClientApplicationID.</param>
+            <returns>A new instance of Credentials object.</returns>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.Authentication.ICredentials">
+            <summary>
+            Credentials to use in authentication process.
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.Authentication.ICredentials.ContextIdentifier">
+            <summary>
+            The PublicClientApplicationID or EnvironmentUniqiueID.
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.Authentication.ICredentials.ClientID">
+            <summary>
+            Username.
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.Authentication.ICredentials.ClientSecret">
+            <summary>
+            Password.
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.Authentication.ICredentials.AuthenticationType">
+            <summary>
+            Authentication Type.
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.Authentication.ICredentials.Authorization">
+            <summary>
+            Authorization Header.
+            </summary>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.Authentication.ICredentials.Store">
+            <summary>
+            Writes the credentials in local disk.
+            </summary>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.Authentication.ICredentials.Delete">
+            <summary>
+            Clears local disk credentials data.
+            </summary>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.GeneralCacheHelper">
+            <summary>
+            Helps to Write, Read and Clear cache data.
+            </summary>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.GeneralCacheHelper.ReadBytes">
+            <summary>
+            Reads the cache content bytes.
+            </summary>
+            <returns>The bytes of readed content.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.GeneralCacheHelper.ReadString">
+            <summary>
+            Reads the cache contents.
+            </summary>
+            <returns>The readed content.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.GeneralCacheHelper.WriteBytes(System.Byte[])">
+            <summary>
+            Writes the content bytes in cahce.
+            </summary>
+            <param name="Data">The bytes of content to be written.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.GeneralCacheHelper.WriteString(System.String)">
+            <summary>
+            /// Writes the content in cahce.
+            </summary>
+            <param name="Data">The content to be written.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.GeneralCacheHelper.Clear">
+            <summary>
+            Clears cache data.
+            </summary>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.TokenCacheHelper">
+            <summary>
+            PublicClientApplication user tokens serialization.
+            </summary>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.TokenCacheHelper.EnableSerialization(Microsoft.Identity.Client.ITokenCache)">
+            <summary>
+            Enables serialization of PublicClientApplication user tokens.
+            </summary>
+            <param name="UserTokenCache">User token cache from PublicClientApplication.</param>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.Notifications.ClientSignalRWebSocket">
+            <summary>
+            ClientWebSocket based on SignalR.
+            </summary>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.Notifications.ClientSignalRWebSocket.#ctor">
+            <summary>
+            Creates a new instance of SignalR based client.
+            </summary>
+        </member>
+        <member name="E:SoftmakeAll.SDK.Fluent.Notifications.ClientSignalRWebSocket.MessageReceived">
+            <summary>
+            Occurs when a new message is received.
+            </summary>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.Notifications.ClientSignalRWebSocket.OnMessageReceived(System.Action{System.Text.Json.JsonElement})">
+            <summary>
+            Occurs when a new message is received.
+            </summary>
+            <param name="Action">The action to be executed when a new message is received.</param>
+        </member>
+        <member name="E:SoftmakeAll.SDK.Fluent.Notifications.ClientSignalRWebSocket.ConnectionStateChanged">
+            <summary>
+            Occurs when the connection state changes.
+            </summary>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.Notifications.ClientSignalRWebSocket.OnConnectionStateChanged(System.Action{System.Text.Json.JsonElement})">
+            <summary>
+            Occurs when the connection state changes.
+            </summary>
+            <param name="Action">The action to be executed when connection state changes.</param>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.Notifications.ClientSignalRWebSocket.Connected">
+            <summary>
+            Indicates the current connection state.
+            </summary>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.Notifications.ClientSignalRWebSocket.SoftmakeAll#SDK#Fluent#Notifications#IClientWebSocket#ConfigureAsync(System.String)">
+            <summary>
+            Configures the ClientWebSocket.
+            </summary>
+            <param name="Authorization">Authorization Header.</param>
+            <returns>A task to be wait.</returns>
+            <example>Basic YourBase64String</example>
+            <example>Bearer YourAuthToken</example>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.Notifications.ClientSignalRWebSocket.SoftmakeAll#SDK#Fluent#Notifications#IClientWebSocket#DisposeAsync">
+            <summary>
+            Stops and disposes the ClientWebSocket.
+            </summary>
+            <returns>A task to be wait.</returns>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.Notifications.IClientWebSocket">
+            <summary>
+            ClientWebSocket.
+            </summary>
+        </member>
+        <member name="E:SoftmakeAll.SDK.Fluent.Notifications.IClientWebSocket.MessageReceived">
+            <summary>
+            Occurs when a new message is received.
+            </summary>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.Notifications.IClientWebSocket.OnMessageReceived(System.Action{System.Text.Json.JsonElement})">
+            <summary>
+            Occurs when a new message is received.
+            </summary>
+            <param name="Action">The action to be executed when a new message is received.</param>
+        </member>
+        <member name="E:SoftmakeAll.SDK.Fluent.Notifications.IClientWebSocket.ConnectionStateChanged">
+            <summary>
+            Occurs when the connection state changes.
+            </summary>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.Notifications.IClientWebSocket.OnConnectionStateChanged(System.Action{System.Text.Json.JsonElement})">
+            <summary>
+            Occurs when the connection state changes.
+            </summary>
+            <param name="Action">The action to be executed when connection state changes.</param>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.Notifications.IClientWebSocket.Connected">
+            <summary>
+            Indicates the current connection state.
+            </summary>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.Notifications.IClientWebSocket.ConfigureAsync(System.String)">
+            <summary>
+            Configures the ClientWebSocket.
+            </summary>
+            <param name="Authorization">Authorization Header.</param>
+            <returns>A task to be wait.</returns>
+            <example>Basic YourBase64String</example>
+            <example>Bearer YourAuthToken</example>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.Notifications.IClientWebSocket.DisposeAsync">
+            <summary>
+            Stops and disposes the ClientWebSocket.
+            </summary>
+            <returns>A task to be wait.</returns>
+        </member>
         <member name="T:SoftmakeAll.SDK.Fluent.Resource">
             <summary>
             The base class of the Softmake All Resource.
@@ -44,6 +318,1836 @@
             Validates all properties of the current object.
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCD`1">
+            <summary>
+            Supports creating and deleting resources.
+            </summary>
+            <typeparam name="T">The generic object that represents any resource.</typeparam>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCD`1.#ctor(System.String)">
+            <summary>
+            Supports creating and deleting resources.
+            </summary>
+            <param name="Route">The address of the resources.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCD`1.Create(`0)">
+            <summary>
+            Creates a new resource.
+            </summary>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The created resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCD`1.CreateAsync(`0)">
+            <summary>
+            Creates a new resource.
+            </summary>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The created resource.</returns>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCR`1">
+            <summary>
+            Supports creating and reading resources.
+            </summary>
+            <typeparam name="T">The generic object that represents any resource.</typeparam>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCR`1.#ctor(System.String)">
+            <summary>
+            Supports creating and reading resources.
+            </summary>
+            <param name="Route">The address of the resources.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCR`1.Create(`0)">
+            <summary>
+            Creates a new resource.
+            </summary>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The created resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCR`1.CreateAsync(`0)">
+            <summary>
+            Creates a new resource.
+            </summary>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The created resource.</returns>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCRD`1">
+            <summary>
+            Supports creating, reading and deleting resources.
+            </summary>
+            <typeparam name="T">The generic object that represents any resource.</typeparam>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCRD`1.#ctor(System.String)">
+            <summary>
+            Supports creating, reading and deleting resources.
+            </summary>
+            <param name="Route">The address of the resources.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCRD`1.Create(`0)">
+            <summary>
+            Creates a new resource.
+            </summary>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The created resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCRD`1.CreateAsync(`0)">
+            <summary>
+            Creates a new resource.
+            </summary>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The created resource.</returns>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCRU`1">
+            <summary>
+            Supports creating, reading and updating resources.
+            </summary>
+            <typeparam name="T">The generic object that represents any resource.</typeparam>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCRU`1.#ctor(System.String)">
+            <summary>
+            Supports creating, reading and updating resources.
+            </summary>
+            <param name="Route">The address of the resources.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCRU`1.Create(`0)">
+            <summary>
+            Creates a new resource.
+            </summary>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The created resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCRU`1.CreateAsync(`0)">
+            <summary>
+            Creates a new resource.
+            </summary>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The created resource.</returns>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCRUD`1">
+            <summary>
+            Supports creating, reading, updating and deleting resources.
+            </summary>
+            <typeparam name="T">The generic object that represents any resource.</typeparam>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCRUD`1.#ctor(System.String)">
+            <summary>
+            Supports creating, reading, updating and deleting resources.
+            </summary>
+            <param name="Route">The address of the resources.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCRUD`1.Create(`0)">
+            <summary>
+            Creates a new resource.
+            </summary>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The created resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCRUD`1.CreateAsync(`0)">
+            <summary>
+            Creates a new resource.
+            </summary>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The created resource.</returns>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCU`1">
+            <summary>
+            Supports creating and updating resources.
+            </summary>
+            <typeparam name="T">The generic object that represents any resource.</typeparam>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCU`1.#ctor(System.String)">
+            <summary>
+            Supports creating and updating resources.
+            </summary>
+            <param name="Route">The address of the resources.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCU`1.Create(`0)">
+            <summary>
+            Creates a new resource.
+            </summary>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The created resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCU`1.CreateAsync(`0)">
+            <summary>
+            Creates a new resource.
+            </summary>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The created resource.</returns>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCUD`1">
+            <summary>
+            Supports creating, updating and deleting resources.
+            </summary>
+            <typeparam name="T">The generic object that represents any resource.</typeparam>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCUD`1.#ctor(System.String)">
+            <summary>
+            Supports creating, updating and deleting resources.
+            </summary>
+            <param name="Route">The address of the resources.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCUD`1.Create(`0)">
+            <summary>
+            Creates a new resource.
+            </summary>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The created resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionCUD`1.CreateAsync(`0)">
+            <summary>
+            Creates a new resource.
+            </summary>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The created resource.</returns>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRD`1">
+            <summary>
+            Supports listing and deleting resources.
+            </summary>
+            <typeparam name="T">The generic object that represents any resource.</typeparam>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRD`1.#ctor(System.String)">
+            <summary>
+            Supports listing and deleting resources.
+            </summary>
+            <param name="Route">The address of the resources.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRD`1.List(System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter},System.Collections.Generic.List{System.String},System.Collections.Generic.Dictionary{System.String,System.Boolean},System.Int32,System.Int32)">
+            <summary>
+            Fetch a list of resources.
+            </summary>
+            <param name="Parameters">Parameters to send as a query string.</param>
+            <param name="Fields">List of field names to retrieve.</param>
+            <param name="Filter">List of filters to apply.</param>
+            <param name="Group">List of field names to group and perform aggregates if available.</param>
+            <param name="Sort">List of fields to apply sorting.</param>
+            <param name="Skip">Number of records to skip.</param>
+            <param name="Take">Number of records to take.</param>
+            <returns>The list of the resources.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRD`1.ListAsync(System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter},System.Collections.Generic.List{System.String},System.Collections.Generic.Dictionary{System.String,System.Boolean},System.Int32,System.Int32)">
+            <summary>
+            Fetch a list of resources.
+            </summary>
+            <param name="Parameters">Parameters to send as a query string.</param>
+            <param name="Fields">List of field names to retrieve.</param>
+            <param name="Filter">List of filters to apply.</param>
+            <param name="Group">List of field names to group and perform aggregates if available.</param>
+            <param name="Sort">List of fields to apply sorting.</param>
+            <param name="Skip">Number of records to skip.</param>
+            <param name="Take">Number of records to take.</param>
+            <returns>The list of the resources.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRD`1.Show(System.Byte)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRD`1.Show(System.Int16)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRD`1.Show(System.Int32)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRD`1.Show(System.Int64)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRD`1.Show(System.Char)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRD`1.Show(System.String)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRD`1.ShowAsync(System.Byte)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRD`1.ShowAsync(System.Int16)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRD`1.ShowAsync(System.Int32)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRD`1.ShowAsync(System.Int64)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRD`1.ShowAsync(System.Char)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRD`1.ShowAsync(System.String)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRU`1">
+            <summary>
+            Supports listing and updating resources.
+            </summary>
+            <typeparam name="T">The generic object that represents any resource.</typeparam>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRU`1.#ctor(System.String)">
+            <summary>
+            Supports listing and updating resources.
+            </summary>
+            <param name="Route">The address of the resources.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRU`1.List(System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter},System.Collections.Generic.List{System.String},System.Collections.Generic.Dictionary{System.String,System.Boolean},System.Int32,System.Int32)">
+            <summary>
+            Fetch a list of resources.
+            </summary>
+            <param name="Parameters">Parameters to send as a query string.</param>
+            <param name="Fields">List of field names to retrieve.</param>
+            <param name="Filter">List of filters to apply.</param>
+            <param name="Group">List of field names to group and perform aggregates if available.</param>
+            <param name="Sort">List of fields to apply sorting.</param>
+            <param name="Skip">Number of records to skip.</param>
+            <param name="Take">Number of records to take.</param>
+            <returns>The list of the resources.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRU`1.ListAsync(System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter},System.Collections.Generic.List{System.String},System.Collections.Generic.Dictionary{System.String,System.Boolean},System.Int32,System.Int32)">
+            <summary>
+            Fetch a list of resources.
+            </summary>
+            <param name="Parameters">Parameters to send as a query string.</param>
+            <param name="Fields">List of field names to retrieve.</param>
+            <param name="Filter">List of filters to apply.</param>
+            <param name="Group">List of field names to group and perform aggregates if available.</param>
+            <param name="Sort">List of fields to apply sorting.</param>
+            <param name="Skip">Number of records to skip.</param>
+            <param name="Take">Number of records to take.</param>
+            <returns>The list of the resources.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRU`1.Show(System.Byte)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRU`1.Show(System.Int16)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRU`1.Show(System.Int32)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRU`1.Show(System.Int64)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRU`1.Show(System.Char)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRU`1.Show(System.String)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRU`1.ShowAsync(System.Byte)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRU`1.ShowAsync(System.Int16)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRU`1.ShowAsync(System.Int32)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRU`1.ShowAsync(System.Int64)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRU`1.ShowAsync(System.Char)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRU`1.ShowAsync(System.String)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRUD`1">
+            <summary>
+            Supports reading, updating and deleting resources.
+            </summary>
+            <typeparam name="T">The generic object that represents any resource.</typeparam>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRUD`1.#ctor(System.String)">
+            <summary>
+            Supports reading, updating and deleting resources.
+            </summary>
+            <param name="Route">The address of the resources.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRUD`1.List(System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter},System.Collections.Generic.List{System.String},System.Collections.Generic.Dictionary{System.String,System.Boolean},System.Int32,System.Int32)">
+            <summary>
+            Fetch a list of resources.
+            </summary>
+            <param name="Parameters">Parameters to send as a query string.</param>
+            <param name="Fields">List of field names to retrieve.</param>
+            <param name="Filter">List of filters to apply.</param>
+            <param name="Group">List of field names to group and perform aggregates if available.</param>
+            <param name="Sort">List of fields to apply sorting.</param>
+            <param name="Skip">Number of records to skip.</param>
+            <param name="Take">Number of records to take.</param>
+            <returns>The list of the resources.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRUD`1.ListAsync(System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter},System.Collections.Generic.List{System.String},System.Collections.Generic.Dictionary{System.String,System.Boolean},System.Int32,System.Int32)">
+            <summary>
+            Fetch a list of resources.
+            </summary>
+            <param name="Parameters">Parameters to send as a query string.</param>
+            <param name="Fields">List of field names to retrieve.</param>
+            <param name="Filter">List of filters to apply.</param>
+            <param name="Group">List of field names to group and perform aggregates if available.</param>
+            <param name="Sort">List of fields to apply sorting.</param>
+            <param name="Skip">Number of records to skip.</param>
+            <param name="Take">Number of records to take.</param>
+            <returns>The list of the resources.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRUD`1.Show(System.Byte)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRUD`1.Show(System.Int16)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRUD`1.Show(System.Int32)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRUD`1.Show(System.Int64)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRUD`1.Show(System.Char)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRUD`1.Show(System.String)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRUD`1.ShowAsync(System.Byte)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRUD`1.ShowAsync(System.Int16)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRUD`1.ShowAsync(System.Int32)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRUD`1.ShowAsync(System.Int64)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRUD`1.ShowAsync(System.Char)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionRUD`1.ShowAsync(System.String)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1">
+            <summary>
+            Supports updating and deleting resources.
+            </summary>
+            <typeparam name="T">The generic object that represents any resource.</typeparam>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.#ctor(System.String)">
+            <summary>
+            Supports updating and deleting resources.
+            </summary>
+            <param name="Route">The address of the resources.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.Modify(System.Byte,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.Modify(System.Int16,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.Modify(System.Int32,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.Modify(System.Int64,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.Modify(System.Char,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.Modify(System.String,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ModifyAsync(System.Byte,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ModifyAsync(System.Int16,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ModifyAsync(System.Int32,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ModifyAsync(System.Int64,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ModifyAsync(System.Char,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ModifyAsync(System.String,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.Replace(System.Byte,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.Replace(System.Int16,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.Replace(System.Int32,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.Replace(System.Int64,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.Replace(System.Char,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.Replace(System.String,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplaceAsync(System.Byte,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplaceAsync(System.Int16,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplaceAsync(System.Int32,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplaceAsync(System.Int64,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplaceAsync(System.Char,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplaceAsync(System.String,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsCreating`1">
+            <summary>
+            Creates a resource.
+            </summary>
+            <typeparam name="T">The generic object that represents any resource.</typeparam>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsCreating`1.Create(`0)">
+            <summary>
+            Creates a new resource.
+            </summary>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The created resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsCreating`1.CreateAsync(`0)">
+            <summary>
+            Creates a new resource.
+            </summary>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The created resource.</returns>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1">
+            <summary>
+            Deletes a resource.
+            </summary>
+            <typeparam name="T">The generic object that represents any resource.</typeparam>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.Delete(System.Byte)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.Delete(System.Int16)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.Delete(System.Int32)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.Delete(System.Int64)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.Delete(System.Char)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.Delete(System.String)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.Delete(System.Byte[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.Delete(System.Int16[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.Delete(System.Int32[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.Delete(System.Int64[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.Delete(System.Char[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.Delete(System.String[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.DeleteAsync(System.Byte)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.DeleteAsync(System.Int16)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.DeleteAsync(System.Int32)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.DeleteAsync(System.Int64)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.DeleteAsync(System.Char)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.DeleteAsync(System.String)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.DeleteAsync(System.Byte[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.DeleteAsync(System.Int16[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.DeleteAsync(System.Int32[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.DeleteAsync(System.Int64[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.DeleteAsync(System.Char[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsDeleting`1.DeleteAsync(System.String[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsListing`1">
+            <summary>
+            List and Show resources.
+            </summary>
+            <typeparam name="T">The generic object that represents any resource.</typeparam>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsListing`1.List(System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter},System.Collections.Generic.List{System.String},System.Collections.Generic.Dictionary{System.String,System.Boolean},System.Int32,System.Int32)">
+            <summary>
+            Fetch a list of resources.
+            </summary>
+            <param name="Parameters">Parameters to send as a query string.</param>
+            <param name="Fields">List of field names to retrieve.</param>
+            <param name="Filter">List of filters to apply.</param>
+            <param name="Group">List of field names to group and perform aggregates if available.</param>
+            <param name="Sort">List of fields to apply sorting.</param>
+            <param name="Skip">Number of records to skip.</param>
+            <param name="Take">Number of records to take.</param>
+            <returns>The list of the resources.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsListing`1.ListAsync(System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter},System.Collections.Generic.List{System.String},System.Collections.Generic.Dictionary{System.String,System.Boolean},System.Int32,System.Int32)">
+            <summary>
+            Fetch a list of resources.
+            </summary>
+            <param name="Parameters">Parameters to send as a query string.</param>
+            <param name="Fields">List of field names to retrieve.</param>
+            <param name="Filter">List of filters to apply.</param>
+            <param name="Group">List of field names to group and perform aggregates if available.</param>
+            <param name="Sort">List of fields to apply sorting.</param>
+            <param name="Skip">Number of records to skip.</param>
+            <param name="Take">Number of records to take.</param>
+            <returns>The list of the resources.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsListing`1.Show(System.Byte)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsListing`1.Show(System.Int16)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsListing`1.Show(System.Int32)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsListing`1.Show(System.Int64)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsListing`1.Show(System.Char)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsListing`1.Show(System.String)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsListing`1.ShowAsync(System.Byte)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsListing`1.ShowAsync(System.Int16)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsListing`1.ShowAsync(System.Int32)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsListing`1.ShowAsync(System.Int64)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsListing`1.ShowAsync(System.Char)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsListing`1.ShowAsync(System.String)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1">
+            <summary>
+            Updates a resource.
+            </summary>
+            <typeparam name="T">The generic object that represents any resource.</typeparam>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.Modify(System.Byte,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.Modify(System.Int16,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.Modify(System.Int32,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.Modify(System.Int64,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.Modify(System.Char,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.Modify(System.String,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ModifyAsync(System.Byte,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ModifyAsync(System.Int16,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ModifyAsync(System.Int32,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ModifyAsync(System.Int64,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ModifyAsync(System.Char,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ModifyAsync(System.String,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.Replace(System.Byte,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.Replace(System.Int16,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.Replace(System.Int32,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.Replace(System.Int64,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.Replace(System.Char,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.Replace(System.String,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ReplaceAsync(System.Byte,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ReplaceAsync(System.Int16,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ReplaceAsync(System.Int32,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ReplaceAsync(System.Int64,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ReplaceAsync(System.Char,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ReplaceAsync(System.String,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter">
+            <summary>
+            The object to use to filter data on HTTP GET method.
+            </summary>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter.#ctor">
+            <summary>
+            The object to use to filter data on HTTP GET method.
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter.Condition">
+            <summary>
+            Condition: AND, OR
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter.Field">
+            <summary>
+            Field name
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter.Operator">
+            <summary>
+            Operator: eq, lt, leq, gt, geq, ...
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter.Value">
+            <summary>
+            Value
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter.Predicates">
+            <summary>
+            Nested predicates
+            </summary>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsBase`1">
+            <summary>
+            The abstraction to process the results of the requests.
+            </summary>
+            <typeparam name="T">The generic object that represents any resource.</typeparam>
+        </member>
+        <member name="F:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsBase`1.Route">
+            <summary>
+            The address of the resource.
+            </summary>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsBase`1.#ctor(System.String)">
+            <summary>
+            The abstraction to process the results of the requests.
+            </summary>
+            <param name="Route">The address of the resource.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsBase`1.ProcessOperationResult(SoftmakeAll.SDK.OperationResult{System.Text.Json.JsonElement},`0)">
+            <summary>
+            Process operation result from POST, GET (with ID), PATCH, PUT and DELETE.
+            </summary>
+            <param name="OperationResult">REST operation result.</param>
+            <param name="Model">The generic object that represents the any resource to result if operation is not valid.</param>
+            <returns>Operation result as object when valid. Otherwise the Model parameter.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsBase`1.ProcessListOperationResult(SoftmakeAll.SDK.OperationResult{System.Text.Json.JsonElement})">
+            <summary>
+            Process operation result from GET (without ID).
+            </summary>
+            <param name="OperationResult">REST operation result.</param>
+            <returns>A list of resources.</returns>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsCreating`1">
+            <summary>
+            Supports creating resources.
+            </summary>
+            <typeparam name="T">The generic object that represents any resource.</typeparam>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsCreating`1.#ctor(System.String)">
+            <summary>
+            Supports creating resources.
+            </summary>
+            <param name="Route">The address of the resource.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsCreating`1.Create(`0)">
+            <summary>
+            Creates a new resource.
+            </summary>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The created resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsCreating`1.CreateAsync(`0)">
+            <summary>
+            Creates a new resource.
+            </summary>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The created resource.</returns>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1">
+            <summary>
+            Supports deleting resources.
+            </summary>
+            <typeparam name="T">The generic object that represents any resource.</typeparam>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.#ctor(System.String)">
+            <summary>
+            Supports deleting resources.
+            </summary>
+            <param name="Route">The address of the resource.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.Delete(System.Byte)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.Delete(System.Int16)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.Delete(System.Int32)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.Delete(System.Int64)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.Delete(System.Char)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.Delete(System.String)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.Delete(System.Byte[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.Delete(System.Int16[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.Delete(System.Int32[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.Delete(System.Int64[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.Delete(System.Char[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.Delete(System.String[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.DeleteAsync(System.Byte)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.DeleteAsync(System.Int16)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.DeleteAsync(System.Int32)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.DeleteAsync(System.Int64)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.DeleteAsync(System.Char)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.DeleteAsync(System.String)">
+            <summary>
+            Deletes a existing resource.
+            </summary>
+            <param name="ID">The ID of the resource to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.DeleteAsync(System.Byte[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.DeleteAsync(System.Int16[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.DeleteAsync(System.Int32[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.DeleteAsync(System.Int64[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.DeleteAsync(System.Char[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDeleting`1.DeleteAsync(System.String[])">
+            <summary>
+            Deletes a multiple existing resources.
+            </summary>
+            <param name="IDs">The IDs of the resources to be deleted.</param>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDownloading`1">
+            <summary>
+            Supports downloading resources.
+            </summary>
+            <typeparam name="T">The generic object that represents any resource.</typeparam>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDownloading`1.#ctor(System.String)">
+            <summary>
+            Supports downloading resources.
+            </summary>
+            <param name="Route">The address of the resource.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsDownloading`1.DownloadFileAsync(System.String)">
+            <summary>
+            Download the file.
+            </summary>
+            <param name="Parameters">Query string parameters.</param>
+            <returns>The resource as a file.</returns>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsListing`1">
+            <summary>
+            Supports listing resources.
+            </summary>
+            <typeparam name="T">The generic object that represents any resource.</typeparam>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsListing`1.#ctor(System.String)">
+            <summary>
+            Supports listing resources.
+            </summary>
+            <param name="Route">The address of the resource.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsListing`1.List(System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter},System.Collections.Generic.List{System.String},System.Collections.Generic.Dictionary{System.String,System.Boolean},System.Int32,System.Int32)">
+            <summary>
+            Fetch a list of resources.
+            </summary>
+            <param name="Parameters">Parameters to send as a query string.</param>
+            <param name="Fields">List of field names to retrieve.</param>
+            <param name="Filter">List of filters to apply.</param>
+            <param name="Group">List of field names to group and perform aggregates if available.</param>
+            <param name="Sort">List of fields to apply sorting.</param>
+            <param name="Skip">Number of records to skip.</param>
+            <param name="Take">Number of records to take.</param>
+            <returns>The list of the resources.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsListing`1.ListAsync(System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter},System.Collections.Generic.List{System.String},System.Collections.Generic.Dictionary{System.String,System.Boolean},System.Int32,System.Int32)">
+            <summary>
+            Fetch a list of resources.
+            </summary>
+            <param name="Parameters">Parameters to send as a query string.</param>
+            <param name="Fields">List of field names to retrieve.</param>
+            <param name="Filter">List of filters to apply.</param>
+            <param name="Group">List of field names to group and perform aggregates if available.</param>
+            <param name="Sort">List of fields to apply sorting.</param>
+            <param name="Skip">Number of records to skip.</param>
+            <param name="Take">Number of records to take.</param>
+            <returns>The list of the resources.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsListing`1.Show(System.Byte)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsListing`1.Show(System.Int16)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsListing`1.Show(System.Int32)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsListing`1.Show(System.Int64)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsListing`1.Show(System.Char)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsListing`1.Show(System.String)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsListing`1.ShowAsync(System.Byte)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsListing`1.ShowAsync(System.Int16)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsListing`1.ShowAsync(System.Int32)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsListing`1.ShowAsync(System.Int64)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsListing`1.ShowAsync(System.Char)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsListing`1.ShowAsync(System.String)">
+            <summary>
+            Gets a single resource by ID.
+            </summary>
+            <param name="ID">The ID of the resource to show.</param>
+            <returns>A resource represented by ID.</returns>
+        </member>
+        <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1">
+            <summary>
+            Supports updating resources.
+            </summary>
+            <typeparam name="T">The generic object that represents any resource.</typeparam>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.#ctor(System.String)">
+            <summary>
+            Supports updating resources.
+            </summary>
+            <param name="Route">The address of the resource.</param>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.Modify(System.Byte,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.Modify(System.Int16,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.Modify(System.Int32,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.Modify(System.Int64,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.Modify(System.Char,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.Modify(System.String,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ModifyAsync(System.Byte,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ModifyAsync(System.Int16,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ModifyAsync(System.Int32,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ModifyAsync(System.Int64,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ModifyAsync(System.Char,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ModifyAsync(System.String,System.Object)">
+            <summary>
+            Updates a resource partially.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The object that contains the fields and values ​​to be modified.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.Replace(System.Byte,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.Replace(System.Int16,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.Replace(System.Int32,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.Replace(System.Int64,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.Replace(System.Char,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.Replace(System.String,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ReplaceAsync(System.Byte,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ReplaceAsync(System.Int16,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ReplaceAsync(System.Int32,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ReplaceAsync(System.Int64,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ReplaceAsync(System.Char,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ReplaceAsync(System.String,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.ResourceList`1">
             <summary>
@@ -101,7 +2205,7 @@
             Authentication result from PublicClientApplication.
             </summary>
         </member>
-        <member name="F:SoftmakeAll.SDK.Fluent.SDKContext.WebSocketClient">
+        <member name="F:SoftmakeAll.SDK.Fluent.SDKContext.ClientWebSocket">
             <summary>
             Softmake All WebSocket Connection.
             </summary>
@@ -176,7 +2280,7 @@
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.SignOut">
             <summary>
-            Clear the authentication objects and cache data.
+            Clears the authentication objects and cache data.
             </summary>
         </member>
     </members>
