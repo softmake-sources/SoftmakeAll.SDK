@@ -7,7 +7,6 @@ namespace SoftmakeAll.SDK.Communication
   {
     #region Fields
     private System.Net.HttpListener HttpListener;
-    private System.Collections.Generic.Dictionary<System.String, SoftmakeAll.SDK.Communication.ServerWebSocket.ConnectionProperties> ActiveConnections;
     private System.Threading.Timer IdleDisconnectionTimer;
     private readonly System.Double KeepAliveIntervalTotalMilliseconds;
     private readonly System.Object SyncRoot = new System.Object();
@@ -30,23 +29,23 @@ namespace SoftmakeAll.SDK.Communication
     #endregion
 
     #region Subclasses
-    private class ConnectionProperties
+    public class ConnectionProperties
     {
       #region Fields
-      internal readonly System.Net.WebSockets.WebSocketContext WebSocketContext;
-      public readonly System.String ConnectionID = System.Guid.NewGuid().ToString();
+      internal readonly System.String ConnectionID = System.Guid.NewGuid().ToString();
       #endregion
 
       #region Constructor
       public ConnectionProperties(System.Net.WebSockets.WebSocketContext WebSocketContext)
       {
-        this.WebSocketContext = WebSocketContext;
         this.LastPingTime = System.DateTimeOffset.UtcNow;
+        this.WebSocketContext = WebSocketContext;
       }
       #endregion
 
       #region Properties
       public System.DateTimeOffset LastPingTime { get; set; }
+      public System.Net.WebSockets.WebSocketContext WebSocketContext { get; }
       #endregion
     }
     #endregion
@@ -58,6 +57,11 @@ namespace SoftmakeAll.SDK.Communication
     #region Events
     public event System.Action<System.String> ClientConnected;
     public event System.Action<System.String> ClientDisconnected;
+    #endregion
+
+
+    #region Properties
+    public System.Collections.Generic.Dictionary<System.String, SoftmakeAll.SDK.Communication.ServerWebSocket.ConnectionProperties> ActiveConnections { get; }
     #endregion
 
     #region Methods
@@ -81,6 +85,30 @@ namespace SoftmakeAll.SDK.Communication
       while (true);
     }
     public void On(System.Func<System.String, System.String> ReceiveMessageFunc) => this.ReceiveMessageFunc = ReceiveMessageFunc;
+    public void SendToAllClients(System.String Message, System.Threading.CancellationToken CancellationToken = default)
+    {
+      if (!(System.String.IsNullOrWhiteSpace(Message)))
+        lock (this.SyncRoot)
+          foreach (SoftmakeAll.SDK.Communication.ServerWebSocket.ConnectionProperties ConnectionProperties in this.ActiveConnections.Values)
+            try { ConnectionProperties.WebSocketContext.WebSocket.SendAsync(new System.ArraySegment<System.Byte>(System.Text.Encoding.UTF8.GetBytes(Message)), System.Net.WebSockets.WebSocketMessageType.Text, true, CancellationToken).ConfigureAwait(false); } catch { }
+    }
+    public void SendToSpecificClients(System.String Message, System.Collections.Generic.List<System.String> ConnectionsID, System.Threading.CancellationToken CancellationToken = default)
+    {
+      if ((!(System.String.IsNullOrWhiteSpace(Message))) && (ConnectionsID != null) && (ConnectionsID.Any()))
+        lock (this.SyncRoot)
+          foreach (SoftmakeAll.SDK.Communication.ServerWebSocket.ConnectionProperties ConnectionProperties in this.ActiveConnections.Where(ac => ConnectionsID.Contains(ac.Key)).Select(ac => ac.Value))
+            try { ConnectionProperties.WebSocketContext.WebSocket.SendAsync(new System.ArraySegment<System.Byte>(System.Text.Encoding.UTF8.GetBytes(Message)), System.Net.WebSockets.WebSocketMessageType.Text, true, CancellationToken).ConfigureAwait(false); } catch { }
+    }
+    public void SendToSpecificClient(System.String Message, System.String ConnectionID, System.Threading.CancellationToken CancellationToken = default)
+    {
+      if ((!(System.String.IsNullOrWhiteSpace(Message))) && (!(System.String.IsNullOrWhiteSpace(ConnectionID))))
+        lock (this.SyncRoot)
+        {
+          SoftmakeAll.SDK.Communication.ServerWebSocket.ConnectionProperties ConnectionProperties = this.ActiveConnections.FirstOrDefault(ac => ac.Key == ConnectionID).Value;
+          if (ConnectionProperties != null)
+            try { ConnectionProperties.WebSocketContext.WebSocket.SendAsync(new System.ArraySegment<System.Byte>(System.Text.Encoding.UTF8.GetBytes(Message)), System.Net.WebSockets.WebSocketMessageType.Text, true, CancellationToken).ConfigureAwait(false); } catch { }
+        }
+    }
     public void Stop()
     {
       this.IdleDisconnectionTimer?.Change(System.Threading.Timeout.Infinite, 0);
@@ -98,7 +126,7 @@ namespace SoftmakeAll.SDK.Communication
 
     private async System.Threading.Tasks.Task ProcessRequestAsync(System.Net.HttpListenerContext HttpListenerContext, System.Threading.CancellationToken CancellationToken = default)
     {
-      System.Net.WebSockets.WebSocketContext WebSocketContext = null;
+      System.Net.WebSockets.WebSocketContext WebSocketContext;
       try
       {
         WebSocketContext = await HttpListenerContext.AcceptWebSocketAsync(null);
@@ -169,10 +197,8 @@ namespace SoftmakeAll.SDK.Communication
     {
       lock (this.SyncRoot)
         foreach (System.String ConnectionID in this.ActiveConnections.Select(ac => ac.Key))
-        {
           if (System.DateTimeOffset.UtcNow.Subtract(this.ActiveConnections[ConnectionID].LastPingTime).TotalMilliseconds > this.KeepAliveIntervalTotalMilliseconds)
             this.DropConnectionAsync(this.ActiveConnections[ConnectionID], false, System.Threading.CancellationToken.None).ConfigureAwait(false);
-        }
     }
     private async System.Threading.Tasks.Task DropConnectionAsync(SoftmakeAll.SDK.Communication.ServerWebSocket.ConnectionProperties ConnectionProperties, System.Boolean NormalClosure, System.Threading.CancellationToken CancellationToken = default)
     {

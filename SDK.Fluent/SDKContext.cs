@@ -8,6 +8,13 @@ namespace SoftmakeAll.SDK.Fluent
   /// </summary>
   public static class SDKContext
   {
+    #region Constants
+    /// <summary>
+    /// Allows to acquire a new access token from the time specified before expiration.
+    /// </summary>
+    private const System.Double ExpirationTime = 5.0D;
+    #endregion
+
     #region Fields
     /// <summary>
     /// The Softmake All server address.
@@ -33,6 +40,11 @@ namespace SoftmakeAll.SDK.Fluent
     /// PublicClientApplication to perform Authentication.
     /// </summary>
     private static Microsoft.Identity.Client.IPublicClientApplication PublicClientApplication = null;
+
+    /// <summary>
+    /// Scopes requested to access a protected API
+    /// </summary>
+    private static System.String[] Scopes = new System.String[] { "openid", "https://softmakeb2c.onmicrosoft.com/48512da7-b030-4e62-be61-9e19b2c52d8a/user_impersonation" };
 
     /// <summary>
     /// Authentication result from PublicClientApplication.
@@ -80,24 +92,28 @@ namespace SoftmakeAll.SDK.Fluent
     /// <summary>
     /// Authenticate user/application using stored cache Credentials.
     /// </summary>
-    public static void Authenticate() => SoftmakeAll.SDK.Fluent.SDKContext.Authenticate(null);
+    public static void Authenticate() => SoftmakeAll.SDK.Fluent.SDKContext.Authenticate(true);
+    private static void Authenticate(System.Boolean ConfigureWebSocket) => SoftmakeAll.SDK.Fluent.SDKContext.Authenticate(null, ConfigureWebSocket);
 
     /// <summary>
     /// Authenticate user/application using Credentials.
     /// </summary>
     /// <param name="Credentials">Credentials to use during authentication process.</param>
     public static void Authenticate(SoftmakeAll.SDK.Fluent.Authentication.ICredentials Credentials) => SoftmakeAll.SDK.Fluent.SDKContext.AuthenticateAsync(Credentials).Wait();
+    private static void Authenticate(SoftmakeAll.SDK.Fluent.Authentication.ICredentials Credentials, System.Boolean ConfigureWebSocket) => SoftmakeAll.SDK.Fluent.SDKContext.AuthenticateAsync(Credentials, ConfigureWebSocket).Wait();
 
     /// <summary>
     /// Authenticate user/application using stored cache Credentials.
     /// </summary>
-    public static async System.Threading.Tasks.Task AuthenticateAsync() => await SoftmakeAll.SDK.Fluent.SDKContext.AuthenticateAsync(null);
+    public static async System.Threading.Tasks.Task AuthenticateAsync() => await SoftmakeAll.SDK.Fluent.SDKContext.AuthenticateAsync(true);
+    private static async System.Threading.Tasks.Task AuthenticateAsync(System.Boolean ConfigureWebSocket) => await SoftmakeAll.SDK.Fluent.SDKContext.AuthenticateAsync(null, ConfigureWebSocket);
 
     /// <summary>
     /// Authenticate user/application using Credentials.
     /// </summary>
     /// <param name="Credentials">Credentials to use during authentication process.</param>
-    public static async System.Threading.Tasks.Task AuthenticateAsync(SoftmakeAll.SDK.Fluent.Authentication.ICredentials Credentials)
+    public static async System.Threading.Tasks.Task AuthenticateAsync(SoftmakeAll.SDK.Fluent.Authentication.ICredentials Credentials) => await SoftmakeAll.SDK.Fluent.SDKContext.AuthenticateAsync(Credentials, true);
+    private static async System.Threading.Tasks.Task AuthenticateAsync(SoftmakeAll.SDK.Fluent.Authentication.ICredentials Credentials, System.Boolean ConfigureWebSocket)
     {
       if (Credentials != null)
       {
@@ -109,7 +125,15 @@ namespace SoftmakeAll.SDK.Fluent
         {
           SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization = $"Basic {System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{Credentials.ClientID}@{Credentials.ContextIdentifier.ToString().ToLower()}:{Credentials.ClientSecret}"))}";
           SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Store();
-          await SoftmakeAll.SDK.Fluent.SDKContext.ClientWebSocket.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization);
+
+          if (!((await SoftmakeAll.SDK.Fluent.SDKContext.GetEnvironmentsAsync()).IsValid()))
+          {
+            SoftmakeAll.SDK.Fluent.SDKContext.SignOut();
+            return;
+          }
+
+          if (ConfigureWebSocket)
+            await SoftmakeAll.SDK.Fluent.SDKContext.ClientWebSocket.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization);
           return;
         }
       }
@@ -122,14 +146,15 @@ namespace SoftmakeAll.SDK.Fluent
             throw new System.Exception();
 
           // From AccessKey
-          if (CacheData.GetInt32("AuthType") == (int)SoftmakeAll.SDK.Fluent.Authentication.AuthenticationTypes.Application)
+          if (CacheData.GetInt32("AuthenticationType") == (int)SoftmakeAll.SDK.Fluent.Authentication.AuthenticationTypes.Application)
           {
-            SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials = new SoftmakeAll.SDK.Fluent.Authentication.Credentials(CacheData.GetGuid("ContextIdentifier"), CacheData.GetString("ClientID"), null, (SoftmakeAll.SDK.Fluent.Authentication.AuthenticationTypes)CacheData.GetInt32("AuthType"));
+            SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials = new SoftmakeAll.SDK.Fluent.Authentication.Credentials(CacheData.GetGuid("ContextIdentifier"), CacheData.GetString("ClientID"), null, (SoftmakeAll.SDK.Fluent.Authentication.AuthenticationTypes)CacheData.GetInt32("AuthenticationType"));
             SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization = CacheData.GetString("Authorization");
             if (System.String.IsNullOrWhiteSpace(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization))
               throw new System.Exception();
 
-            await SoftmakeAll.SDK.Fluent.SDKContext.ClientWebSocket.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization);
+            if (ConfigureWebSocket)
+              await SoftmakeAll.SDK.Fluent.SDKContext.ClientWebSocket.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization);
             return;
           }
           else
@@ -154,9 +179,8 @@ namespace SoftmakeAll.SDK.Fluent
 
 
       // From Public Client Application
-      if ((SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult == null) || (SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.ExpiresOn.Subtract(System.DateTimeOffset.UtcNow).TotalMinutes <= 5.0D))
+      if ((SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult == null) || (SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.ExpiresOn.Subtract(System.DateTimeOffset.UtcNow).TotalMinutes <= SoftmakeAll.SDK.Fluent.SDKContext.ExpirationTime))
       {
-        System.String[] Scopes = new System.String[] { "openid", "https://softmakeb2c.onmicrosoft.com/48512da7-b030-4e62-be61-9e19b2c52d8a/user_impersonation" };
         if (SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication == null)
         {
           if (SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.AuthenticationType == SoftmakeAll.SDK.Fluent.Authentication.AuthenticationTypes.Interactive) // From Interactive
@@ -173,11 +197,12 @@ namespace SoftmakeAll.SDK.Fluent
           System.Collections.Generic.IEnumerable<Microsoft.Identity.Client.IAccount> Accounts = await SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication.GetAccountsAsync();
           if (Accounts.Any())
           {
-            SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult = await SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication.AcquireTokenSilent(Scopes, Accounts.FirstOrDefault()).ExecuteAsync();
+            SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult = await SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication.AcquireTokenSilent(SoftmakeAll.SDK.Fluent.SDKContext.Scopes, Accounts.FirstOrDefault()).ExecuteAsync();
             if (SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult != null)
             {
               SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization = $"Bearer {SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken}";
-              await SoftmakeAll.SDK.Fluent.SDKContext.ClientWebSocket.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken);
+              if (ConfigureWebSocket)
+                await SoftmakeAll.SDK.Fluent.SDKContext.ClientWebSocket.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken);
               return;
             }
           }
@@ -230,7 +255,9 @@ namespace SoftmakeAll.SDK.Fluent
 
 
         SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization = $"Bearer {SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken}";
-        await SoftmakeAll.SDK.Fluent.SDKContext.ClientWebSocket.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken);
+
+        if (ConfigureWebSocket)
+          await SoftmakeAll.SDK.Fluent.SDKContext.ClientWebSocket.ConfigureAsync(SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult.AccessToken);
         return;
       }
     }
@@ -327,6 +354,44 @@ namespace SoftmakeAll.SDK.Fluent
       SoftmakeAll.SDK.Fluent.SDKContext.LastOperationResult.ID = Result.ID;
 
       return Result;
+    }
+
+    /// <summary>
+    /// Gets the current authorization header.
+    /// </summary>
+    /// <returns>The current authorization token.</returns>
+    public static async System.Threading.Tasks.Task<System.Text.Json.JsonElement> GetAuthorizationAsync()
+    {
+      try
+      {
+        await SoftmakeAll.SDK.Fluent.SDKContext.AuthenticateAsync(false);
+        if (SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials != null)
+          return new { SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization }.ToJsonElement();
+      }
+      catch { }
+      return new System.Text.Json.JsonElement();
+    }
+
+    /// <summary>
+    /// Gets the all environments of current user.
+    /// </summary>
+    /// <returns>The json array containing the Environments.</returns>
+    public static System.Text.Json.JsonElement GetEnvironments()
+    {
+      SoftmakeAll.SDK.Communication.REST REST = new SoftmakeAll.SDK.Communication.REST();
+      REST.URL = "v1/core/EnvironmentsOfLoggedEnvironmentSystemAccount?fields=EnvironmentUniqueID,EnvironmentName,IsDefaultEnvironment";
+      return SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequest(REST).Data.GetJsonElement("Result");
+    }
+
+    /// <summary>
+    /// Gets the all environments of current user.
+    /// </summary>
+    /// <returns>The json array containing the Environments.</returns>
+    public static async System.Threading.Tasks.Task<System.Text.Json.JsonElement> GetEnvironmentsAsync()
+    {
+      SoftmakeAll.SDK.Communication.REST REST = new SoftmakeAll.SDK.Communication.REST();
+      REST.URL = "v1/core/EnvironmentsOfLoggedEnvironmentSystemAccount?fields=EnvironmentUniqueID,EnvironmentName,IsDefaultEnvironment";
+      return (await SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequestAsync(REST)).Data.GetJsonElement("Result");
     }
 
     /// <summary>
