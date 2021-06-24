@@ -26,9 +26,9 @@
 
       SoftmakeAll.SDK.CloudStorage.AWS.Environment._S3Client = new Amazon.S3.AmazonS3Client(AccessKeyID, SecretAccessKey, RegionEndpoint);
     }
-    internal static void Validate()
+    internal static void Validate(Amazon.S3.IAmazonS3 S3Client)
     {
-      if (SoftmakeAll.SDK.CloudStorage.AWS.Environment._S3Client == null)
+      if (S3Client == null)
         throw new System.Exception("Call SoftmakeAll.SDK.CloudStorage.AWS.Environment.Configure(...) to configure the SDK.");
     }
     #endregion

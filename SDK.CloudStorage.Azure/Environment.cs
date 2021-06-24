@@ -16,17 +16,17 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
 
       SoftmakeAll.SDK.CloudStorage.Azure.Environment._ConnectionString = ConnectionString.Trim();
     }
-    internal static void Validate()
+    internal static void Validate(System.String ConnectionString)
     {
-      if (System.String.IsNullOrWhiteSpace(SoftmakeAll.SDK.CloudStorage.Azure.Environment._ConnectionString))
+      if (System.String.IsNullOrWhiteSpace(ConnectionString))
         throw new System.Exception("Call SoftmakeAll.SDK.CloudStorage.Azure.Environment.Configure(...) to configure the SDK.");
     }
-    internal static System.String GetConnectionStringPropertyValue(System.String PropertyName)
+    internal static System.String GetConnectionStringPropertyValue(System.String ConnectionString, System.String PropertyName)
     {
-      if ((System.String.IsNullOrWhiteSpace(SoftmakeAll.SDK.CloudStorage.Azure.Environment._ConnectionString)) || (System.String.IsNullOrWhiteSpace(PropertyName)))
+      if ((System.String.IsNullOrWhiteSpace(ConnectionString)) || (System.String.IsNullOrWhiteSpace(PropertyName)))
         return null;
 
-      System.String[] Properties = SoftmakeAll.SDK.CloudStorage.Azure.Environment._ConnectionString.Split(';');
+      System.String[] Properties = ConnectionString.Split(';');
       if ((Properties == null) || (!(Properties.Any())))
         return null;
 

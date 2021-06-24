@@ -5,13 +5,18 @@ namespace SoftmakeAll.SDK.CloudStorage.AWS
   public class S3 : SoftmakeAll.SDK.CloudStorage.IFile
   {
     #region Constructor
-    public S3() { }
+    public S3() => this.ScopedS3Client = SoftmakeAll.SDK.CloudStorage.AWS.Environment._S3Client;
+    #endregion
+
+    #region Fields
+    private Amazon.S3.IAmazonS3 ScopedS3Client;
     #endregion
 
     #region Methods
+    public void SetScopedS3Client(Amazon.S3.IAmazonS3 S3Client) => this.ScopedS3Client = S3Client;
     public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> UploadAsync(System.String BucketName, System.String StorageFileName, System.IO.Stream FileContents)
     {
-      SoftmakeAll.SDK.CloudStorage.AWS.Environment.Validate();
+      SoftmakeAll.SDK.CloudStorage.AWS.Environment.Validate(this.ScopedS3Client);
 
       SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> OperationResult = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
 
@@ -23,7 +28,7 @@ namespace SoftmakeAll.SDK.CloudStorage.AWS
 
       try
       {
-        using (Amazon.S3.Transfer.TransferUtility TransferUtility = new Amazon.S3.Transfer.TransferUtility(SoftmakeAll.SDK.CloudStorage.AWS.Environment._S3Client))
+        using (Amazon.S3.Transfer.TransferUtility TransferUtility = new Amazon.S3.Transfer.TransferUtility(this.ScopedS3Client))
           await TransferUtility.UploadAsync(FileContents, BucketName, StorageFileName);
       }
       catch (System.Exception ex)
@@ -52,7 +57,7 @@ namespace SoftmakeAll.SDK.CloudStorage.AWS
     }
     public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Byte[]>> DownloadAsync(System.String BucketName, System.Collections.Generic.Dictionary<System.String, System.String> StorageFileNames)
     {
-      SoftmakeAll.SDK.CloudStorage.AWS.Environment.Validate();
+      SoftmakeAll.SDK.CloudStorage.AWS.Environment.Validate(this.ScopedS3Client);
 
       SoftmakeAll.SDK.OperationResult<System.Byte[]> OperationResult = new SoftmakeAll.SDK.OperationResult<System.Byte[]>();
 
@@ -67,7 +72,7 @@ namespace SoftmakeAll.SDK.CloudStorage.AWS
         if (StorageFileNames.Count == 1)
         {
           Amazon.S3.Model.GetObjectRequest GetObjectRequest = new Amazon.S3.Model.GetObjectRequest { BucketName = BucketName, Key = StorageFileNames.First().Key };
-          using (Amazon.S3.Model.GetObjectResponse GetObjectResponse = await SoftmakeAll.SDK.CloudStorage.AWS.Environment._S3Client.GetObjectAsync(GetObjectRequest))
+          using (Amazon.S3.Model.GetObjectResponse GetObjectResponse = await this.ScopedS3Client.GetObjectAsync(GetObjectRequest))
           using (System.IO.Stream Stream = GetObjectResponse.ResponseStream)
           using (System.IO.MemoryStream MemoryStream = new System.IO.MemoryStream())
           {
@@ -86,7 +91,7 @@ namespace SoftmakeAll.SDK.CloudStorage.AWS
               DownloadTasks.Add(System.Threading.Tasks.Task.Run(async () =>
               {
                 Amazon.S3.Model.GetObjectRequest GetObjectRequest = new Amazon.S3.Model.GetObjectRequest { BucketName = BucketName, Key = StorageFileName.Key };
-                using (Amazon.S3.Model.GetObjectResponse GetObjectResponse = await SoftmakeAll.SDK.CloudStorage.AWS.Environment._S3Client.GetObjectAsync(GetObjectRequest))
+                using (Amazon.S3.Model.GetObjectResponse GetObjectResponse = await this.ScopedS3Client.GetObjectAsync(GetObjectRequest))
                   await GetObjectResponse.WriteResponseStreamToFileAsync(StorageFileName.Key, false, new System.Threading.CancellationToken());
                 SemaphoreSlim.Release();
               }));
@@ -121,7 +126,7 @@ namespace SoftmakeAll.SDK.CloudStorage.AWS
     }
     public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> DeleteAsync(System.String BucketName, System.String[] StorageFileNames)
     {
-      SoftmakeAll.SDK.CloudStorage.AWS.Environment.Validate();
+      SoftmakeAll.SDK.CloudStorage.AWS.Environment.Validate(this.ScopedS3Client);
 
       SoftmakeAll.SDK.OperationResult OperationResult = new SoftmakeAll.SDK.OperationResult();
 
@@ -138,7 +143,7 @@ namespace SoftmakeAll.SDK.CloudStorage.AWS
 
       try
       {
-        await SoftmakeAll.SDK.CloudStorage.AWS.Environment._S3Client.DeleteObjectsAsync(DeleteObjectsRequest);
+        await this.ScopedS3Client.DeleteObjectsAsync(DeleteObjectsRequest);
       }
       catch (System.Exception ex)
       {
@@ -163,7 +168,7 @@ namespace SoftmakeAll.SDK.CloudStorage.AWS
     }
     public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> CopyAsync(System.String SourceBucketName, System.String[] SourceStorageFileNames, System.String TargetBucketName, System.String[] TargetStorageFileNames, System.Boolean Overwrite)
     {
-      SoftmakeAll.SDK.CloudStorage.AWS.Environment.Validate();
+      SoftmakeAll.SDK.CloudStorage.AWS.Environment.Validate(this.ScopedS3Client);
 
       SoftmakeAll.SDK.OperationResult OperationResult = new SoftmakeAll.SDK.OperationResult();
 
@@ -189,7 +194,7 @@ namespace SoftmakeAll.SDK.CloudStorage.AWS
             await SemaphoreSlim.WaitAsync();
             CopyTasks.Add(System.Threading.Tasks.Task.Run(async () =>
             {
-              await SoftmakeAll.SDK.CloudStorage.AWS.Environment._S3Client.CopyObjectAsync(new Amazon.S3.Model.CopyObjectRequest { SourceBucket = SourceBucketName, SourceKey = SourceStorageFileNames[i], DestinationBucket = TargetBucketName, DestinationKey = TargetStorageFileNames[i] });
+              await this.ScopedS3Client.CopyObjectAsync(new Amazon.S3.Model.CopyObjectRequest { SourceBucket = SourceBucketName, SourceKey = SourceStorageFileNames[i], DestinationBucket = TargetBucketName, DestinationKey = TargetStorageFileNames[i] });
               SemaphoreSlim.Release();
             }));
           }
@@ -210,12 +215,12 @@ namespace SoftmakeAll.SDK.CloudStorage.AWS
     public System.String GenerateDownloadURL(System.String BucketName, System.String StorageFileName, System.String OriginalName) => this.GenerateDownloadURL(BucketName, StorageFileName, OriginalName, System.DateTimeOffset.UtcNow.AddMinutes(5));
     public System.String GenerateDownloadURL(System.String BucketName, System.String StorageFileName, System.String OriginalName, System.DateTimeOffset ExpirationDateTime)
     {
-      SoftmakeAll.SDK.CloudStorage.AWS.Environment.Validate();
+      SoftmakeAll.SDK.CloudStorage.AWS.Environment.Validate(this.ScopedS3Client);
 
       if (!(SoftmakeAll.SDK.Helpers.String.Extensions.StringExtensions.IsNullOrWhiteSpace(BucketName, StorageFileName)))
         try
         {
-          return SoftmakeAll.SDK.CloudStorage.AWS.Environment._S3Client.GetPreSignedURL(new Amazon.S3.Model.GetPreSignedUrlRequest { BucketName = BucketName, Key = StorageFileName, Expires = System.Convert.ToDateTime(ExpirationDateTime) });
+          return this.ScopedS3Client.GetPreSignedURL(new Amazon.S3.Model.GetPreSignedUrlRequest { BucketName = BucketName, Key = StorageFileName, Expires = System.Convert.ToDateTime(ExpirationDateTime) });
         }
         catch { }
 

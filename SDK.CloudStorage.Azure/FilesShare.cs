@@ -5,13 +5,18 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
   public class FilesShare : SoftmakeAll.SDK.CloudStorage.IFile
   {
     #region Constructor
-    public FilesShare() { }
+    public FilesShare() => this.ScopedConnectionString = SoftmakeAll.SDK.CloudStorage.Azure.Environment._ConnectionString;
+    #endregion
+
+    #region Fields
+    private System.String ScopedConnectionString;
     #endregion
 
     #region Methods
+    public void SetScopedConnectionString(System.String ConnectionString) => this.ScopedConnectionString = ConnectionString;
     public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> UploadAsync(System.String ShareName, System.String StorageFileName, System.IO.Stream FileContents)
     {
-      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate();
+      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate(this.ScopedConnectionString);
 
       SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> OperationResult = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
 
@@ -23,7 +28,7 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
 
       try
       {
-        global::Azure.Storage.Files.Shares.ShareClient ShareClient = new global::Azure.Storage.Files.Shares.ShareClient(SoftmakeAll.SDK.CloudStorage.Azure.Environment._ConnectionString, ShareName);
+        global::Azure.Storage.Files.Shares.ShareClient ShareClient = new global::Azure.Storage.Files.Shares.ShareClient(this.ScopedConnectionString, ShareName);
         global::Azure.Storage.Files.Shares.ShareDirectoryClient ShareDirectoryClient = ShareClient.GetRootDirectoryClient();
         global::Azure.Storage.Files.Shares.ShareFileClient ShareFileClient = ShareDirectoryClient.GetFileClient(StorageFileName);
         await ShareFileClient.CreateAsync(FileContents.Length);
@@ -55,7 +60,7 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
     }
     public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Byte[]>> DownloadAsync(System.String ShareName, System.Collections.Generic.Dictionary<System.String, System.String> StorageFileNames)
     {
-      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate();
+      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate(this.ScopedConnectionString);
 
       SoftmakeAll.SDK.OperationResult<System.Byte[]> OperationResult = new SoftmakeAll.SDK.OperationResult<System.Byte[]>();
 
@@ -67,7 +72,7 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
 
       try
       {
-        global::Azure.Storage.Files.Shares.ShareClient ShareClient = new global::Azure.Storage.Files.Shares.ShareClient(SoftmakeAll.SDK.CloudStorage.Azure.Environment._ConnectionString, ShareName);
+        global::Azure.Storage.Files.Shares.ShareClient ShareClient = new global::Azure.Storage.Files.Shares.ShareClient(this.ScopedConnectionString, ShareName);
         global::Azure.Storage.Files.Shares.ShareDirectoryClient ShareDirectoryClient = ShareClient.GetRootDirectoryClient();
         if (StorageFileNames.Count == 1)
         {
@@ -135,7 +140,7 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
     }
     public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> DeleteAsync(System.String ShareName, System.String[] StorageFileNames)
     {
-      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate();
+      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate(this.ScopedConnectionString);
 
       SoftmakeAll.SDK.OperationResult OperationResult = new SoftmakeAll.SDK.OperationResult();
 
@@ -147,7 +152,7 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
 
       try
       {
-        global::Azure.Storage.Files.Shares.ShareClient ShareClient = new global::Azure.Storage.Files.Shares.ShareClient(SoftmakeAll.SDK.CloudStorage.Azure.Environment._ConnectionString, ShareName);
+        global::Azure.Storage.Files.Shares.ShareClient ShareClient = new global::Azure.Storage.Files.Shares.ShareClient(this.ScopedConnectionString, ShareName);
         global::Azure.Storage.Files.Shares.ShareDirectoryClient ShareDirectoryClient = ShareClient.GetRootDirectoryClient();
 
         using (System.Threading.SemaphoreSlim SemaphoreSlim = new System.Threading.SemaphoreSlim(StorageFileNames.Length))
@@ -190,7 +195,7 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
     }
     public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> CopyAsync(System.String SourceShareName, System.String[] SourceStorageFileNames, System.String TargetShareName, System.String[] TargetStorageFileNames, System.Boolean Overwrite)
     {
-      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate();
+      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate(this.ScopedConnectionString);
 
       SoftmakeAll.SDK.OperationResult OperationResult = new SoftmakeAll.SDK.OperationResult();
 
@@ -208,12 +213,12 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
 
       try
       {
-        global::Azure.Storage.Files.Shares.ShareClient SourceShareClient = new global::Azure.Storage.Files.Shares.ShareClient(SoftmakeAll.SDK.CloudStorage.Azure.Environment._ConnectionString, SourceShareName);
+        global::Azure.Storage.Files.Shares.ShareClient SourceShareClient = new global::Azure.Storage.Files.Shares.ShareClient(this.ScopedConnectionString, SourceShareName);
         global::Azure.Storage.Files.Shares.ShareDirectoryClient SourceShareDirectoryClient = SourceShareClient.GetRootDirectoryClient();
 
         global::Azure.Storage.Files.Shares.ShareClient TargetShareClient;
         if (SourceShareName != TargetShareName)
-          TargetShareClient = new global::Azure.Storage.Files.Shares.ShareClient(SoftmakeAll.SDK.CloudStorage.Azure.Environment._ConnectionString, TargetShareName);
+          TargetShareClient = new global::Azure.Storage.Files.Shares.ShareClient(this.ScopedConnectionString, TargetShareName);
         else
           TargetShareClient = SourceShareClient;
         global::Azure.Storage.Files.Shares.ShareDirectoryClient TargetShareDirectoryClient = TargetShareClient.GetRootDirectoryClient();
@@ -254,7 +259,7 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
     public System.String GenerateDownloadURL(System.String ShareName, System.String StorageFileName, System.String OriginalName) => this.GenerateDownloadURL(ShareName, StorageFileName, OriginalName, System.DateTimeOffset.UtcNow.AddMinutes(5));
     public System.String GenerateDownloadURL(System.String ShareName, System.String StorageFileName, System.String OriginalName, System.DateTimeOffset ExpirationDateTime)
     {
-      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate();
+      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate(this.ScopedConnectionString);
 
       if (SoftmakeAll.SDK.Helpers.String.Extensions.StringExtensions.IsNullOrWhiteSpace(ShareName, StorageFileName, OriginalName))
         return null;
@@ -267,10 +272,10 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
       ShareSasBuilder.ContentDisposition = $"attachment; filename={OriginalName}";
       ShareSasBuilder.SetPermissions(global::Azure.Storage.Sas.ShareFileSasPermissions.Read);
 
-      System.String DefaultEndpointsProtocol = SoftmakeAll.SDK.CloudStorage.Azure.Environment.GetConnectionStringPropertyValue("DefaultEndpointsProtocol");
-      System.String EndpointSuffix = SoftmakeAll.SDK.CloudStorage.Azure.Environment.GetConnectionStringPropertyValue("EndpointSuffix");
-      System.String AccountName = SoftmakeAll.SDK.CloudStorage.Azure.Environment.GetConnectionStringPropertyValue("AccountName");
-      System.String AccountKey = SoftmakeAll.SDK.CloudStorage.Azure.Environment.GetConnectionStringPropertyValue("AccountKey");
+      System.String DefaultEndpointsProtocol = SoftmakeAll.SDK.CloudStorage.Azure.Environment.GetConnectionStringPropertyValue(this.ScopedConnectionString, "DefaultEndpointsProtocol");
+      System.String EndpointSuffix = SoftmakeAll.SDK.CloudStorage.Azure.Environment.GetConnectionStringPropertyValue(this.ScopedConnectionString, "EndpointSuffix");
+      System.String AccountName = SoftmakeAll.SDK.CloudStorage.Azure.Environment.GetConnectionStringPropertyValue(this.ScopedConnectionString, "AccountName");
+      System.String AccountKey = SoftmakeAll.SDK.CloudStorage.Azure.Environment.GetConnectionStringPropertyValue(this.ScopedConnectionString, "AccountKey");
 
       try
       {
