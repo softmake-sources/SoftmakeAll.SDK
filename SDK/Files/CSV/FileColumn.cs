@@ -1,4 +1,4 @@
-﻿namespace SoftmakeAll.SDK.FileWR.CSV
+﻿namespace SoftmakeAll.SDK.Files.CSV
 {
   public class FileColumn
   {
@@ -25,7 +25,7 @@
           return;
         }
 
-        if ((value == "String") || (SoftmakeAll.SDK.FileWR.CSV.ConverterEngine.AllowedDataTypeNameReplacements.Exists(i => i.Item1 == this._DataTypeName && i.Item2 == value)))
+        if ((value == "String") || (SoftmakeAll.SDK.Files.CSV.ConverterEngine.AllowedDataTypeNameReplacements.Exists(i => i.Item1 == this._DataTypeName && i.Item2 == value)))
           this._DataTypeName = value;
       }
     }

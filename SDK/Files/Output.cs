@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace SoftmakeAll.SDK.FileWR
+namespace SoftmakeAll.SDK.Files
 {
   public struct Data
   {

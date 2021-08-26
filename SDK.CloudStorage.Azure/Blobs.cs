@@ -2,31 +2,70 @@
 
 namespace SoftmakeAll.SDK.CloudStorage.Azure
 {
-  public class Blobs : SoftmakeAll.SDK.CloudStorage.IFile
+  public class Blobs : SoftmakeAll.SDK.CloudStorage.Repository, SoftmakeAll.SDK.CloudStorage.IRepository
   {
     #region Constructor
-    public Blobs() { }
+    public Blobs() : base() { }
+    #endregion
+
+    #region Properties
+    private System.String _ScopedConnectionString;
+    private System.String ScopedConnectionString
+    {
+      get => System.String.IsNullOrWhiteSpace(this._ScopedConnectionString) ? SoftmakeAll.SDK.CloudStorage.Azure.Environment._ConnectionString : this._ScopedConnectionString;
+      set => this._ScopedConnectionString = value;
+    }
     #endregion
 
     #region Methods
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> UploadAsync(System.String ContainerName, System.String StorageFileName, System.IO.Stream FileContents)
+    public void SetScopedConnectionString(System.String ConnectionString) => this.ScopedConnectionString = ConnectionString;
+    public override System.String GenerateDownloadURL(System.String ContainerName, System.String EntryName, System.String OriginalName, System.DateTimeOffset ExpirationDateTime)
     {
-      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate();
+      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate(this.ScopedConnectionString);
+
+      if (SoftmakeAll.SDK.Helpers.String.Extensions.StringExtensions.IsNullOrWhiteSpace(ContainerName, EntryName, OriginalName))
+        return null;
+
+      global::Azure.Storage.Sas.BlobSasBuilder ShareSasBuilder = new global::Azure.Storage.Sas.BlobSasBuilder();
+      ShareSasBuilder.BlobContainerName = ContainerName;
+      ShareSasBuilder.Resource = "b";
+      ShareSasBuilder.BlobName = EntryName;
+      ShareSasBuilder.ExpiresOn = ExpirationDateTime;
+      ShareSasBuilder.ContentDisposition = $"attachment; EntryName={OriginalName}";
+      ShareSasBuilder.SetPermissions(global::Azure.Storage.Sas.BlobSasPermissions.Read);
+
+      System.String DefaultEndpointsProtocol = SoftmakeAll.SDK.CloudStorage.Azure.Environment.GetConnectionStringPropertyValue(this.ScopedConnectionString, "DefaultEndpointsProtocol");
+      System.String EndpointSuffix = SoftmakeAll.SDK.CloudStorage.Azure.Environment.GetConnectionStringPropertyValue(this.ScopedConnectionString, "EndpointSuffix");
+      System.String AccountName = SoftmakeAll.SDK.CloudStorage.Azure.Environment.GetConnectionStringPropertyValue(this.ScopedConnectionString, "AccountName");
+      System.String AccountKey = SoftmakeAll.SDK.CloudStorage.Azure.Environment.GetConnectionStringPropertyValue(this.ScopedConnectionString, "AccountKey");
+
+      try
+      {
+        return new System.UriBuilder($"{DefaultEndpointsProtocol}://{AccountName}.blob.{EndpointSuffix}/{ContainerName}/{EntryName}") { Query = ShareSasBuilder.ToSasQueryParameters(new global::Azure.Storage.StorageSharedKeyCredential(AccountName, AccountKey)).ToString() }.Uri.AbsoluteUri;
+      }
+      catch { }
+
+      return null;
+    }
+
+    public override SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> Upload(System.String ContainerName, System.String EntryName, System.IO.Stream Contents)
+    {
+      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate(this.ScopedConnectionString);
 
       SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> OperationResult = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
 
-      if (SoftmakeAll.SDK.Helpers.String.Extensions.StringExtensions.IsNullOrWhiteSpace(ContainerName, StorageFileName))
+      if (SoftmakeAll.SDK.Helpers.String.Extensions.StringExtensions.IsNullOrWhiteSpace(ContainerName, EntryName))
       {
-        OperationResult.Message = "The ContainerName and StorageFileName cannot be null.";
+        OperationResult.Message = "ContainerName, EntryName and Destination are required.";
         return OperationResult;
       }
 
       try
       {
-        global::Azure.Storage.Blobs.BlobContainerClient BlobContainerClient = new global::Azure.Storage.Blobs.BlobContainerClient(SoftmakeAll.SDK.CloudStorage.Azure.Environment._ConnectionString, ContainerName);
-        await BlobContainerClient.CreateIfNotExistsAsync();
-        global::Azure.Storage.Blobs.BlobClient BlobClient = BlobContainerClient.GetBlobClient(StorageFileName);
-        await BlobClient.UploadAsync(FileContents, true);
+        global::Azure.Storage.Blobs.BlobContainerClient BlobContainerClient = new global::Azure.Storage.Blobs.BlobContainerClient(this.ScopedConnectionString, ContainerName);
+        BlobContainerClient.CreateIfNotExists();
+        global::Azure.Storage.Blobs.BlobClient BlobClient = BlobContainerClient.GetBlobClient(EntryName);
+        BlobClient.Upload(Contents, true);
       }
       catch (System.Exception ex)
       {
@@ -37,81 +76,275 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
       OperationResult.ExitCode = 0;
       return OperationResult;
     }
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Byte[]>> DownloadAsync(System.String ContainerName, System.String StorageFileName)
+    public override SoftmakeAll.SDK.OperationResult Download(System.String ContainerName, System.Collections.Generic.Dictionary<System.String, System.String> EntriesNames, System.IO.Stream Destination)
     {
-      return await this.DownloadAsync(ContainerName, new System.String[] { StorageFileName });
-    }
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Byte[]>> DownloadAsync(System.String ContainerName, System.String[] StorageFileNames)
-    {
-      System.Collections.Generic.Dictionary<System.String, System.String> StorageFileNamesDictionary = null;
-      if ((StorageFileNames != null) && (StorageFileNames.Length > 0))
-      {
-        StorageFileNamesDictionary = new System.Collections.Generic.Dictionary<System.String, System.String>();
-        foreach (System.String StorageFileName in StorageFileNames)
-          StorageFileNamesDictionary.Add(StorageFileName, StorageFileName);
-      }
-      return await this.DownloadAsync(ContainerName, StorageFileNamesDictionary);
-    }
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Byte[]>> DownloadAsync(System.String ContainerName, System.Collections.Generic.Dictionary<System.String, System.String> StorageFileNames)
-    {
-      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate();
+      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate(this.ScopedConnectionString);
 
-      SoftmakeAll.SDK.OperationResult<System.Byte[]> OperationResult = new SoftmakeAll.SDK.OperationResult<System.Byte[]>();
+      SoftmakeAll.SDK.OperationResult OperationResult = new SoftmakeAll.SDK.OperationResult();
 
-      if ((System.String.IsNullOrWhiteSpace(ContainerName)) || (StorageFileNames == null) || (StorageFileNames.Count == 0))
+      if ((System.String.IsNullOrWhiteSpace(ContainerName)) || (EntriesNames == null) || (EntriesNames.Count == 0) || (Destination == null))
       {
-        OperationResult.Message = "The ContainerName and StorageFileName cannot be null.";
+        OperationResult.Message = "ContainerName, EntryName and Destination are required.";
         return OperationResult;
       }
 
       try
       {
-        global::Azure.Storage.Blobs.BlobContainerClient BlobContainerClient = new global::Azure.Storage.Blobs.BlobContainerClient(SoftmakeAll.SDK.CloudStorage.Azure.Environment._ConnectionString, ContainerName);
-        if (StorageFileNames.Count == 1)
+        global::Azure.Storage.Blobs.BlobContainerClient BlobContainerClient = new global::Azure.Storage.Blobs.BlobContainerClient(this.ScopedConnectionString, ContainerName);
+        if (EntriesNames.Count == 1)
         {
-          global::Azure.Storage.Blobs.BlobClient BlobClient = BlobContainerClient.GetBlobClient(StorageFileNames.First().Key);
-          if (!(await BlobClient.ExistsAsync()))
+          global::Azure.Storage.Blobs.BlobClient BlobClient = BlobContainerClient.GetBlobClient(EntriesNames.First().Key);
+          if (!(BlobClient.Exists()))
           {
-            OperationResult.Message = "The file could not be found.";
+            OperationResult.Message = "File not found.";
             return OperationResult;
           }
 
-          using (System.IO.MemoryStream MemoryStream = new System.IO.MemoryStream())
-          {
-            await BlobClient.DownloadToAsync(MemoryStream);
-            OperationResult.Data = MemoryStream.ToArray();
-          }
+          BlobClient.DownloadTo(Destination);
         }
         else
         {
-          using (System.Threading.SemaphoreSlim SemaphoreSlim = new System.Threading.SemaphoreSlim(StorageFileNames.Count))
+          System.Collections.Generic.Dictionary<System.String, System.String> FilesToCompression = new System.Collections.Generic.Dictionary<System.String, System.String>();
+          using (System.Threading.SemaphoreSlim SemaphoreSlim = new System.Threading.SemaphoreSlim(EntriesNames.Count))
           {
             System.Collections.Generic.List<System.Threading.Tasks.Task> DownloadTasks = new System.Collections.Generic.List<System.Threading.Tasks.Task>();
-            foreach (System.Collections.Generic.KeyValuePair<System.String, System.String> StorageFileName in StorageFileNames)
+            System.String TempPath = System.IO.Path.GetTempPath();
+            foreach (System.Collections.Generic.KeyValuePair<System.String, System.String> EntryName in EntriesNames)
             {
-              global::Azure.Storage.Blobs.BlobClient BlobClient = BlobContainerClient.GetBlobClient(StorageFileName.Key);
+              global::Azure.Storage.Blobs.BlobClient BlobClient = BlobContainerClient.GetBlobClient(EntryName.Key);
+              if (!(BlobClient.Exists()))
+                continue;
+
+              SemaphoreSlim.Wait();
+              DownloadTasks.Add(System.Threading.Tasks.Task.Run(() =>
+              {
+                System.String FileName = System.IO.Path.Combine(TempPath, System.IO.Path.GetRandomFileName());
+                BlobClient.DownloadTo(FileName);
+                FilesToCompression.Add(FileName, (FilesToCompression.ContainsValue(EntryName.Value) ? $"{System.DateTimeOffset.UtcNow:ddMMyyyyHHmmssfff}_{EntryName.Value}" : EntryName.Value));
+                SemaphoreSlim.Release();
+              }));
+            }
+
+            if (DownloadTasks.Any())
+              System.Threading.Tasks.Task.WhenAll(DownloadTasks).Wait();
+          }
+
+          SoftmakeAll.SDK.Files.Compression.CreateZipArchive(FilesToCompression, Destination);
+
+          foreach (System.Collections.Generic.KeyValuePair<System.String, System.String> EntryName in EntriesNames)
+            if (System.IO.File.Exists(EntryName.Key)) try { System.IO.File.Delete(EntryName.Key); } catch { }
+        }
+      }
+      catch (System.Exception ex)
+      {
+        if (EntriesNames.Count > 0)
+          foreach (System.Collections.Generic.KeyValuePair<System.String, System.String> EntryName in EntriesNames)
+            if (System.IO.File.Exists(EntryName.Key)) try { System.IO.File.Delete(EntryName.Key); } catch { }
+
+        OperationResult.Message = ex.Message;
+        return OperationResult;
+      }
+
+      OperationResult.ExitCode = 0;
+      return OperationResult;
+    }
+    public override SoftmakeAll.SDK.OperationResult Delete(System.String ContainerName, System.String[] EntriesNames)
+    {
+      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate(this.ScopedConnectionString);
+
+      SoftmakeAll.SDK.OperationResult OperationResult = new SoftmakeAll.SDK.OperationResult();
+
+      if ((System.String.IsNullOrWhiteSpace(ContainerName)) || (EntriesNames == null) || (EntriesNames.Length == 0))
+      {
+        OperationResult.Message = "The ContainerName and EntriesNames cannot be null.";
+        return OperationResult;
+      }
+
+      try
+      {
+        global::Azure.Storage.Blobs.BlobContainerClient BlobContainerClient = new global::Azure.Storage.Blobs.BlobContainerClient(this.ScopedConnectionString, ContainerName);
+
+        using (System.Threading.SemaphoreSlim SemaphoreSlim = new System.Threading.SemaphoreSlim(EntriesNames.Length))
+        {
+          System.Collections.Generic.List<System.Threading.Tasks.Task> DeleteTasks = new System.Collections.Generic.List<System.Threading.Tasks.Task>();
+          foreach (System.String EntryName in EntriesNames)
+          {
+            global::Azure.Storage.Blobs.BlobClient BlobClient = BlobContainerClient.GetBlobClient(EntryName);
+            if (!(BlobClient.Exists()))
+              continue;
+
+            SemaphoreSlim.Wait();
+            DeleteTasks.Add(System.Threading.Tasks.Task.Run(() => { BlobClient.Delete(); SemaphoreSlim.Release(); }));
+          }
+
+          if (DeleteTasks.Any())
+            System.Threading.Tasks.Task.WhenAll(DeleteTasks).Wait();
+        }
+      }
+      catch (System.Exception ex)
+      {
+        OperationResult.Message = ex.Message;
+        return OperationResult;
+      }
+
+      OperationResult.ExitCode = 0;
+      return OperationResult;
+    }
+    public override SoftmakeAll.SDK.OperationResult Copy(System.String SourceContainerName, System.String[] SourceEntriesNames, System.String TargetContainerName, System.String[] TargetEntriesNames, System.Boolean Overwrite)
+    {
+      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate(this.ScopedConnectionString);
+
+      SoftmakeAll.SDK.OperationResult OperationResult = new SoftmakeAll.SDK.OperationResult();
+
+      if ((System.String.IsNullOrWhiteSpace(SourceContainerName)) || (SourceEntriesNames == null) || (SourceEntriesNames.Length == 0) || (System.String.IsNullOrWhiteSpace(TargetContainerName)) || (TargetEntriesNames == null) || (TargetEntriesNames.Length == 0))
+      {
+        OperationResult.Message = "The SourceContainerName, SourceEntriesNames, TargetContainerName and TargetEntriesNames cannot be null.";
+        return OperationResult;
+      }
+
+      if (SourceEntriesNames.Length != TargetEntriesNames.Length)
+      {
+        OperationResult.Message = "The SourceEntriesNames and TargetEntriesNames must be the same length.";
+        return OperationResult;
+      }
+
+      try
+      {
+        global::Azure.Storage.Blobs.BlobContainerClient SourceBlobContainerClient = new global::Azure.Storage.Blobs.BlobContainerClient(this.ScopedConnectionString, SourceContainerName);
+        global::Azure.Storage.Blobs.BlobContainerClient TargetBlobContainerClient;
+        if (SourceContainerName != TargetContainerName)
+          TargetBlobContainerClient = new global::Azure.Storage.Blobs.BlobContainerClient(this.ScopedConnectionString, TargetContainerName);
+        else
+          TargetBlobContainerClient = SourceBlobContainerClient;
+
+
+        using (System.Threading.SemaphoreSlim SemaphoreSlim = new System.Threading.SemaphoreSlim(SourceEntriesNames.Length))
+        {
+          System.Collections.Generic.List<System.Threading.Tasks.Task> CopyTasks = new System.Collections.Generic.List<System.Threading.Tasks.Task>();
+          for (System.Int32 i = 0; i < SourceEntriesNames.Length; i++)
+          {
+            System.String SourceEntryName = SourceEntriesNames[i];
+            global::Azure.Storage.Blobs.BlobClient SourceBlobClient = SourceBlobContainerClient.GetBlobClient(SourceEntryName);
+            if (!(SourceBlobClient.Exists()))
+              continue;
+
+            System.String TargetEntryName = TargetEntriesNames[i];
+            global::Azure.Storage.Blobs.BlobClient TargetBlobClient = TargetBlobContainerClient.GetBlobClient(TargetEntryName);
+            if ((!(Overwrite)) && (TargetBlobClient.Exists()))
+              continue;
+
+            SemaphoreSlim.Wait();
+            CopyTasks.Add(System.Threading.Tasks.Task.Run(() => { TargetBlobClient.StartCopyFromUri(SourceBlobClient.Uri); SemaphoreSlim.Release(); }));
+          }
+
+          if (CopyTasks.Any())
+            System.Threading.Tasks.Task.WhenAll(CopyTasks).Wait();
+        }
+      }
+      catch (System.Exception ex)
+      {
+        OperationResult.Message = ex.Message;
+        return OperationResult;
+      }
+
+      OperationResult.ExitCode = 0;
+      return OperationResult;
+    }
+
+    #region Async Methods
+    public override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> UploadAsync(System.String ContainerName, System.String EntryName, System.IO.Stream Contents)
+    {
+      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate(this.ScopedConnectionString);
+
+      SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> OperationResult = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
+
+      if (SoftmakeAll.SDK.Helpers.String.Extensions.StringExtensions.IsNullOrWhiteSpace(ContainerName, EntryName))
+      {
+        OperationResult.Message = "ContainerName, EntryName and Destination are required.";
+        return OperationResult;
+      }
+
+      try
+      {
+        global::Azure.Storage.Blobs.BlobContainerClient BlobContainerClient = new global::Azure.Storage.Blobs.BlobContainerClient(this.ScopedConnectionString, ContainerName);
+        await BlobContainerClient.CreateIfNotExistsAsync();
+        global::Azure.Storage.Blobs.BlobClient BlobClient = BlobContainerClient.GetBlobClient(EntryName);
+        await BlobClient.UploadAsync(Contents, true);
+      }
+      catch (System.Exception ex)
+      {
+        OperationResult.Message = ex.Message;
+        return OperationResult;
+      }
+
+      OperationResult.ExitCode = 0;
+      return OperationResult;
+    }
+    public override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> DownloadAsync(System.String ContainerName, System.Collections.Generic.Dictionary<System.String, System.String> EntriesNames, System.IO.Stream Destination)
+    {
+      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate(this.ScopedConnectionString);
+
+      SoftmakeAll.SDK.OperationResult OperationResult = new SoftmakeAll.SDK.OperationResult();
+
+      if ((System.String.IsNullOrWhiteSpace(ContainerName)) || (EntriesNames == null) || (EntriesNames.Count == 0) || (Destination == null))
+      {
+        OperationResult.Message = "ContainerName, EntryName and Destination are required.";
+        return OperationResult;
+      }
+
+      try
+      {
+        global::Azure.Storage.Blobs.BlobContainerClient BlobContainerClient = new global::Azure.Storage.Blobs.BlobContainerClient(this.ScopedConnectionString, ContainerName);
+        if (EntriesNames.Count == 1)
+        {
+          global::Azure.Storage.Blobs.BlobClient BlobClient = BlobContainerClient.GetBlobClient(EntriesNames.First().Key);
+          if (!(await BlobClient.ExistsAsync()))
+          {
+            OperationResult.Message = "File not found.";
+            return OperationResult;
+          }
+
+          await BlobClient.DownloadToAsync(Destination);
+        }
+        else
+        {
+          System.Collections.Generic.Dictionary<System.String, System.String> FilesToCompression = new System.Collections.Generic.Dictionary<System.String, System.String>();
+          using (System.Threading.SemaphoreSlim SemaphoreSlim = new System.Threading.SemaphoreSlim(EntriesNames.Count))
+          {
+            System.Collections.Generic.List<System.Threading.Tasks.Task> DownloadTasks = new System.Collections.Generic.List<System.Threading.Tasks.Task>();
+            System.String TempPath = System.IO.Path.GetTempPath();
+            foreach (System.Collections.Generic.KeyValuePair<System.String, System.String> EntryName in EntriesNames)
+            {
+              global::Azure.Storage.Blobs.BlobClient BlobClient = BlobContainerClient.GetBlobClient(EntryName.Key);
               if (!(await BlobClient.ExistsAsync()))
                 continue;
 
               await SemaphoreSlim.WaitAsync();
-              DownloadTasks.Add(System.Threading.Tasks.Task.Run(async () => { await BlobClient.DownloadToAsync(StorageFileName.Key); SemaphoreSlim.Release(); }));
+              DownloadTasks.Add(System.Threading.Tasks.Task.Run(async () =>
+              {
+                System.String FileName = System.IO.Path.Combine(TempPath, System.IO.Path.GetRandomFileName());
+                await BlobClient.DownloadToAsync(FileName);
+                FilesToCompression.Add(FileName, (FilesToCompression.ContainsValue(EntryName.Value) ? $"{System.DateTimeOffset.UtcNow:ddMMyyyyHHmmssfff}_{EntryName.Value}" : EntryName.Value));
+                SemaphoreSlim.Release();
+              }));
+
             }
 
             if (DownloadTasks.Any())
               await System.Threading.Tasks.Task.WhenAll(DownloadTasks);
           }
 
-          OperationResult.Data = SoftmakeAll.SDK.Files.Compression.CreateZipArchive(StorageFileNames);
+          SoftmakeAll.SDK.Files.Compression.CreateZipArchive(FilesToCompression, Destination);
 
-          foreach (System.Collections.Generic.KeyValuePair<System.String, System.String> StorageFileName in StorageFileNames)
-            if (System.IO.File.Exists(StorageFileName.Key)) try { System.IO.File.Delete(StorageFileName.Key); } catch { }
+          foreach (System.Collections.Generic.KeyValuePair<System.String, System.String> EntryName in EntriesNames)
+            if (System.IO.File.Exists(EntryName.Key)) try { System.IO.File.Delete(EntryName.Key); } catch { }
         }
       }
       catch (System.Exception ex)
       {
-        if (StorageFileNames.Count > 0)
-          foreach (System.Collections.Generic.KeyValuePair<System.String, System.String> StorageFileName in StorageFileNames)
-            if (System.IO.File.Exists(StorageFileName.Key)) try { System.IO.File.Delete(StorageFileName.Key); } catch { }
+        if (EntriesNames.Count > 0)
+          foreach (System.Collections.Generic.KeyValuePair<System.String, System.String> EntryName in EntriesNames)
+            if (System.IO.File.Exists(EntryName.Key)) try { System.IO.File.Delete(EntryName.Key); } catch { }
 
         OperationResult.Message = ex.Message;
         return OperationResult;
@@ -120,32 +353,28 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
       OperationResult.ExitCode = 0;
       return OperationResult;
     }
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> DeleteAsync(System.String ContainerName, System.String StorageFileName)
+    public override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> DeleteAsync(System.String ContainerName, System.String[] EntriesNames)
     {
-      return await this.DeleteAsync(ContainerName, new System.String[] { StorageFileName });
-    }
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> DeleteAsync(System.String ContainerName, System.String[] StorageFileNames)
-    {
-      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate();
+      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate(this.ScopedConnectionString);
 
       SoftmakeAll.SDK.OperationResult OperationResult = new SoftmakeAll.SDK.OperationResult();
 
-      if ((System.String.IsNullOrWhiteSpace(ContainerName)) || (StorageFileNames == null) || (StorageFileNames.Length == 0))
+      if ((System.String.IsNullOrWhiteSpace(ContainerName)) || (EntriesNames == null) || (EntriesNames.Length == 0))
       {
-        OperationResult.Message = "The ContainerName and StorageFileName cannot be null.";
+        OperationResult.Message = "The ContainerName and EntriesNames cannot be null.";
         return OperationResult;
       }
 
       try
       {
-        global::Azure.Storage.Blobs.BlobContainerClient BlobContainerClient = new global::Azure.Storage.Blobs.BlobContainerClient(SoftmakeAll.SDK.CloudStorage.Azure.Environment._ConnectionString, ContainerName);
+        global::Azure.Storage.Blobs.BlobContainerClient BlobContainerClient = new global::Azure.Storage.Blobs.BlobContainerClient(this.ScopedConnectionString, ContainerName);
 
-        using (System.Threading.SemaphoreSlim SemaphoreSlim = new System.Threading.SemaphoreSlim(StorageFileNames.Length))
+        using (System.Threading.SemaphoreSlim SemaphoreSlim = new System.Threading.SemaphoreSlim(EntriesNames.Length))
         {
           System.Collections.Generic.List<System.Threading.Tasks.Task> DeleteTasks = new System.Collections.Generic.List<System.Threading.Tasks.Task>();
-          foreach (System.String StorageFileName in StorageFileNames)
+          foreach (System.String EntryName in EntriesNames)
           {
-            global::Azure.Storage.Blobs.BlobClient BlobClient = BlobContainerClient.GetBlobClient(StorageFileName);
+            global::Azure.Storage.Blobs.BlobClient BlobClient = BlobContainerClient.GetBlobClient(EntryName);
             if (!(await BlobClient.ExistsAsync()))
               continue;
 
@@ -166,58 +395,46 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
       OperationResult.ExitCode = 0;
       return OperationResult;
     }
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> CopyAsync(System.String SourceContainerName, System.String SourceStorageFileName, System.String TargetStorageFileName, System.Boolean Overwrite)
+    public override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> CopyAsync(System.String SourceContainerName, System.String[] SourceEntriesNames, System.String TargetContainerName, System.String[] TargetEntriesNames, System.Boolean Overwrite)
     {
-      return await this.CopyAsync(SourceContainerName, new System.String[] { SourceStorageFileName }, SourceContainerName, new System.String[] { TargetStorageFileName }, Overwrite);
-    }
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> CopyAsync(System.String SourceContainerName, System.String[] SourceStorageFileNames, System.String[] TargetStorageFileNames, System.Boolean Overwrite)
-    {
-      return await this.CopyAsync(SourceContainerName, SourceStorageFileNames, SourceContainerName, TargetStorageFileNames, Overwrite);
-    }
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> CopyAsync(System.String SourceContainerName, System.String SourceStorageFileName, System.String TargetContainerName, System.String TargetStorageFileName, System.Boolean Overwrite)
-    {
-      return await this.CopyAsync(SourceContainerName, new System.String[] { SourceStorageFileName }, TargetContainerName, new System.String[] { TargetStorageFileName }, Overwrite);
-    }
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> CopyAsync(System.String SourceContainerName, System.String[] SourceStorageFileNames, System.String TargetContainerName, System.String[] TargetStorageFileNames, System.Boolean Overwrite)
-    {
-      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate();
+      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate(this.ScopedConnectionString);
 
       SoftmakeAll.SDK.OperationResult OperationResult = new SoftmakeAll.SDK.OperationResult();
 
-      if ((System.String.IsNullOrWhiteSpace(SourceContainerName)) || (SourceStorageFileNames == null) || (SourceStorageFileNames.Length == 0) || (System.String.IsNullOrWhiteSpace(TargetContainerName)) || (TargetStorageFileNames == null) || (TargetStorageFileNames.Length == 0))
+      if ((System.String.IsNullOrWhiteSpace(SourceContainerName)) || (SourceEntriesNames == null) || (SourceEntriesNames.Length == 0) || (System.String.IsNullOrWhiteSpace(TargetContainerName)) || (TargetEntriesNames == null) || (TargetEntriesNames.Length == 0))
       {
-        OperationResult.Message = "The SourceContainerName, SourceStorageFileNames, TargetContainerName and TargetStorageFileNames cannot be null.";
+        OperationResult.Message = "The SourceContainerName, SourceEntriesNames, TargetContainerName and TargetEntriesNames cannot be null.";
         return OperationResult;
       }
 
-      if (SourceStorageFileNames.Length != TargetStorageFileNames.Length)
+      if (SourceEntriesNames.Length != TargetEntriesNames.Length)
       {
-        OperationResult.Message = "The SourceStorageFileNames and TargetStorageFileNames must be the same length.";
+        OperationResult.Message = "The SourceEntriesNames and TargetEntriesNames must be the same length.";
         return OperationResult;
       }
 
       try
       {
-        global::Azure.Storage.Blobs.BlobContainerClient SourceBlobContainerClient = new global::Azure.Storage.Blobs.BlobContainerClient(SoftmakeAll.SDK.CloudStorage.Azure.Environment._ConnectionString, SourceContainerName);
+        global::Azure.Storage.Blobs.BlobContainerClient SourceBlobContainerClient = new global::Azure.Storage.Blobs.BlobContainerClient(this.ScopedConnectionString, SourceContainerName);
         global::Azure.Storage.Blobs.BlobContainerClient TargetBlobContainerClient;
         if (SourceContainerName != TargetContainerName)
-          TargetBlobContainerClient = new global::Azure.Storage.Blobs.BlobContainerClient(SoftmakeAll.SDK.CloudStorage.Azure.Environment._ConnectionString, TargetContainerName);
+          TargetBlobContainerClient = new global::Azure.Storage.Blobs.BlobContainerClient(this.ScopedConnectionString, TargetContainerName);
         else
           TargetBlobContainerClient = SourceBlobContainerClient;
 
 
-        using (System.Threading.SemaphoreSlim SemaphoreSlim = new System.Threading.SemaphoreSlim(SourceStorageFileNames.Length))
+        using (System.Threading.SemaphoreSlim SemaphoreSlim = new System.Threading.SemaphoreSlim(SourceEntriesNames.Length))
         {
           System.Collections.Generic.List<System.Threading.Tasks.Task> CopyTasks = new System.Collections.Generic.List<System.Threading.Tasks.Task>();
-          for (System.Int32 i = 0; i < SourceStorageFileNames.Length; i++)
+          for (System.Int32 i = 0; i < SourceEntriesNames.Length; i++)
           {
-            System.String SourceStorageFileName = SourceStorageFileNames[i];
-            global::Azure.Storage.Blobs.BlobClient SourceBlobClient = SourceBlobContainerClient.GetBlobClient(SourceStorageFileName);
+            System.String SourceEntryName = SourceEntriesNames[i];
+            global::Azure.Storage.Blobs.BlobClient SourceBlobClient = SourceBlobContainerClient.GetBlobClient(SourceEntryName);
             if (!(await SourceBlobClient.ExistsAsync()))
               continue;
 
-            System.String TargetStorageFileName = TargetStorageFileNames[i];
-            global::Azure.Storage.Blobs.BlobClient TargetBlobClient = TargetBlobContainerClient.GetBlobClient(TargetStorageFileName);
+            System.String TargetEntryName = TargetEntriesNames[i];
+            global::Azure.Storage.Blobs.BlobClient TargetBlobClient = TargetBlobContainerClient.GetBlobClient(TargetEntryName);
             if ((!(Overwrite)) && (await TargetBlobClient.ExistsAsync()))
               continue;
 
@@ -238,35 +455,7 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
       OperationResult.ExitCode = 0;
       return OperationResult;
     }
-    public System.String GenerateDownloadURL(System.String ShareName, System.String StorageFileName, System.String OriginalName) => this.GenerateDownloadURL(ShareName, StorageFileName, OriginalName, System.DateTimeOffset.UtcNow.AddMinutes(5));
-    public System.String GenerateDownloadURL(System.String ShareName, System.String StorageFileName, System.String OriginalName, System.DateTimeOffset ExpirationDateTime)
-    {
-      SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate();
-
-      if (SoftmakeAll.SDK.Helpers.String.Extensions.StringExtensions.IsNullOrWhiteSpace(ShareName, StorageFileName, OriginalName))
-        return null;
-
-      global::Azure.Storage.Sas.BlobSasBuilder ShareSasBuilder = new global::Azure.Storage.Sas.BlobSasBuilder();
-      ShareSasBuilder.BlobContainerName = ShareName;
-      ShareSasBuilder.Resource = "b";
-      ShareSasBuilder.BlobName = StorageFileName;
-      ShareSasBuilder.ExpiresOn = ExpirationDateTime;
-      ShareSasBuilder.ContentDisposition = $"attachment; filename={OriginalName}";
-      ShareSasBuilder.SetPermissions(global::Azure.Storage.Sas.BlobSasPermissions.Read);
-
-      System.String DefaultEndpointsProtocol = SoftmakeAll.SDK.CloudStorage.Azure.Environment.GetConnectionStringPropertyValue("DefaultEndpointsProtocol");
-      System.String EndpointSuffix = SoftmakeAll.SDK.CloudStorage.Azure.Environment.GetConnectionStringPropertyValue("EndpointSuffix");
-      System.String AccountName = SoftmakeAll.SDK.CloudStorage.Azure.Environment.GetConnectionStringPropertyValue("AccountName");
-      System.String AccountKey = SoftmakeAll.SDK.CloudStorage.Azure.Environment.GetConnectionStringPropertyValue("AccountKey");
-
-      try
-      {
-        return new System.UriBuilder($"{DefaultEndpointsProtocol}://{AccountName}.file.{EndpointSuffix}/{ShareName}/{StorageFileName}") { Query = ShareSasBuilder.ToSasQueryParameters(new global::Azure.Storage.StorageSharedKeyCredential(AccountName, AccountKey)).ToString() }.Uri.AbsoluteUri;
-      }
-      catch { }
-
-      return null;
-    }
+    #endregion
     #endregion
   }
 }

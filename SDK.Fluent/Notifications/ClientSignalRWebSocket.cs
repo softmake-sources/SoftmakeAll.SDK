@@ -84,7 +84,7 @@ namespace SoftmakeAll.SDK.Fluent.Notifications
          else
            o.AccessTokenProvider = () => System.Threading.Tasks.Task.FromResult(Authorization);
        })
-       .WithAutomaticReconnect()
+       .WithAutomaticReconnect(new SoftmakeAll.SDK.Fluent.Notifications.SignalRRandomRetryPolicy(86400)) // Stops reconnection attempts after 1 day
        .Build();
 
       this.WSConnection.Closed += this.WSConnection_Closed;

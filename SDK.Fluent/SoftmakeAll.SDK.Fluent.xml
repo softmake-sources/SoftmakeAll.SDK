@@ -2175,6 +2175,11 @@
             The SDK Context to authenticate and perform requests.
             </summary>
         </member>
+        <member name="F:SoftmakeAll.SDK.Fluent.SDKContext.ExpirationTime">
+            <summary>
+            Allows to acquire a new access token from the time specified before expiration.
+            </summary>
+        </member>
         <member name="F:SoftmakeAll.SDK.Fluent.SDKContext.DefaultServer">
             <summary>
             The Softmake All server address.
@@ -2198,6 +2203,11 @@
         <member name="F:SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication">
             <summary>
             PublicClientApplication to perform Authentication.
+            </summary>
+        </member>
+        <member name="F:SoftmakeAll.SDK.Fluent.SDKContext.Scopes">
+            <summary>
+            Scopes requested to access a protected API
             </summary>
         </member>
         <member name="F:SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult">
@@ -2277,6 +2287,24 @@
             <param name="REST">REST object that contains the HTTP Request information.</param>
             <param name="RESTResult">The output of Send method.</param>
             <returns>A OperationResult with JSON property Data.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.GetAuthorizationAsync">
+            <summary>
+            Gets the current authorization header.
+            </summary>
+            <returns>The current authorization token.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.GetEnvironments">
+            <summary>
+            Gets the all environments of current user.
+            </summary>
+            <returns>The json array containing the Environments.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.GetEnvironmentsAsync">
+            <summary>
+            Gets the all environments of current user.
+            </summary>
+            <returns>The json array containing the Environments.</returns>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.SDKContext.SignOut">
             <summary>

@@ -5,8 +5,8 @@
   /// </summary>
   public enum AuthenticationTypes
   {
-    Application = 0,
-    Credentials = 1,
-    Interactive = 2
+    Application = 1,
+    Credentials = 2,
+    Interactive = 3
   }
 }

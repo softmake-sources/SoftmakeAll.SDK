@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace SoftmakeAll.SDK.FileWR.CSV
+namespace SoftmakeAll.SDK.Files.CSV
 {
   public class ConverterEngine
   {
@@ -24,7 +24,7 @@ namespace SoftmakeAll.SDK.FileWR.CSV
     {
       this.Encoding = System.Text.Encoding.UTF8;
       this.ContainsHeader = true;
-      this.FileColumns = new System.Collections.Generic.List<SoftmakeAll.SDK.FileWR.CSV.FileColumn>();
+      this.FileColumns = new System.Collections.Generic.List<SoftmakeAll.SDK.Files.CSV.FileColumn>();
     }
     #endregion
 
@@ -32,7 +32,7 @@ namespace SoftmakeAll.SDK.FileWR.CSV
     public System.Text.Encoding Encoding { get; set; }
     public System.Boolean ContainsHeader { get; set; }
     public System.Globalization.CultureInfo CultureInfo { get; set; }
-    public System.Collections.Generic.List<SoftmakeAll.SDK.FileWR.CSV.FileColumn> FileColumns { get; }
+    public System.Collections.Generic.List<SoftmakeAll.SDK.Files.CSV.FileColumn> FileColumns { get; }
     #endregion
 
     #region Methods
@@ -68,7 +68,7 @@ namespace SoftmakeAll.SDK.FileWR.CSV
 
           System.String[] DataTableColumnNames = System.Text.RegularExpressions.Regex.Split(CurrentLine, RegexSplit).Where((c, i) => i % 2 == 1).ToArray();
           for (System.Int32 i = 0; i < DataTableColumnNames.Length; i++)
-            FileColumns.Add(new SoftmakeAll.SDK.FileWR.CSV.FileColumn() { Name = ((!(this.ContainsHeader)) ? $"column{i:00000}" : DataTableColumnNames[i]), Index = i });
+            FileColumns.Add(new SoftmakeAll.SDK.Files.CSV.FileColumn() { Name = ((!(this.ContainsHeader)) ? $"column{i:00000}" : DataTableColumnNames[i]), Index = i });
           DataTableColumnNames = null;
 
           while (AnalyserStreamReader.Peek() > -1)
@@ -105,7 +105,7 @@ namespace SoftmakeAll.SDK.FileWR.CSV
         }
       }
 
-      foreach (SoftmakeAll.SDK.FileWR.CSV.FileColumn FileColumn in FileColumns)
+      foreach (SoftmakeAll.SDK.Files.CSV.FileColumn FileColumn in FileColumns)
       {
         if (System.String.IsNullOrWhiteSpace(FileColumn.DataTypeName))
           FileColumn.DataTypeName = "String";
@@ -191,7 +191,7 @@ namespace SoftmakeAll.SDK.FileWR.CSV
 
       return Result;
     }
-    private void DefineFileColumnProperties(SoftmakeAll.SDK.FileWR.CSV.FileColumn FileColumn, System.String Value, System.Globalization.CultureInfo CultureInfo)
+    private void DefineFileColumnProperties(SoftmakeAll.SDK.Files.CSV.FileColumn FileColumn, System.String Value, System.Globalization.CultureInfo CultureInfo)
     {
       Value = Value.ToLower();
 
