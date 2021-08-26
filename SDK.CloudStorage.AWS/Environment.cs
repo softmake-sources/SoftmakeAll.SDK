@@ -28,7 +28,7 @@
     }
     internal static void Validate(Amazon.S3.IAmazonS3 S3Client)
     {
-      if (S3Client == null)
+      if ((S3Client == null) && (SoftmakeAll.SDK.CloudStorage.AWS.Environment._S3Client == null))
         throw new System.Exception("Call SoftmakeAll.SDK.CloudStorage.AWS.Environment.Configure(...) to configure the SDK.");
     }
     #endregion

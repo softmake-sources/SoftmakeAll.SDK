@@ -1,4 +1,4 @@
-﻿namespace SoftmakeAll.SDK.FileWR
+﻿namespace SoftmakeAll.SDK.Files
 {
   public class FileRegisterColumn
   {

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using SoftmakeAll.SDK.Helpers.LINQ.Extensions;
 
-namespace SoftmakeAll.SDK.FileWR
+namespace SoftmakeAll.SDK.Files
 {
   public class FileMap
   {
@@ -12,13 +12,13 @@ namespace SoftmakeAll.SDK.FileWR
         throw new System.Exception("The parameter FileRegistersLength must be greather then 0.");
 
       this.FileRegistersLength = FileRegistersLength;
-      this.FileRegisters = new System.Collections.Generic.List<SoftmakeAll.SDK.FileWR.FileRegister>();
+      this.FileRegisters = new System.Collections.Generic.List<SoftmakeAll.SDK.Files.FileRegister>();
     }
     #endregion
 
     #region Properties
     public System.Int32 FileRegistersLength { get; }
-    public System.Collections.Generic.List<SoftmakeAll.SDK.FileWR.FileRegister> FileRegisters { get; }
+    public System.Collections.Generic.List<SoftmakeAll.SDK.Files.FileRegister> FileRegisters { get; }
 
     private System.Boolean _Builded;
     internal System.Boolean Builded => this._Builded;
@@ -35,7 +35,7 @@ namespace SoftmakeAll.SDK.FileWR
       if (this.FileRegisters.Count != this.FileRegisters.DistinctBy(fr => fr.Type).Count())
         throw new System.Exception($"The file register types must be unique.");
 
-      foreach (SoftmakeAll.SDK.FileWR.FileRegister FileRegister in FileRegisters)
+      foreach (SoftmakeAll.SDK.Files.FileRegister FileRegister in FileRegisters)
       {
         FileRegister.DefineTypePosition();
 

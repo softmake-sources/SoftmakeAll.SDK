@@ -18,9 +18,9 @@ Recebimento de Notificações;
 Requisição para a API de serviços utilizando objetos genéricos.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
-    <FileVersion>1.0.1.0</FileVersion>
-    <Version>1.0.1</Version>
+    <AssemblyVersion>1.0.2.0</AssemblyVersion>
+    <FileVersion>1.0.2.0</FileVersion>
+    <Version>1.0.2</Version>
     <PackageTags>SoftmakeAll SDK Modules Development Integrations</PackageTags>
     <PackageId>SoftmakeAll.SDK.Fluent</PackageId>
     <AssemblyName>SoftmakeAll.SDK.Fluent</AssemblyName>
@@ -56,11 +56,11 @@ Requisição para a API de serviços utilizando objetos genéricos.</Description
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="5.0.7" />
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="5.0.7" />
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="5.0.7" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.7" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.32.1" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="5.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="5.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="5.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.9" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.35.1" />
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="5.0.0" />
   </ItemGroup>
 

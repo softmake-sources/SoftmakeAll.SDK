@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 
-namespace SoftmakeAll.SDK.FileWR
+namespace SoftmakeAll.SDK.Files
 {
   public class ReaderEngine : System.IDisposable
   {
     #region Constructor
-    public ReaderEngine(SoftmakeAll.SDK.FileWR.FileMap FileMap, System.String Path, System.Int32 BufferSize)
+    public ReaderEngine(SoftmakeAll.SDK.Files.FileMap FileMap, System.String Path, System.Int32 BufferSize)
     {
       if ((FileMap == null) || (!(FileMap.Builded)))
         throw new System.Exception("The map needs to be build. Invoke the BuildMap() method from the FileMap class.");
@@ -62,7 +62,7 @@ namespace SoftmakeAll.SDK.FileWR
       BufferSize = System.Math.Max(BufferSize, FileRegistersLengthWithNewLine);
       this.BufferSize = (BufferSize / FileRegistersLengthWithNewLine) * FileRegistersLengthWithNewLine;
 
-      this.Data = new System.Collections.Generic.List<SoftmakeAll.SDK.FileWR.Data>();
+      this.Data = new System.Collections.Generic.List<SoftmakeAll.SDK.Files.Data>();
     }
     #endregion
 
@@ -73,12 +73,12 @@ namespace SoftmakeAll.SDK.FileWR
     #endregion
 
     #region Properties
-    public SoftmakeAll.SDK.FileWR.FileMap FileMap { get; }
+    public SoftmakeAll.SDK.Files.FileMap FileMap { get; }
     public System.String Path { get; }
     public System.Int32 BufferSize { get; }
     public System.Int64 TotalBytesReaded = 0;
     public System.Int64 TotalBytesToRead => this.FileStream.Length;
-    public System.Collections.Generic.List<SoftmakeAll.SDK.FileWR.Data> Data { get; }
+    public System.Collections.Generic.List<SoftmakeAll.SDK.Files.Data> Data { get; }
     #endregion
 
     #region Methods
@@ -105,12 +105,12 @@ namespace SoftmakeAll.SDK.FileWR
         if (Register[0] == 0)
           continue;
 
-        SoftmakeAll.SDK.FileWR.FileRegister FileRegister = this.FileMap.FileRegisters.FirstOrDefault(fr => fr.Type == Register[fr.TypePosition]);
+        SoftmakeAll.SDK.Files.FileRegister FileRegister = this.FileMap.FileRegisters.FirstOrDefault(fr => fr.Type == Register[fr.TypePosition]);
 
-        SoftmakeAll.SDK.FileWR.Data RegisterData = new SoftmakeAll.SDK.FileWR.Data();
+        SoftmakeAll.SDK.Files.Data RegisterData = new SoftmakeAll.SDK.Files.Data();
         RegisterData.RegisterType = FileRegister.Type;
         RegisterData.ColumnValues = new System.Collections.Generic.List<System.Byte[]>();
-        foreach (SoftmakeAll.SDK.FileWR.FileRegisterColumn FileRegisterColumn in FileRegister.FileRegisterColumns)
+        foreach (SoftmakeAll.SDK.Files.FileRegisterColumn FileRegisterColumn in FileRegister.FileRegisterColumns)
           if (!(FileRegisterColumn.IgnoreValues))
             RegisterData.ColumnValues.Add(Register.Skip(FileRegisterColumn.StartPosition).Take(FileRegisterColumn.ContentLength).ToArray());
         this.Data.Add(RegisterData);
@@ -135,14 +135,14 @@ namespace SoftmakeAll.SDK.FileWR
         if (Register[0] == 0)
           continue;
 
-        SoftmakeAll.SDK.FileWR.FileRegister FileRegister = this.FileMap.FileRegisters.FirstOrDefault(fr => fr.Type == Register[fr.TypePosition]);
+        SoftmakeAll.SDK.Files.FileRegister FileRegister = this.FileMap.FileRegisters.FirstOrDefault(fr => fr.Type == Register[fr.TypePosition]);
         if (FileRegister == null)
           continue;
 
-        SoftmakeAll.SDK.FileWR.Data RegisterData = new SoftmakeAll.SDK.FileWR.Data();
+        SoftmakeAll.SDK.Files.Data RegisterData = new SoftmakeAll.SDK.Files.Data();
         RegisterData.RegisterType = FileRegister.Type;
         RegisterData.ColumnValues = new System.Collections.Generic.List<System.Byte[]>();
-        foreach (SoftmakeAll.SDK.FileWR.FileRegisterColumn FileRegisterColumn in FileRegister.FileRegisterColumns)
+        foreach (SoftmakeAll.SDK.Files.FileRegisterColumn FileRegisterColumn in FileRegister.FileRegisterColumns)
           if (!(FileRegisterColumn.IgnoreValues))
             RegisterData.ColumnValues.Add(Register.Skip(FileRegisterColumn.StartPosition).Take(FileRegisterColumn.ContentLength).ToArray());
         this.Data.Add(RegisterData);

@@ -18,9 +18,9 @@
 
 . Este pacote fornece apoio para administração de arquivos no AWS S3.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <AssemblyVersion>1.0.8.0</AssemblyVersion>
-    <FileVersion>1.0.8.0</FileVersion>
-    <Version>1.0.8</Version>
+    <AssemblyVersion>1.0.9.0</AssemblyVersion>
+    <FileVersion>1.0.9.0</FileVersion>
+    <Version>1.0.9</Version>
 
     <PackageReleaseNotes></PackageReleaseNotes>
 
@@ -43,7 +43,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.S3" Version="3.7.1.5" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.1.27" />
   </ItemGroup>
 
   <ItemGroup>

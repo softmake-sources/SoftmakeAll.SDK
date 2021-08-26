@@ -379,7 +379,7 @@ namespace SoftmakeAll.SDK.Fluent
     public static System.Text.Json.JsonElement GetEnvironments()
     {
       SoftmakeAll.SDK.Communication.REST REST = new SoftmakeAll.SDK.Communication.REST();
-      REST.URL = "v1/core/EnvironmentsOfLoggedEnvironmentSystemAccount?fields=EnvironmentUniqueID,EnvironmentName,IsDefaultEnvironment";
+      REST.URL = "v1/core/EnvironmentsOfLoggedEnvironmentSystemAccount?fields=EnvironmentUniqueID,EnvironmentName,IsDefaultEnvironment,EnvironmentSystemAccountsID,SystemAccountFullName,SystemAccountEmail,SystemAccountsID";
       return SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequest(REST).Data.GetJsonElement("Result");
     }
 
@@ -390,7 +390,7 @@ namespace SoftmakeAll.SDK.Fluent
     public static async System.Threading.Tasks.Task<System.Text.Json.JsonElement> GetEnvironmentsAsync()
     {
       SoftmakeAll.SDK.Communication.REST REST = new SoftmakeAll.SDK.Communication.REST();
-      REST.URL = "v1/core/EnvironmentsOfLoggedEnvironmentSystemAccount?fields=EnvironmentUniqueID,EnvironmentName,IsDefaultEnvironment";
+      REST.URL = "v1/core/EnvironmentsOfLoggedEnvironmentSystemAccount?fields=EnvironmentUniqueID,EnvironmentName,IsDefaultEnvironment,EnvironmentSystemAccountsID,SystemAccountFullName,SystemAccountEmail,SystemAccountsID";
       return (await SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequestAsync(REST)).Data.GetJsonElement("Result");
     }
 

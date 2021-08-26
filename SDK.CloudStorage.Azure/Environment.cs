@@ -18,7 +18,7 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
     }
     internal static void Validate(System.String ConnectionString)
     {
-      if (System.String.IsNullOrWhiteSpace(ConnectionString))
+      if ((System.String.IsNullOrWhiteSpace(ConnectionString)) && (System.String.IsNullOrWhiteSpace(SoftmakeAll.SDK.CloudStorage.Azure.Environment._ConnectionString)))
         throw new System.Exception("Call SoftmakeAll.SDK.CloudStorage.Azure.Environment.Configure(...) to configure the SDK.");
     }
     internal static System.String GetConnectionStringPropertyValue(System.String ConnectionString, System.String PropertyName)
