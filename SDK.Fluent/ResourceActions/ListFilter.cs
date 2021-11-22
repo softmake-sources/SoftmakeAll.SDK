@@ -1,4 +1,6 @@
-﻿namespace SoftmakeAll.SDK.Fluent.ResourceActions
+﻿using System.Linq;
+
+namespace SoftmakeAll.SDK.Fluent.ResourceActions
 {
   /// <summary>
   /// The object to use to filter data on HTTP GET method.
@@ -37,6 +39,11 @@
     /// Nested predicates
     /// </summary>
     public System.Collections.Generic.List<SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter> Predicates { get; set; }
+
+    /// <summary>
+    /// True if this model contains any nested predicate. Otherwise, false.
+    /// </summary>
+    public System.Boolean IsComplex { get => this.Predicates.Any(); }
     #endregion
   }
 }

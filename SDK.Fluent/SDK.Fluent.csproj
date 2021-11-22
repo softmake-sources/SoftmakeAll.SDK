@@ -18,9 +18,9 @@ Recebimento de Notificações;
 Requisição para a API de serviços utilizando objetos genéricos.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
-    <FileVersion>1.0.2.0</FileVersion>
-    <Version>1.0.2</Version>
+    <AssemblyVersion>1.0.3.0</AssemblyVersion>
+    <FileVersion>1.0.3.0</FileVersion>
+    <Version>1.0.3</Version>
     <PackageTags>SoftmakeAll SDK Modules Development Integrations</PackageTags>
     <PackageId>SoftmakeAll.SDK.Fluent</PackageId>
     <AssemblyName>SoftmakeAll.SDK.Fluent</AssemblyName>

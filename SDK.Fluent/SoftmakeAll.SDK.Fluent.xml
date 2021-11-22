@@ -979,97 +979,211 @@
             <summary>
             Updates a resource fully.
             </summary>
-            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="ID">The ID of the resource to be modified.</param>
             <param name="Model">The generic object that represents the new resource.</param>
-            <returns>The replaced resource.</returns>
+            <returns>The modified resource.</returns>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.Replace(System.Int16,`0)">
             <summary>
             Updates a resource fully.
             </summary>
-            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="ID">The ID of the resource to be modified.</param>
             <param name="Model">The generic object that represents the new resource.</param>
-            <returns>The replaced resource.</returns>
+            <returns>The modified resource.</returns>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.Replace(System.Int32,`0)">
             <summary>
             Updates a resource fully.
             </summary>
-            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="ID">The ID of the resource to be modified.</param>
             <param name="Model">The generic object that represents the new resource.</param>
-            <returns>The replaced resource.</returns>
+            <returns>The modified resource.</returns>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.Replace(System.Int64,`0)">
             <summary>
             Updates a resource fully.
             </summary>
-            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="ID">The ID of the resource to be modified.</param>
             <param name="Model">The generic object that represents the new resource.</param>
-            <returns>The replaced resource.</returns>
+            <returns>The modified resource.</returns>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.Replace(System.Char,`0)">
             <summary>
             Updates a resource fully.
             </summary>
-            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="ID">The ID of the resource to be modified.</param>
             <param name="Model">The generic object that represents the new resource.</param>
-            <returns>The replaced resource.</returns>
+            <returns>The modified resource.</returns>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.Replace(System.String,`0)">
             <summary>
             Updates a resource fully.
             </summary>
-            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="ID">The ID of the resource to be modified.</param>
             <param name="Model">The generic object that represents the new resource.</param>
-            <returns>The replaced resource.</returns>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplacePreventingOverwrite(System.Byte,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplacePreventingOverwrite(System.Int16,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplacePreventingOverwrite(System.Int32,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplacePreventingOverwrite(System.Int64,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplacePreventingOverwrite(System.Char,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplacePreventingOverwrite(System.String,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.Replace(System.String,`0,System.Boolean)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <param name="PreventingOverwrite">True: If the server resource model is newer, the system shows an error instead of update. False: Ignores the server resource model version and update it using the Model parameter values.</param>
+            <returns>The modified resource.</returns>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplaceAsync(System.Byte,`0)">
             <summary>
             Updates a resource fully.
             </summary>
-            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="ID">The ID of the resource to be modified.</param>
             <param name="Model">The generic object that represents the new resource.</param>
-            <returns>The replaced resource.</returns>
+            <returns>The modified resource.</returns>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplaceAsync(System.Int16,`0)">
             <summary>
             Updates a resource fully.
             </summary>
-            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="ID">The ID of the resource to be modified.</param>
             <param name="Model">The generic object that represents the new resource.</param>
-            <returns>The replaced resource.</returns>
+            <returns>The modified resource.</returns>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplaceAsync(System.Int32,`0)">
             <summary>
             Updates a resource fully.
             </summary>
-            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="ID">The ID of the resource to be modified.</param>
             <param name="Model">The generic object that represents the new resource.</param>
-            <returns>The replaced resource.</returns>
+            <returns>The modified resource.</returns>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplaceAsync(System.Int64,`0)">
             <summary>
             Updates a resource fully.
             </summary>
-            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="ID">The ID of the resource to be modified.</param>
             <param name="Model">The generic object that represents the new resource.</param>
-            <returns>The replaced resource.</returns>
+            <returns>The modified resource.</returns>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplaceAsync(System.Char,`0)">
             <summary>
             Updates a resource fully.
             </summary>
-            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="ID">The ID of the resource to be modified.</param>
             <param name="Model">The generic object that represents the new resource.</param>
-            <returns>The replaced resource.</returns>
+            <returns>The modified resource.</returns>
         </member>
         <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplaceAsync(System.String,`0)">
             <summary>
             Updates a resource fully.
             </summary>
-            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="ID">The ID of the resource to be modified.</param>
             <param name="Model">The generic object that represents the new resource.</param>
-            <returns>The replaced resource.</returns>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplacePreventingOverwriteAsync(System.Byte,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplacePreventingOverwriteAsync(System.Int16,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplacePreventingOverwriteAsync(System.Int32,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplacePreventingOverwriteAsync(System.Int64,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplacePreventingOverwriteAsync(System.Char,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplacePreventingOverwriteAsync(System.String,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The modified resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ActionUD`1.ReplaceAsync(System.String,`0,System.Boolean)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be modified.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <param name="PreventingOverwrite">True: If the server resource model is newer, the system shows an error instead of update. False: Ignores the server resource model version and update it using the Model parameter values.</param>
+            <returns>The modified resource.</returns>
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsCreating`1">
             <summary>
@@ -1507,6 +1621,63 @@
             <param name="Model">The generic object that represents the new resource.</param>
             <returns>The replaced resource.</returns>
         </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ReplacePreventingOverwrite(System.Byte,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ReplacePreventingOverwrite(System.Int16,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ReplacePreventingOverwrite(System.Int32,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ReplacePreventingOverwrite(System.Int64,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ReplacePreventingOverwrite(System.Char,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ReplacePreventingOverwrite(System.String,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.Replace(System.String,`0,System.Boolean)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <param name="PreventingOverwrite">True: If the server resource model is newer, the system shows an error instead of update. False: Ignores the server resource model version and update it using the Model parameter values.</param>
+            <returns>The replaced resource.</returns>
+        </member>
         <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ReplaceAsync(System.Byte,`0)">
             <summary>
             Updates a resource fully.
@@ -1555,6 +1726,63 @@
             <param name="Model">The generic object that represents the new resource.</param>
             <returns>The replaced resource.</returns>
         </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ReplacePreventingOverwriteAsync(System.Byte,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ReplacePreventingOverwriteAsync(System.Int16,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ReplacePreventingOverwriteAsync(System.Int32,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ReplacePreventingOverwriteAsync(System.Int64,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ReplacePreventingOverwriteAsync(System.Char,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ReplacePreventingOverwriteAsync(System.String,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.ISupportsUpdating`1.ReplaceAsync(System.String,`0,System.Boolean)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <param name="PreventingOverwrite">True: If the server resource model is newer, the system shows an error instead of update. False: Ignores the server resource model version and update it using the Model parameter values.</param>
+            <returns>The replaced resource.</returns>
+        </member>
         <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter">
             <summary>
             The object to use to filter data on HTTP GET method.
@@ -1588,6 +1816,11 @@
         <member name="P:SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter.Predicates">
             <summary>
             Nested predicates
+            </summary>
+        </member>
+        <member name="P:SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter.IsComplex">
+            <summary>
+            True if this model contains any nested predicate. Otherwise, false.
             </summary>
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsBase`1">
@@ -2101,6 +2334,63 @@
             <param name="Model">The generic object that represents the new resource.</param>
             <returns>The replaced resource.</returns>
         </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ReplacePreventingOverwrite(System.Byte,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ReplacePreventingOverwrite(System.Int16,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ReplacePreventingOverwrite(System.Int32,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ReplacePreventingOverwrite(System.Int64,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ReplacePreventingOverwrite(System.Char,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ReplacePreventingOverwrite(System.String,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.Replace(System.String,`0,System.Boolean)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <param name="PreventingOverwrite">True: If the server resource model is newer, the system shows an error instead of update. False: Ignores the server resource model version and update it using the Model parameter values.</param>
+            <returns>The replaced resource.</returns>
+        </member>
         <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ReplaceAsync(System.Byte,`0)">
             <summary>
             Updates a resource fully.
@@ -2147,6 +2437,63 @@
             </summary>
             <param name="ID">The ID of the resource to be replaced.</param>
             <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ReplacePreventingOverwriteAsync(System.Byte,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ReplacePreventingOverwriteAsync(System.Int16,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ReplacePreventingOverwriteAsync(System.Int32,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ReplacePreventingOverwriteAsync(System.Int64,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ReplacePreventingOverwriteAsync(System.Char,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ReplacePreventingOverwriteAsync(System.String,`0)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <returns>The replaced resource.</returns>
+        </member>
+        <member name="M:SoftmakeAll.SDK.Fluent.ResourceActions.SupportsUpdating`1.ReplaceAsync(System.String,`0,System.Boolean)">
+            <summary>
+            Updates a resource fully.
+            </summary>
+            <param name="ID">The ID of the resource to be replaced.</param>
+            <param name="Model">The generic object that represents the new resource.</param>
+            <param name="PreventingOverwrite">True: If the server resource model is newer, the system shows an error instead of update. False: Ignores the server resource model version and update it using the Model parameter values.</param>
             <returns>The replaced resource.</returns>
         </member>
         <member name="T:SoftmakeAll.SDK.Fluent.ResourceList`1">

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using SoftmakeAll.SDK.Helpers.JSON.Extensions;
+using System.Linq;
 
 namespace SoftmakeAll.SDK.Fluent.ResourceActions
 {
@@ -17,10 +18,30 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
     #endregion
 
     #region Methods
+    public System.String CompressStringForURL(System.String UncompressedString)
+    {
+      if (System.String.IsNullOrWhiteSpace(UncompressedString))
+        return UncompressedString;
+
+      try
+      {
+        using (System.IO.MemoryStream MemoryStream = new System.IO.MemoryStream())
+        {
+          using (System.IO.Compression.DeflateStream DeflateStream = new System.IO.Compression.DeflateStream(MemoryStream, System.IO.Compression.CompressionLevel.Fastest))
+          using (System.IO.StreamWriter StreamWriter = new System.IO.StreamWriter(DeflateStream, System.Text.Encoding.UTF8))
+            StreamWriter.Write(UncompressedString);
+
+          return System.Web.HttpUtility.UrlEncode(System.Convert.ToBase64String(MemoryStream.ToArray()));
+        }
+      }
+      catch { }
+
+      return null;
+    }
     private System.String GenerateListURL(
       System.Collections.Generic.Dictionary<System.String, System.String> Parameters = null,
       System.Collections.Generic.List<System.String> Fields = null,
-      System.Collections.Generic.List<SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter> Filter = null, // NOT YET IMPLEMENTED
+      System.Collections.Generic.List<SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter> Filter = null,
       System.Collections.Generic.List<System.String> Group = null,
       System.Collections.Generic.Dictionary<System.String, System.Boolean> Sort = null,
       System.Int32 Skip = 0, System.Int32 Take = 20
@@ -30,6 +51,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
 
       if ((Parameters != null) && (Parameters.Any())) URL = $"{URL}&{System.String.Join('&', Parameters.Select(p => $"{p.Key}={p.Value}"))}";
       if ((Fields != null) && (Fields.Any())) URL = $"{URL}&fields={System.String.Join(',', Fields)}";
+      if ((Filter != null) && (Filter.Any())) URL = $"{URL}&filter=dflt:{this.CompressStringForURL(Filter.ToJsonElement().ToRawText())}";
       if ((Group != null) && (Group.Any())) URL = $"{URL}&group={System.String.Join(',', Group)}";
       if ((Sort != null) && (Sort.Any())) URL = $"{URL}&sort={System.String.Join('&', Sort.Select(p => $"{(p.Value ? '-' : '+')}{p.Key}"))}";
 
@@ -50,7 +72,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
     public SoftmakeAll.SDK.Fluent.ResourceList<T> List(
       System.Collections.Generic.Dictionary<System.String, System.String> Parameters = null,
       System.Collections.Generic.List<System.String> Fields = null,
-      System.Collections.Generic.List<SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter> Filter = null, // NOT YET IMPLEMENTED
+      System.Collections.Generic.List<SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter> Filter = null,
       System.Collections.Generic.List<System.String> Group = null,
       System.Collections.Generic.Dictionary<System.String, System.Boolean> Sort = null,
       System.Int32 Skip = 0, System.Int32 Take = 20
@@ -71,7 +93,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
     public async System.Threading.Tasks.Task<SoftmakeAll.SDK.Fluent.ResourceList<T>> ListAsync(
       System.Collections.Generic.Dictionary<System.String, System.String> Parameters = null,
       System.Collections.Generic.List<System.String> Fields = null,
-      System.Collections.Generic.List<SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter> Filter = null, // NOT YET IMPLEMENTED
+      System.Collections.Generic.List<SoftmakeAll.SDK.Fluent.ResourceActions.ListFilter> Filter = null,
       System.Collections.Generic.List<System.String> Group = null,
       System.Collections.Generic.Dictionary<System.String, System.Boolean> Sort = null,
       System.Int32 Skip = 0, System.Int32 Take = 20
