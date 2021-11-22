@@ -55,6 +55,7 @@
     /// <returns>The modified resource.</returns>
     public T Modify(System.String ID, System.Object Model);
 
+
     /// <summary>
     /// Updates a resource partially.
     /// </summary>
@@ -102,6 +103,7 @@
     /// <param name="Model">The object that contains the fields and values ​​to be modified.</param>
     /// <returns>The modified resource.</returns>
     public System.Threading.Tasks.Task<T> ModifyAsync(System.String ID, System.Object Model);
+
 
 
 
@@ -159,6 +161,64 @@
     /// <param name="ID">The ID of the resource to be replaced.</param>
     /// <param name="Model">The generic object that represents the new resource.</param>
     /// <returns>The replaced resource.</returns>
+    public T ReplacePreventingOverwrite(System.Byte ID, T Model);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public T ReplacePreventingOverwrite(System.Int16 ID, T Model);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public T ReplacePreventingOverwrite(System.Int32 ID, T Model);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public T ReplacePreventingOverwrite(System.Int64 ID, T Model);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public T ReplacePreventingOverwrite(System.Char ID, T Model);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public T ReplacePreventingOverwrite(System.String ID, T Model);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <param name="PreventingOverwrite">True: If the server resource model is newer, the system shows an error instead of update. False: Ignores the server resource model version and update it using the Model parameter values.</param>
+    /// <returns>The replaced resource.</returns>
+    public T Replace(System.String ID, T Model, System.Boolean PreventingOverwrite);
+
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
     public System.Threading.Tasks.Task<T> ReplaceAsync(System.Byte ID, T Model);
 
     /// <summary>
@@ -200,6 +260,63 @@
     /// <param name="Model">The generic object that represents the new resource.</param>
     /// <returns>The replaced resource.</returns>
     public System.Threading.Tasks.Task<T> ReplaceAsync(System.String ID, T Model);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public System.Threading.Tasks.Task<T> ReplacePreventingOverwriteAsync(System.Byte ID, T Model);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public System.Threading.Tasks.Task<T> ReplacePreventingOverwriteAsync(System.Int16 ID, T Model);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public System.Threading.Tasks.Task<T> ReplacePreventingOverwriteAsync(System.Int32 ID, T Model);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public System.Threading.Tasks.Task<T> ReplacePreventingOverwriteAsync(System.Int64 ID, T Model);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public System.Threading.Tasks.Task<T> ReplacePreventingOverwriteAsync(System.Char ID, T Model);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public System.Threading.Tasks.Task<T> ReplacePreventingOverwriteAsync(System.String ID, T Model);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <param name="PreventingOverwrite">True: If the server resource model is newer, the system shows an error instead of update. False: Ignores the server resource model version and update it using the Model parameter values.</param>
+    /// <returns>The replaced resource.</returns>
+    public System.Threading.Tasks.Task<T> ReplaceAsync(System.String ID, T Model, System.Boolean PreventingOverwrite);
     #endregion
   }
 }

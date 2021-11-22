@@ -44,7 +44,7 @@ namespace SoftmakeAll.SDK.Fluent
     /// <summary>
     /// Scopes requested to access a protected API
     /// </summary>
-    private static System.String[] Scopes = new System.String[] { "openid", "https://softmakeb2c.onmicrosoft.com/48512da7-b030-4e62-be61-9e19b2c52d8a/user_impersonation" };
+    private static System.String[] Scopes = new System.String[] { "https://softmakeb2c.onmicrosoft.com/48512da7-b030-4e62-be61-9e19b2c52d8a/user_impersonation", "openid", "offline_access" };
 
     /// <summary>
     /// Authentication result from PublicClientApplication.
@@ -80,11 +80,21 @@ namespace SoftmakeAll.SDK.Fluent
     /// <returns>A PublicClientApplication.</returns>
     private static Microsoft.Identity.Client.IPublicClientApplication CreatePublicClientApplication(System.Guid ContextIdentifier, System.String PolicyName, System.String RedirectURI)
     {
-      Microsoft.Identity.Client.IPublicClientApplication PublicClientApplication = Microsoft.Identity.Client.PublicClientApplicationBuilder
+      Microsoft.Identity.Client.IPublicClientApplication PublicClientApplication;
+
+      if (System.String.IsNullOrWhiteSpace(RedirectURI))
+        PublicClientApplication = Microsoft.Identity.Client.PublicClientApplicationBuilder
         .Create(ContextIdentifier.ToString())
         .WithB2CAuthority($"https://softmakeb2c.b2clogin.com/tfp/softmakeb2c.onmicrosoft.com/B2C_1{PolicyName}")
         .WithRedirectUri(RedirectURI)
         .Build();
+      else
+        PublicClientApplication = Microsoft.Identity.Client.PublicClientApplicationBuilder
+        .Create(ContextIdentifier.ToString())
+        .WithB2CAuthority($"https://softmakeb2c.b2clogin.com/tfp/softmakeb2c.onmicrosoft.com/B2C_1{PolicyName}")
+        .WithRedirectUri(RedirectURI)
+        .Build();
+
       SoftmakeAll.SDK.Fluent.TokenCacheHelper.EnableSerialization(PublicClientApplication.UserTokenCache);
       return PublicClientApplication;
     }
@@ -184,7 +194,7 @@ namespace SoftmakeAll.SDK.Fluent
         if (SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication == null)
         {
           if (SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.AuthenticationType == SoftmakeAll.SDK.Fluent.Authentication.AuthenticationTypes.Interactive) // From Interactive
-            SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication = SoftmakeAll.SDK.Fluent.SDKContext.CreatePublicClientApplication(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.ContextIdentifier, "A_signup_signin", "http://localhost:1435");
+            SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication = SoftmakeAll.SDK.Fluent.SDKContext.CreatePublicClientApplication(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.ContextIdentifier, "A_SIGNUP_SIGNIN", "http://localhost:1435");
           else if (SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.AuthenticationType == SoftmakeAll.SDK.Fluent.Authentication.AuthenticationTypes.Credentials) // From Username and Password
             SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication = SoftmakeAll.SDK.Fluent.SDKContext.CreatePublicClientApplication(SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.ContextIdentifier, "_ROPC");
           else
@@ -239,8 +249,9 @@ namespace SoftmakeAll.SDK.Fluent
             SoftmakeAll.SDK.Fluent.SDKContext.AuthenticationResult = await SoftmakeAll.SDK.Fluent.SDKContext.PublicClientApplication.AcquireTokenByUsernamePassword(Scopes, SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.ClientID, Password).ExecuteAsync();
             Password.Dispose();
           }
-          catch
+          catch (System.Exception ex)
           {
+            System.Console.Write(ex.Message);
             Password.Dispose();
             SoftmakeAll.SDK.Fluent.SDKContext.SignOut();
             throw new System.Exception("Invalid username or password.");

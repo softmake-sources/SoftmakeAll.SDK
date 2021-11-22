@@ -136,13 +136,6 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
     }
 
 
-    /// <summary>
-    /// Updates a resource fully.
-    /// </summary>
-    /// <param name="ID">The ID of the resource to be replaced.</param>
-    /// <param name="Model">The generic object that represents the new resource.</param>
-    /// <returns>The replaced resource.</returns>
-    public T Replace(System.Byte ID, T Model) => this.Replace(ID.ToString(), Model);
 
     /// <summary>
     /// Updates a resource fully.
@@ -150,7 +143,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
     /// <param name="ID">The ID of the resource to be replaced.</param>
     /// <param name="Model">The generic object that represents the new resource.</param>
     /// <returns>The replaced resource.</returns>
-    public T Replace(System.Int16 ID, T Model) => this.Replace(ID.ToString(), Model);
+    public T Replace(System.Byte ID, T Model) => this.Replace(ID.ToString(), Model, false);
 
     /// <summary>
     /// Updates a resource fully.
@@ -158,7 +151,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
     /// <param name="ID">The ID of the resource to be replaced.</param>
     /// <param name="Model">The generic object that represents the new resource.</param>
     /// <returns>The replaced resource.</returns>
-    public T Replace(System.Int32 ID, T Model) => this.Replace(ID.ToString(), Model);
+    public T Replace(System.Int16 ID, T Model) => this.Replace(ID.ToString(), Model, false);
 
     /// <summary>
     /// Updates a resource fully.
@@ -166,7 +159,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
     /// <param name="ID">The ID of the resource to be replaced.</param>
     /// <param name="Model">The generic object that represents the new resource.</param>
     /// <returns>The replaced resource.</returns>
-    public T Replace(System.Int64 ID, T Model) => this.Replace(ID.ToString(), Model);
+    public T Replace(System.Int32 ID, T Model) => this.Replace(ID.ToString(), Model, false);
 
     /// <summary>
     /// Updates a resource fully.
@@ -174,7 +167,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
     /// <param name="ID">The ID of the resource to be replaced.</param>
     /// <param name="Model">The generic object that represents the new resource.</param>
     /// <returns>The replaced resource.</returns>
-    public T Replace(System.Char ID, T Model) => this.Replace(ID.ToString(), Model);
+    public T Replace(System.Int64 ID, T Model) => this.Replace(ID.ToString(), Model, false);
 
     /// <summary>
     /// Updates a resource fully.
@@ -182,12 +175,79 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
     /// <param name="ID">The ID of the resource to be replaced.</param>
     /// <param name="Model">The generic object that represents the new resource.</param>
     /// <returns>The replaced resource.</returns>
-    public T Replace(System.String ID, T Model)
+    public T Replace(System.Char ID, T Model) => this.Replace(ID.ToString(), Model, false);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public T Replace(System.String ID, T Model) => this.Replace(ID, Model, false);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public T ReplacePreventingOverwrite(System.Byte ID, T Model) => this.Replace(ID.ToString(), Model, true);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public T ReplacePreventingOverwrite(System.Int16 ID, T Model) => this.Replace(ID.ToString(), Model, true);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public T ReplacePreventingOverwrite(System.Int32 ID, T Model) => this.Replace(ID.ToString(), Model, true);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public T ReplacePreventingOverwrite(System.Int64 ID, T Model) => this.Replace(ID.ToString(), Model, true);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public T ReplacePreventingOverwrite(System.Char ID, T Model) => this.Replace(ID.ToString(), Model, true);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public T ReplacePreventingOverwrite(System.String ID, T Model) => this.Replace(ID, Model, true);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <param name="PreventingOverwrite">True: If the server resource model is newer, the system shows an error instead of update. False: Ignores the server resource model version and update it using the Model parameter values.</param>
+    /// <returns>The replaced resource.</returns>
+    public T Replace(System.String ID, T Model, System.Boolean PreventingOverwrite)
     {
       if (System.String.IsNullOrWhiteSpace(ID))
         return default;
 
-      return base.ProcessOperationResult(SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequest(new SoftmakeAll.SDK.Communication.REST() { Method = "PUT", URL = $"{base.Route}/{ID}", Body = Model.ToJsonElement() }), Model);
+      SoftmakeAll.SDK.Communication.REST REST = new SoftmakeAll.SDK.Communication.REST() { Method = "PUT", URL = $"{base.Route}/{ID}" };
+      REST.Body = PreventingOverwrite ? Model.ToJsonElement() : Model.Serialize().Insert(1, "\"__Overwrite\": true, ").ToJsonElement();
+      return base.ProcessOperationResult(SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequest(REST), Model);
     }
 
     /// <summary>
@@ -196,7 +256,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
     /// <param name="ID">The ID of the resource to be replaced.</param>
     /// <param name="Model">The generic object that represents the new resource.</param>
     /// <returns>The replaced resource.</returns>
-    public async System.Threading.Tasks.Task<T> ReplaceAsync(System.Byte ID, T Model) => await this.ReplaceAsync(ID.ToString(), Model);
+    public async System.Threading.Tasks.Task<T> ReplaceAsync(System.Byte ID, T Model) => await this.ReplaceAsync(ID.ToString(), Model, false);
 
     /// <summary>
     /// Updates a resource fully.
@@ -204,7 +264,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
     /// <param name="ID">The ID of the resource to be replaced.</param>
     /// <param name="Model">The generic object that represents the new resource.</param>
     /// <returns>The replaced resource.</returns>
-    public async System.Threading.Tasks.Task<T> ReplaceAsync(System.Int16 ID, T Model) => await this.ReplaceAsync(ID.ToString(), Model);
+    public async System.Threading.Tasks.Task<T> ReplaceAsync(System.Int16 ID, T Model) => await this.ReplaceAsync(ID.ToString(), Model, false);
 
     /// <summary>
     /// Updates a resource fully.
@@ -212,7 +272,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
     /// <param name="ID">The ID of the resource to be replaced.</param>
     /// <param name="Model">The generic object that represents the new resource.</param>
     /// <returns>The replaced resource.</returns>
-    public async System.Threading.Tasks.Task<T> ReplaceAsync(System.Int32 ID, T Model) => await this.ReplaceAsync(ID.ToString(), Model);
+    public async System.Threading.Tasks.Task<T> ReplaceAsync(System.Int32 ID, T Model) => await this.ReplaceAsync(ID.ToString(), Model, false);
 
     /// <summary>
     /// Updates a resource fully.
@@ -220,7 +280,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
     /// <param name="ID">The ID of the resource to be replaced.</param>
     /// <param name="Model">The generic object that represents the new resource.</param>
     /// <returns>The replaced resource.</returns>
-    public async System.Threading.Tasks.Task<T> ReplaceAsync(System.Int64 ID, T Model) => await this.ReplaceAsync(ID.ToString(), Model);
+    public async System.Threading.Tasks.Task<T> ReplaceAsync(System.Int64 ID, T Model) => await this.ReplaceAsync(ID.ToString(), Model, false);
 
     /// <summary>
     /// Updates a resource fully.
@@ -228,7 +288,7 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
     /// <param name="ID">The ID of the resource to be replaced.</param>
     /// <param name="Model">The generic object that represents the new resource.</param>
     /// <returns>The replaced resource.</returns>
-    public async System.Threading.Tasks.Task<T> ReplaceAsync(System.Char ID, T Model) => await this.ReplaceAsync(ID.ToString(), Model);
+    public async System.Threading.Tasks.Task<T> ReplaceAsync(System.Char ID, T Model) => await this.ReplaceAsync(ID.ToString(), Model, false);
 
     /// <summary>
     /// Updates a resource fully.
@@ -236,12 +296,71 @@ namespace SoftmakeAll.SDK.Fluent.ResourceActions
     /// <param name="ID">The ID of the resource to be replaced.</param>
     /// <param name="Model">The generic object that represents the new resource.</param>
     /// <returns>The replaced resource.</returns>
-    public async System.Threading.Tasks.Task<T> ReplaceAsync(System.String ID, T Model)
+    public async System.Threading.Tasks.Task<T> ReplaceAsync(System.String ID, T Model) => await this.ReplaceAsync(ID, Model, false);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public async System.Threading.Tasks.Task<T> ReplacePreventingOverwriteAsync(System.Byte ID, T Model) => await this.ReplaceAsync(ID.ToString(), Model, true);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public async System.Threading.Tasks.Task<T> ReplacePreventingOverwriteAsync(System.Int16 ID, T Model) => await this.ReplaceAsync(ID.ToString(), Model, true);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public async System.Threading.Tasks.Task<T> ReplacePreventingOverwriteAsync(System.Int32 ID, T Model) => await this.ReplaceAsync(ID.ToString(), Model, true);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public async System.Threading.Tasks.Task<T> ReplacePreventingOverwriteAsync(System.Int64 ID, T Model) => await this.ReplaceAsync(ID.ToString(), Model, true);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public async System.Threading.Tasks.Task<T> ReplacePreventingOverwriteAsync(System.Char ID, T Model) => await this.ReplaceAsync(ID.ToString(), Model, true);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <returns>The replaced resource.</returns>
+    public async System.Threading.Tasks.Task<T> ReplacePreventingOverwriteAsync(System.String ID, T Model) => await this.ReplaceAsync(ID, Model, true);
+
+    /// <summary>
+    /// Updates a resource fully.
+    /// </summary>
+    /// <param name="ID">The ID of the resource to be replaced.</param>
+    /// <param name="Model">The generic object that represents the new resource.</param>
+    /// <param name="PreventingOverwrite">True: If the server resource model is newer, the system shows an error instead of update. False: Ignores the server resource model version and update it using the Model parameter values.</param>
+    /// <returns>The replaced resource.</returns>
+    public async System.Threading.Tasks.Task<T> ReplaceAsync(System.String ID, T Model, System.Boolean PreventingOverwrite)
     {
       if (System.String.IsNullOrWhiteSpace(ID))
         return default;
 
-      return base.ProcessOperationResult(await SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequestAsync(new SoftmakeAll.SDK.Communication.REST() { Method = "PUT", URL = $"{base.Route}/{ID}", Body = Model.ToJsonElement() }), Model);
+      SoftmakeAll.SDK.Communication.REST REST = new SoftmakeAll.SDK.Communication.REST() { Method = "PUT", URL = $"{base.Route}/{ID}" };
+      REST.Body = PreventingOverwrite ? Model.ToJsonElement() : Model.Serialize().Insert(1, "\"__Overwrite\": true, ").ToJsonElement();
+      return base.ProcessOperationResult(await SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequestAsync(REST), Model);
     }
     #endregion
   }
