@@ -1,7 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
 
     <Authors>Arthur Mattos</Authors>
     <Company>Softmake - Software &amp; Automação</Company>
@@ -21,9 +23,9 @@ Este pacote fornece apoio para a construção de APIs de serviços que serão co
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
     <PackageReleaseNotes></PackageReleaseNotes>
-    <AssemblyVersion>1.0.16.0</AssemblyVersion>
-    <FileVersion>1.0.16.0</FileVersion>
-    <Version>1.0.16</Version>
+    <AssemblyVersion>1.0.18.0</AssemblyVersion>
+    <FileVersion>1.0.18.0</FileVersion>
+    <Version>1.0.18</Version>
     <AssemblyName>SoftmakeAll.SDK.WebAPI</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK.WebAPI</RootNamespace>
     <PackageProjectUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</PackageProjectUrl>
@@ -41,7 +43,7 @@ Este pacote fornece apoio para a construção de APIs de serviços que serão co
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
   </ItemGroup>
 
   <ItemGroup>

@@ -117,33 +117,41 @@ namespace SoftmakeAll.SDK.DataAccess
     #endregion
 
     #region Parameters
-    public System.Data.Common.DbParameter CreateInputParameter(System.String Name, System.Int32 Type, System.Object Value) { return this.CreateInputParameter(Name, Type, 0, Value); }
-    public System.Data.Common.DbParameter CreateInputParameter(System.String Name, System.Int32 Type, System.Int32 Size, System.Object Value) { return this.CreateParameter(Name, Type, Size, Value, System.Data.ParameterDirection.Input); }
+    public System.Data.Common.DbParameter CreateInputParameter(System.String Name, System.Int32 Type, System.Object Value) => this.CreateInputParameter(Name, Type, 0, Value);
+    public System.Data.Common.DbParameter CreateInputParameter(System.String Name, System.Int32 Type, System.Int32 Size, System.Object Value) => this.CreateParameter(Name, Type, Size, Value, System.Data.ParameterDirection.Input);
 
-    public System.Data.Common.DbParameter CreateOutputParameter(System.String Name, System.Int32 Type) { return this.CreateOutputParameter(Name, Type, null); }
-    public System.Data.Common.DbParameter CreateOutputParameter(System.String Name, System.Int32 Type, System.Object Value) { return this.CreateOutputParameter(Name, Type, 0, Value); }
-    public System.Data.Common.DbParameter CreateOutputParameter(System.String Name, System.Int32 Type, System.Int32 Size, System.Object Value) { return this.CreateParameter(Name, Type, Size, Value, System.Data.ParameterDirection.Output); }
+    public System.Data.Common.DbParameter CreateOutputParameter(System.String Name, System.Int32 Type) => this.CreateOutputParameter(Name, Type, null);
+    public System.Data.Common.DbParameter CreateOutputParameter(System.String Name, System.Int32 Type, System.Object Value) => this.CreateOutputParameter(Name, Type, 0, Value);
+    public System.Data.Common.DbParameter CreateOutputParameter(System.String Name, System.Int32 Type, System.Int32 Size, System.Object Value) => this.CreateParameter(Name, Type, Size, Value, System.Data.ParameterDirection.Output);
 
     protected abstract System.Data.Common.DbParameter CreateParameter(System.String Name, System.Int32 Type, System.Int32 Size, System.Object Value, System.Data.ParameterDirection Direction);
     #endregion
 
     #region Command Execution
     #region Syncronous Command Execution
-    public SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteText(System.String Text) { return this.ExecuteText(Text, null); }
-    public SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteText(System.String Text, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters) { return this.ExecuteCommand(Text, Parameters, System.Data.CommandType.Text); }
-    public SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteProcedure(System.String Name) { return this.ExecuteProcedure(Name, null); }
-    public SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteProcedure(System.String Name, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters) { return this.ExecuteCommand(Name, Parameters, System.Data.CommandType.StoredProcedure); }
-    protected abstract SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteCommand(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType);
+    public SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteText(System.String Text) => this.ExecuteCommand(Text, null, System.Data.CommandType.Text, -1);
+    public SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteText(System.String Text, System.Int32 Timeout) => this.ExecuteCommand(Text, null, System.Data.CommandType.Text, Timeout);
+    public SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteText(System.String Text, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters) => this.ExecuteCommand(Text, Parameters, System.Data.CommandType.Text, -1);
+    public SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteText(System.String Text, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Int32 Timeout) => this.ExecuteCommand(Text, Parameters, System.Data.CommandType.Text, Timeout);
+    public SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteProcedure(System.String Name) => this.ExecuteCommand(Name, null, System.Data.CommandType.StoredProcedure, -1);
+    public SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteProcedure(System.String Name, System.Int32 Timeout) => this.ExecuteCommand(Name, null, System.Data.CommandType.StoredProcedure, Timeout);
+    public SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteProcedure(System.String Name, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters) => this.ExecuteCommand(Name, Parameters, System.Data.CommandType.StoredProcedure, -1);
+    public SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteProcedure(System.String Name, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Int32 Timeout) => this.ExecuteCommand(Name, Parameters, System.Data.CommandType.StoredProcedure, Timeout);
+    protected abstract SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteCommand(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType, System.Int32 Timeout);
 
-    public SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ExecuteTextForJSON(System.String Text) { return this.ExecuteTextForJSON(Text, null); }
-    public SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ExecuteTextForJSON(System.String Text, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters) { return this.ExecuteCommandForJSON(Text, Parameters, System.Data.CommandType.Text); }
-    public SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ExecuteProcedureForJSON(System.String Name) { return this.ExecuteProcedureForJSON(Name, null); }
-    public SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ExecuteProcedureForJSON(System.String Name, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters) { return this.ExecuteCommandForJSON(Name, Parameters, System.Data.CommandType.StoredProcedure); }
-    protected virtual SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ExecuteCommandForJSON(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
+    public SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ExecuteTextForJSON(System.String Text) => this.ExecuteCommandForJSON(Text, null, System.Data.CommandType.Text, -1);
+    public SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ExecuteTextForJSON(System.String Text, System.Int32 Timeout) => this.ExecuteCommandForJSON(Text, null, System.Data.CommandType.Text, Timeout);
+    public SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ExecuteTextForJSON(System.String Text, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters) => this.ExecuteCommandForJSON(Text, Parameters, System.Data.CommandType.Text, -1);
+    public SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ExecuteTextForJSON(System.String Text, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Int32 Timeout) => this.ExecuteCommandForJSON(Text, Parameters, System.Data.CommandType.Text, Timeout);
+    public SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ExecuteProcedureForJSON(System.String Name) => this.ExecuteCommandForJSON(Name, null, System.Data.CommandType.StoredProcedure, -1);
+    public SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ExecuteProcedureForJSON(System.String Name, System.Int32 Timeout) => this.ExecuteCommandForJSON(Name, null, System.Data.CommandType.StoredProcedure, Timeout);
+    public SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ExecuteProcedureForJSON(System.String Name, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters) => this.ExecuteCommandForJSON(Name, Parameters, System.Data.CommandType.StoredProcedure, -1);
+    public SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ExecuteProcedureForJSON(System.String Name, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Int32 Timeout) => this.ExecuteCommandForJSON(Name, Parameters, System.Data.CommandType.StoredProcedure, Timeout);
+    protected virtual SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ExecuteCommandForJSON(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType, System.Int32 Timeout)
     {
       SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> Result = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
 
-      SoftmakeAll.SDK.OperationResult<System.Data.DataSet> DatabaseOperationResult = this.ExecuteCommand(ProcedureNameOrCommandText, Parameters, CommandType);
+      SoftmakeAll.SDK.OperationResult<System.Data.DataSet> DatabaseOperationResult = this.ExecuteCommand(ProcedureNameOrCommandText, Parameters, CommandType, Timeout);
       Result.Count = DatabaseOperationResult.Count;
       Result.ID = DatabaseOperationResult.ID;
       Result.Message = DatabaseOperationResult.Message;
@@ -158,21 +166,29 @@ namespace SoftmakeAll.SDK.DataAccess
     #endregion
 
     #region Asyncronous Command Execution
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteTextAsync(System.String Text) { return await this.ExecuteTextAsync(Text, null); }
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteTextAsync(System.String Text, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters) { return await this.ExecuteCommandAsync(Text, Parameters, System.Data.CommandType.Text); }
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteProcedureAsync(System.String Name) { return await this.ExecuteProcedureAsync(Name, null); }
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteProcedureAsync(System.String Name, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters) { return await this.ExecuteCommandAsync(Name, Parameters, System.Data.CommandType.StoredProcedure); }
-    protected abstract System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteCommandAsync(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType);
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteTextAsync(System.String Text) => await this.ExecuteCommandAsync(Text, null, System.Data.CommandType.Text, -1);
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteTextAsync(System.String Text, System.Int32 Timeout) => await this.ExecuteCommandAsync(Text, null, System.Data.CommandType.Text, Timeout);
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteTextAsync(System.String Text, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters) => await this.ExecuteCommandAsync(Text, Parameters, System.Data.CommandType.Text, -1);
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteTextAsync(System.String Text, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Int32 Timeout) => await this.ExecuteCommandAsync(Text, Parameters, System.Data.CommandType.Text, Timeout);
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteProcedureAsync(System.String Name) => await this.ExecuteCommandAsync(Name, null, System.Data.CommandType.StoredProcedure, -1);
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteProcedureAsync(System.String Name, System.Int32 Timeout) => await this.ExecuteCommandAsync(Name, null, System.Data.CommandType.StoredProcedure, Timeout);
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteProcedureAsync(System.String Name, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters) => await this.ExecuteCommandAsync(Name, Parameters, System.Data.CommandType.StoredProcedure, -1);
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteProcedureAsync(System.String Name, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Int32 Timeout) => await this.ExecuteCommandAsync(Name, Parameters, System.Data.CommandType.StoredProcedure, Timeout);
+    protected abstract System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteCommandAsync(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType, System.Int32 Timeout);
 
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> ExecuteTextForJSONAsync(System.String Text) { return await this.ExecuteTextForJSONAsync(Text, null); }
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> ExecuteTextForJSONAsync(System.String Text, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters) { return await this.ExecuteCommandForJSONAsync(Text, Parameters, System.Data.CommandType.Text); }
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> ExecuteProcedureForJSONAsync(System.String Name) { return await this.ExecuteProcedureForJSONAsync(Name, null); }
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> ExecuteProcedureForJSONAsync(System.String Name, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters) { return await this.ExecuteCommandForJSONAsync(Name, Parameters, System.Data.CommandType.StoredProcedure); }
-    protected virtual async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> ExecuteCommandForJSONAsync(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> ExecuteTextForJSONAsync(System.String Text) => await this.ExecuteCommandForJSONAsync(Text, null, System.Data.CommandType.Text, -1);
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> ExecuteTextForJSONAsync(System.String Text, System.Int32 Timeout) => await this.ExecuteCommandForJSONAsync(Text, null, System.Data.CommandType.Text, Timeout);
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> ExecuteTextForJSONAsync(System.String Text, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters) => await this.ExecuteCommandForJSONAsync(Text, Parameters, System.Data.CommandType.Text, -1);
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> ExecuteTextForJSONAsync(System.String Text, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Int32 Timeout) => await this.ExecuteCommandForJSONAsync(Text, Parameters, System.Data.CommandType.Text, Timeout);
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> ExecuteProcedureForJSONAsync(System.String Name) => await this.ExecuteCommandForJSONAsync(Name, null, System.Data.CommandType.StoredProcedure, -1);
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> ExecuteProcedureForJSONAsync(System.String Name, System.Int32 Timeout) => await this.ExecuteCommandForJSONAsync(Name, null, System.Data.CommandType.StoredProcedure, Timeout);
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> ExecuteProcedureForJSONAsync(System.String Name, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters) => await this.ExecuteCommandForJSONAsync(Name, Parameters, System.Data.CommandType.StoredProcedure, -1);
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> ExecuteProcedureForJSONAsync(System.String Name, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Int32 Timeout) => await this.ExecuteCommandForJSONAsync(Name, Parameters, System.Data.CommandType.StoredProcedure, Timeout);
+    protected virtual async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> ExecuteCommandForJSONAsync(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType, System.Int32 Timeout)
     {
       SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> Result = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
 
-      SoftmakeAll.SDK.OperationResult<System.Data.DataSet> DatabaseOperationResult = await this.ExecuteCommandAsync(ProcedureNameOrCommandText, Parameters, CommandType);
+      SoftmakeAll.SDK.OperationResult<System.Data.DataSet> DatabaseOperationResult = await this.ExecuteCommandAsync(ProcedureNameOrCommandText, Parameters, CommandType, Timeout);
       Result.Count = DatabaseOperationResult.Count;
       Result.ID = DatabaseOperationResult.ID;
       Result.Message = DatabaseOperationResult.Message;
@@ -189,18 +205,18 @@ namespace SoftmakeAll.SDK.DataAccess
 
     #region System Events (Log)
     #region Syncronous System Events (Log)
-    public void WriteApplicationDebugEvent(System.String ProcedureName, System.String Description) { this.WriteEvent("A", "D", ProcedureName, Description); }
-    public void WriteApplicationInformationEvent(System.String ProcedureName, System.String Description) { this.WriteEvent("A", "I", ProcedureName, Description); }
-    public void WriteApplicationWarningEvent(System.String ProcedureName, System.String Description) { this.WriteEvent("A", "W", ProcedureName, Description); }
-    public void WriteApplicationErrorEvent(System.String ProcedureName, System.String Description) { this.WriteEvent("A", "E", ProcedureName, Description); }
-    public void WriteDatabaseDebugEvent(System.String ProcedureName, System.String Description) { this.WriteEvent("D", "D", ProcedureName, Description); }
-    public void WriteDatabaseInformationEvent(System.String ProcedureName, System.String Description) { this.WriteEvent("D", "I", ProcedureName, Description); }
-    public void WriteDatabaseWarningEvent(System.String ProcedureName, System.String Description) { this.WriteEvent("D", "W", ProcedureName, Description); }
-    public void WriteDatabaseErrorEvent(System.String ProcedureName, System.String Description) { this.WriteEvent("D", "E", ProcedureName, Description); }
-    public void WriteFunctionsDebugEvent(System.String ProcedureName, System.String Description) { this.WriteEvent("F", "D", ProcedureName, Description); }
-    public void WriteFunctionsInformationEvent(System.String ProcedureName, System.String Description) { this.WriteEvent("F", "I", ProcedureName, Description); }
-    public void WriteFunctionsWarningEvent(System.String ProcedureName, System.String Description) { this.WriteEvent("F", "W", ProcedureName, Description); }
-    public void WriteFunctionsErrorEvent(System.String ProcedureName, System.String Description) { this.WriteEvent("F", "E", ProcedureName, Description); }
+    public void WriteApplicationDebugEvent(System.String ProcedureName, System.String Description) => this.WriteEvent("A", "D", ProcedureName, Description);
+    public void WriteApplicationInformationEvent(System.String ProcedureName, System.String Description) => this.WriteEvent("A", "I", ProcedureName, Description);
+    public void WriteApplicationWarningEvent(System.String ProcedureName, System.String Description) => this.WriteEvent("A", "W", ProcedureName, Description);
+    public void WriteApplicationErrorEvent(System.String ProcedureName, System.String Description) => this.WriteEvent("A", "E", ProcedureName, Description);
+    public void WriteDatabaseDebugEvent(System.String ProcedureName, System.String Description) => this.WriteEvent("D", "D", ProcedureName, Description);
+    public void WriteDatabaseInformationEvent(System.String ProcedureName, System.String Description) => this.WriteEvent("D", "I", ProcedureName, Description);
+    public void WriteDatabaseWarningEvent(System.String ProcedureName, System.String Description) => this.WriteEvent("D", "W", ProcedureName, Description);
+    public void WriteDatabaseErrorEvent(System.String ProcedureName, System.String Description) => this.WriteEvent("D", "E", ProcedureName, Description);
+    public void WriteFunctionsDebugEvent(System.String ProcedureName, System.String Description) => this.WriteEvent("F", "D", ProcedureName, Description);
+    public void WriteFunctionsInformationEvent(System.String ProcedureName, System.String Description) => this.WriteEvent("F", "I", ProcedureName, Description);
+    public void WriteFunctionsWarningEvent(System.String ProcedureName, System.String Description) => this.WriteEvent("F", "W", ProcedureName, Description);
+    public void WriteFunctionsErrorEvent(System.String ProcedureName, System.String Description) => this.WriteEvent("F", "E", ProcedureName, Description);
     protected abstract void WriteEvent(System.String Source, System.String Type, System.String ProcedureName, System.String Description);
     protected virtual void WriteErrorFile(SoftmakeAll.SDK.OperationResult OperationResult)
     {
@@ -217,18 +233,18 @@ namespace SoftmakeAll.SDK.DataAccess
     #endregion
 
     #region Asyncronous System Events (Log)
-    public async System.Threading.Tasks.Task WriteApplicationDebugEventAsync(System.String ProcedureName, System.String Description) { await this.WriteEventAsync("A", "D", ProcedureName, Description); }
-    public async System.Threading.Tasks.Task WriteApplicationInformationEventAsync(System.String ProcedureName, System.String Description) { await this.WriteEventAsync("A", "I", ProcedureName, Description); }
-    public async System.Threading.Tasks.Task WriteApplicationWarningEventAsync(System.String ProcedureName, System.String Description) { await this.WriteEventAsync("A", "W", ProcedureName, Description); }
-    public async System.Threading.Tasks.Task WriteApplicationErrorEventAsync(System.String ProcedureName, System.String Description) { await this.WriteEventAsync("A", "E", ProcedureName, Description); }
-    public async System.Threading.Tasks.Task WriteDatabaseDebugEventAsync(System.String ProcedureName, System.String Description) { await this.WriteEventAsync("D", "D", ProcedureName, Description); }
-    public async System.Threading.Tasks.Task WriteDatabaseInformationEventAsync(System.String ProcedureName, System.String Description) { await this.WriteEventAsync("D", "I", ProcedureName, Description); }
-    public async System.Threading.Tasks.Task WriteDatabaseWarningEventAsync(System.String ProcedureName, System.String Description) { await this.WriteEventAsync("D", "W", ProcedureName, Description); }
-    public async System.Threading.Tasks.Task WriteDatabaseErrorEventAsync(System.String ProcedureName, System.String Description) { await this.WriteEventAsync("D", "E", ProcedureName, Description); }
-    public async System.Threading.Tasks.Task WriteFunctionsDebugEventAsync(System.String ProcedureName, System.String Description) { await this.WriteEventAsync("F", "D", ProcedureName, Description); }
-    public async System.Threading.Tasks.Task WriteFunctionsInformationEventAsync(System.String ProcedureName, System.String Description) { await this.WriteEventAsync("F", "I", ProcedureName, Description); }
-    public async System.Threading.Tasks.Task WriteFunctionsWarningEventAsync(System.String ProcedureName, System.String Description) { await this.WriteEventAsync("F", "W", ProcedureName, Description); }
-    public async System.Threading.Tasks.Task WriteFunctionsErrorEventAsync(System.String ProcedureName, System.String Description) { await this.WriteEventAsync("F", "E", ProcedureName, Description); }
+    public async System.Threading.Tasks.Task WriteApplicationDebugEventAsync(System.String ProcedureName, System.String Description) => await this.WriteEventAsync("A", "D", ProcedureName, Description);
+    public async System.Threading.Tasks.Task WriteApplicationInformationEventAsync(System.String ProcedureName, System.String Description) => await this.WriteEventAsync("A", "I", ProcedureName, Description);
+    public async System.Threading.Tasks.Task WriteApplicationWarningEventAsync(System.String ProcedureName, System.String Description) => await this.WriteEventAsync("A", "W", ProcedureName, Description);
+    public async System.Threading.Tasks.Task WriteApplicationErrorEventAsync(System.String ProcedureName, System.String Description) => await this.WriteEventAsync("A", "E", ProcedureName, Description);
+    public async System.Threading.Tasks.Task WriteDatabaseDebugEventAsync(System.String ProcedureName, System.String Description) => await this.WriteEventAsync("D", "D", ProcedureName, Description);
+    public async System.Threading.Tasks.Task WriteDatabaseInformationEventAsync(System.String ProcedureName, System.String Description) => await this.WriteEventAsync("D", "I", ProcedureName, Description);
+    public async System.Threading.Tasks.Task WriteDatabaseWarningEventAsync(System.String ProcedureName, System.String Description) => await this.WriteEventAsync("D", "W", ProcedureName, Description);
+    public async System.Threading.Tasks.Task WriteDatabaseErrorEventAsync(System.String ProcedureName, System.String Description) => await this.WriteEventAsync("D", "E", ProcedureName, Description);
+    public async System.Threading.Tasks.Task WriteFunctionsDebugEventAsync(System.String ProcedureName, System.String Description) => await this.WriteEventAsync("F", "D", ProcedureName, Description);
+    public async System.Threading.Tasks.Task WriteFunctionsInformationEventAsync(System.String ProcedureName, System.String Description) => await this.WriteEventAsync("F", "I", ProcedureName, Description);
+    public async System.Threading.Tasks.Task WriteFunctionsWarningEventAsync(System.String ProcedureName, System.String Description) => await this.WriteEventAsync("F", "W", ProcedureName, Description);
+    public async System.Threading.Tasks.Task WriteFunctionsErrorEventAsync(System.String ProcedureName, System.String Description) => await this.WriteEventAsync("F", "E", ProcedureName, Description);
     protected abstract System.Threading.Tasks.Task WriteEventAsync(System.String Source, System.String Type, System.String ProcedureName, System.String Description);
     protected virtual async System.Threading.Tasks.Task WriteErrorFileAsync(SoftmakeAll.SDK.OperationResult OperationResult)
     {

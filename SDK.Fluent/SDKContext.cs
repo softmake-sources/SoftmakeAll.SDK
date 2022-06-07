@@ -17,21 +17,6 @@ namespace SoftmakeAll.SDK.Fluent
 
     #region Fields
     /// <summary>
-    /// The Softmake All server address.
-    /// </summary>
-    private static System.String DefaultServer = "smallservices01.azurewebsites.net";
-
-    /// <summary>
-    /// The Softmake All API base address.
-    /// </summary>
-    internal static System.String APIBaseAddress = $"https://{DefaultServer}";
-
-    /// <summary>
-    /// The Softmake All WebSocket base address.
-    /// </summary>
-    internal static System.String WebSocketBaseAddress = $"wss://{DefaultServer}/nhb";
-
-    /// <summary>
     /// Credentials to use after authentication process.
     /// </summary>
     private static SoftmakeAll.SDK.Fluent.Authentication.ICredentials InMemoryCredentials = null;
@@ -62,7 +47,29 @@ namespace SoftmakeAll.SDK.Fluent
     public static readonly SoftmakeAll.SDK.OperationResult LastOperationResult = new SoftmakeAll.SDK.OperationResult();
     #endregion
 
+    #region Properties
+    /// <summary>
+    /// The Softmake All server address.
+    /// </summary>
+    private static System.String DefaultServer = "smallservices01.azurewebsites.net";
+
+    /// <summary>
+    /// The Softmake All API base address.
+    /// </summary>
+    internal static System.String APIBaseAddress { get => $"https://{SoftmakeAll.SDK.Fluent.SDKContext.DefaultServer}"; }
+
+    /// <summary>
+    /// The Softmake All WebSocket base address.
+    /// </summary>
+    internal static System.String WebSocketBaseAddress { get => $"wss://{SoftmakeAll.SDK.Fluent.SDKContext.DefaultServer}/nhb"; }
+    #endregion
+
     #region Methods
+    /// <summary>
+    /// Sets the new Server Address.
+    /// </summary>
+    public static void ConfigureConnections(System.String ServerAddress) => SoftmakeAll.SDK.Fluent.SDKContext.DefaultServer = ServerAddress;
+
     /// <summary>
     /// Creates a PublicClientApplication.
     /// </summary>

@@ -336,7 +336,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
     #endregion
 
     #region Command Execution
-    protected override SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteCommand(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
+    protected override SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteCommand(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType, System.Int32 Timeout)
     {
       const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.SQLServer.Connector.ExecuteCommand";
 
@@ -386,7 +386,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
               {
                 BlockCommand.Connection = ConnectorObjects.Connection;
                 BlockCommand.CommandText = Block;
-                BlockCommand.CommandTimeout = ConnectorObjects.Command.CommandTimeout;
+                BlockCommand.CommandTimeout = Timeout < 0 ? ConnectorObjects.Command.CommandTimeout : Timeout;
                 Adapter.SelectCommand = BlockCommand;
                 Adapter.Fill(DataTable);
               }
@@ -436,7 +436,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
 
       return Result;
     }
-    protected override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteCommandAsync(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
+    protected override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteCommandAsync(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType, System.Int32 Timeout)
     {
       const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.SQLServer.Connector.ExecuteCommandAsync";
 
@@ -486,7 +486,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
               {
                 BlockCommand.Connection = ConnectorObjects.Connection;
                 BlockCommand.CommandText = Block;
-                BlockCommand.CommandTimeout = ConnectorObjects.Command.CommandTimeout;
+                BlockCommand.CommandTimeout = Timeout < 0 ? ConnectorObjects.Command.CommandTimeout : Timeout;
                 Adapter.SelectCommand = BlockCommand;
                 Adapter.Fill(DataTable);
               }
@@ -537,14 +537,14 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
       return Result;
     }
 
-    protected override SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ExecuteCommandForJSON(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
+    protected override SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ExecuteCommandForJSON(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType, System.Int32 Timeout)
     {
       const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.SQLServer.Connector.ExecuteCommandForJSON";
 
       SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> Result = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
       if (base.ShowPlan)
       {
-        SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ShowPlanResult = this.ExecuteCommand(ProcedureNameOrCommandText, Parameters, CommandType);
+        SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ShowPlanResult = this.ExecuteCommand(ProcedureNameOrCommandText, Parameters, CommandType, Timeout);
 
         Result.ExitCode = ShowPlanResult.ExitCode;
         Result.Message = ShowPlanResult.Message;
@@ -644,14 +644,14 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
 
       return Result;
     }
-    protected override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> ExecuteCommandForJSONAsync(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
+    protected override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> ExecuteCommandForJSONAsync(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType, System.Int32 Timeout)
     {
       const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.SQLServer.Connector.ExecuteCommandForJSONAsync";
 
       SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> Result = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
       if (base.ShowPlan)
       {
-        SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ShowPlanResult = await this.ExecuteCommandAsync(ProcedureNameOrCommandText, Parameters, CommandType);
+        SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ShowPlanResult = await this.ExecuteCommandAsync(ProcedureNameOrCommandText, Parameters, CommandType, Timeout);
         Result.ExitCode = ShowPlanResult.ExitCode;
         Result.Message = ShowPlanResult.Message;
         Result.ID = ShowPlanResult.ID;
@@ -751,10 +751,10 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
       return Result;
     }
 
-    public SoftmakeAll.SDK.OperationResult ImportData(System.Data.DataTable DataTable) => this.ImportData(DataTable, null, 0);
-    public SoftmakeAll.SDK.OperationResult ImportData(System.Data.DataTable DataTable, System.Collections.Generic.Dictionary<System.String, System.String> ColumnMappings) => this.ImportData(DataTable, ColumnMappings, 0);
-    public SoftmakeAll.SDK.OperationResult ImportData(System.Data.DataTable DataTable, System.Int32 BatchSize) => this.ImportData(DataTable, null, BatchSize);
-    public SoftmakeAll.SDK.OperationResult ImportData(System.Data.DataTable DataTable, System.Collections.Generic.Dictionary<System.String, System.String> ColumnMappings, System.Int32 BatchSize)
+    public SoftmakeAll.SDK.OperationResult ImportData(System.Data.DataTable DataTable) => this.ImportData(DataTable, null, 0, -1);
+    public SoftmakeAll.SDK.OperationResult ImportData(System.Data.DataTable DataTable, System.Collections.Generic.Dictionary<System.String, System.String> ColumnMappings) => this.ImportData(DataTable, ColumnMappings, 0, -1);
+    public SoftmakeAll.SDK.OperationResult ImportData(System.Data.DataTable DataTable, System.Int32 BatchSize, System.Int32 Timeout) => this.ImportData(DataTable, null, BatchSize, Timeout);
+    public SoftmakeAll.SDK.OperationResult ImportData(System.Data.DataTable DataTable, System.Collections.Generic.Dictionary<System.String, System.String> ColumnMappings, System.Int32 BatchSize, System.Int32 Timeout)
     {
       System.String ConnectionString = SoftmakeAll.SDK.DataAccess.SQLServer.Environment._ConnectionString;
       if (!(System.String.IsNullOrEmpty(base.ConnectionString)))
@@ -769,9 +769,10 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
 
       try
       {
-        using (System.Data.SqlClient.SqlBulkCopy SqlBulkCopy = new System.Data.SqlClient.SqlBulkCopy(ConnectionString, System.Data.SqlClient.SqlBulkCopyOptions.CheckConstraints | System.Data.SqlClient.SqlBulkCopyOptions.TableLock | System.Data.SqlClient.SqlBulkCopyOptions.UseInternalTransaction))
+        using (System.Data.SqlClient.SqlBulkCopy SqlBulkCopy = new System.Data.SqlClient.SqlBulkCopy(ConnectionString, System.Data.SqlClient.SqlBulkCopyOptions.CheckConstraints | System.Data.SqlClient.SqlBulkCopyOptions.UseInternalTransaction))
         {
           SqlBulkCopy.DestinationTableName = DataTable.TableName;
+          SqlBulkCopy.BulkCopyTimeout = Timeout < 0 ? 30 : Timeout;
           if ((ColumnMappings != null) && (ColumnMappings.Any()))
             foreach (System.Collections.Generic.KeyValuePair<System.String, System.String> ColumnMapping in ColumnMappings)
               SqlBulkCopy.ColumnMappings.Add(new System.Data.SqlClient.SqlBulkCopyColumnMapping(ColumnMapping.Key, ColumnMapping.Value));
@@ -788,16 +789,17 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
       catch (System.Exception ex)
       {
         Stopwatch.Stop();
+        OperationResult.ExitCode = 500;
         OperationResult.Message = ex.Message;
       }
 
       return OperationResult;
     }
 
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> ImportDataAsync(System.Data.DataTable DataTable) => await this.ImportDataAsync(DataTable, null, 0);
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> ImportDataAsync(System.Data.DataTable DataTable, System.Collections.Generic.Dictionary<System.String, System.String> ColumnMappings) => await this.ImportDataAsync(DataTable, ColumnMappings, 0);
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> ImportDataAsync(System.Data.DataTable DataTable, System.Int32 BatchSize) => await this.ImportDataAsync(DataTable, null, BatchSize);
-    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> ImportDataAsync(System.Data.DataTable DataTable, System.Collections.Generic.Dictionary<System.String, System.String> ColumnMappings, System.Int32 BatchSize)
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> ImportDataAsync(System.Data.DataTable DataTable) => await this.ImportDataAsync(DataTable, null, 0, -1);
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> ImportDataAsync(System.Data.DataTable DataTable, System.Collections.Generic.Dictionary<System.String, System.String> ColumnMappings) => await this.ImportDataAsync(DataTable, ColumnMappings, 0, -1);
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> ImportDataAsync(System.Data.DataTable DataTable, System.Int32 BatchSize, System.Int32 Timeout) => await this.ImportDataAsync(DataTable, null, BatchSize, Timeout);
+    public async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> ImportDataAsync(System.Data.DataTable DataTable, System.Collections.Generic.Dictionary<System.String, System.String> ColumnMappings, System.Int32 BatchSize, System.Int32 Timeout)
     {
       System.String ConnectionString = SoftmakeAll.SDK.DataAccess.SQLServer.Environment._ConnectionString;
       if (!(System.String.IsNullOrEmpty(base.ConnectionString)))
@@ -812,9 +814,10 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
 
       try
       {
-        using (System.Data.SqlClient.SqlBulkCopy SqlBulkCopy = new System.Data.SqlClient.SqlBulkCopy(ConnectionString, System.Data.SqlClient.SqlBulkCopyOptions.CheckConstraints | System.Data.SqlClient.SqlBulkCopyOptions.TableLock | System.Data.SqlClient.SqlBulkCopyOptions.UseInternalTransaction))
+        using (System.Data.SqlClient.SqlBulkCopy SqlBulkCopy = new System.Data.SqlClient.SqlBulkCopy(ConnectionString, System.Data.SqlClient.SqlBulkCopyOptions.CheckConstraints | System.Data.SqlClient.SqlBulkCopyOptions.UseInternalTransaction))
         {
           SqlBulkCopy.DestinationTableName = DataTable.TableName;
+          SqlBulkCopy.BulkCopyTimeout = Timeout < 0 ? 30 : Timeout;
           if ((ColumnMappings != null) && (ColumnMappings.Any()))
             foreach (System.Collections.Generic.KeyValuePair<System.String, System.String> ColumnMapping in ColumnMappings)
               SqlBulkCopy.ColumnMappings.Add(new System.Data.SqlClient.SqlBulkCopyColumnMapping(ColumnMapping.Key, ColumnMapping.Value));
@@ -831,6 +834,7 @@ namespace SoftmakeAll.SDK.DataAccess.SQLServer
       catch (System.Exception ex)
       {
         Stopwatch.Stop();
+        OperationResult.ExitCode = 500;
         OperationResult.Message = ex.Message;
       }
 

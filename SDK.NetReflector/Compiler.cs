@@ -129,7 +129,7 @@ namespace SoftmakeAll.SDK.NetReflector
           System.String Category = Diagnostic.Descriptor.Category;
           System.String Message = Diagnostic.GetMessage();
           System.Text.Json.JsonElement Location = new System.Text.Json.JsonElement();
-          if ((Diagnostic.Location != null) && (Diagnostic.Location.SourceSpan != null) && (!(Diagnostic.Location.SourceSpan.IsEmpty)))
+          if ((Diagnostic.Location != null) && (!(Diagnostic.Location.SourceSpan.IsEmpty)))
           {
             Microsoft.CodeAnalysis.FileLinePositionSpan FileLinePositionSpan = Diagnostic.Location.GetMappedLineSpan();
             System.Nullable<System.Int32> Line = null;

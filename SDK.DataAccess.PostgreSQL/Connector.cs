@@ -138,7 +138,7 @@ namespace SoftmakeAll.SDK.DataAccess.PostgreSQL
     #endregion
 
     #region Command Execution
-    protected override SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteCommand(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
+    protected override SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteCommand(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType, System.Int32 Timeout)
     {
       const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.PostgreSQL.Connector.ExecuteCommand";
 
@@ -230,7 +230,7 @@ namespace SoftmakeAll.SDK.DataAccess.PostgreSQL
 
       return Result;
     }
-    protected override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteCommandAsync(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
+    protected override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteCommandAsync(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType, System.Int32 Timeout)
     {
       const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.PostgreSQL.Connector.ExecuteCommandAsync";
 

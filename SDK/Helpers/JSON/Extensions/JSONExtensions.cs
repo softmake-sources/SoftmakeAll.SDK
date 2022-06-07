@@ -10,7 +10,7 @@
     #endregion
 
     #region Methods
-    public static System.Text.Json.JsonSerializerOptions CreateJsonSerializerOptions(System.Boolean UseCamelCase, System.Boolean IgnoreNullValues)
+    public static System.Text.Json.JsonSerializerOptions CreateJsonSerializerOptions(System.Boolean UseCamelCase)
     {
       System.Text.Json.JsonSerializerOptions JsonSerializerOptions = new System.Text.Json.JsonSerializerOptions();
       if (UseCamelCase)
@@ -28,27 +28,25 @@
       JsonSerializerOptions.Converters.Add(new SoftmakeAll.SDK.Helpers.JSON.Converters.JsonElementSerializationConverter());
       JsonSerializerOptions.Converters.Add(new SoftmakeAll.SDK.Helpers.JSON.Converters.TimeSpanSerializationConverter());
       JsonSerializerOptions.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
-      JsonSerializerOptions.IgnoreNullValues = IgnoreNullValues;
+      JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.Never;
       return JsonSerializerOptions;
     }
 
-    public static System.String Serialize<T>(this T Object) { return SoftmakeAll.SDK.Helpers.JSON.Extensions.JSONExtensions.Serialize(Object, false, true); }
-    public static System.String Serialize<T>(this T Object, System.Boolean UseCamelCase) { return SoftmakeAll.SDK.Helpers.JSON.Extensions.JSONExtensions.Serialize(Object, UseCamelCase, true); }
-    public static System.String Serialize<T>(this T Object, System.Boolean UseCamelCase, System.Boolean IgnoreNullValues)
+    public static System.String Serialize<T>(this T Object) { return SoftmakeAll.SDK.Helpers.JSON.Extensions.JSONExtensions.Serialize(Object, false); }
+    public static System.String Serialize<T>(this T Object, System.Boolean UseCamelCase)
     {
       if (Object == null)
         return null;
 
-      return System.Text.Json.JsonSerializer.Serialize(Object, SoftmakeAll.SDK.Helpers.JSON.Extensions.JSONExtensions.CreateJsonSerializerOptions(UseCamelCase, IgnoreNullValues));
+      return System.Text.Json.JsonSerializer.Serialize(Object, SoftmakeAll.SDK.Helpers.JSON.Extensions.JSONExtensions.CreateJsonSerializerOptions(UseCamelCase));
     }
-    public static T Deserialize<T>(this System.String String) { return SoftmakeAll.SDK.Helpers.JSON.Extensions.JSONExtensions.Deserialize<T>(String, false, true); }
-    public static T Deserialize<T>(this System.String String, System.Boolean UseCamelCase) { return SoftmakeAll.SDK.Helpers.JSON.Extensions.JSONExtensions.Deserialize<T>(String, UseCamelCase, true); }
-    public static T Deserialize<T>(this System.String String, System.Boolean UseCamelCase, System.Boolean IgnoreNullValues)
+    public static T Deserialize<T>(this System.String String) { return SoftmakeAll.SDK.Helpers.JSON.Extensions.JSONExtensions.Deserialize<T>(String, false); }
+    public static T Deserialize<T>(this System.String String, System.Boolean UseCamelCase)
     {
       if (System.String.IsNullOrEmpty(String))
         return default(T);
 
-      return System.Text.Json.JsonSerializer.Deserialize<T>(String, SoftmakeAll.SDK.Helpers.JSON.Extensions.JSONExtensions.CreateJsonSerializerOptions(UseCamelCase, IgnoreNullValues));
+      return System.Text.Json.JsonSerializer.Deserialize<T>(String, SoftmakeAll.SDK.Helpers.JSON.Extensions.JSONExtensions.CreateJsonSerializerOptions(UseCamelCase));
     }
     public static System.Text.Json.JsonElement ToJsonElement(this System.Object Object) { return Object.ToJsonElement(false); }
     public static System.Text.Json.JsonElement ToJsonElement(this System.Object Object, System.Boolean ThrowOnError)
@@ -68,10 +66,10 @@
       {
         return System.Text.Json.JsonDocument.Parse(String).RootElement;
       }
-      catch (System.Exception ex)
+      catch
       {
         if (ThrowOnError)
-          throw ex;
+          throw;
       }
 
       return new System.Text.Json.JsonElement();

@@ -1,7 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
 
     <Authors>Arthur Mattos</Authors>
     <Company>Softmake - Software &amp; Automação</Company>
@@ -14,13 +16,15 @@
     <PackageIcon>Cubes.png</PackageIcon>
     <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2021</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>Este pacote é parte do pacote SoftmakeAll.SDK. 
+    <Description>
+      Este pacote é parte do pacote SoftmakeAll.SDK.
 
-Este pacote fornece apoio para acesso à dados quando o banco de dados é SQL Server.</Description>
+      Este pacote fornece apoio para acesso à dados quando o banco de dados é SQL Server.
+    </Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <AssemblyVersion>1.0.11.0</AssemblyVersion>
-    <FileVersion>1.0.11.0</FileVersion>
-    <Version>1.0.11</Version>
+    <AssemblyVersion>1.0.14.0</AssemblyVersion>
+    <FileVersion>1.0.14.0</FileVersion>
+    <Version>1.0.14</Version>
 
     <PackageReleaseNotes>Novas assinaturas para os métodos de importação de dados. O recurso adicionado é o mapeamento de colunas.</PackageReleaseNotes>
 
@@ -43,7 +47,7 @@ Este pacote fornece apoio para acesso à dados quando o banco de dados é SQL Se
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 
   <ItemGroup>

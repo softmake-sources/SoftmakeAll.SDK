@@ -131,7 +131,7 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
     #endregion
 
     #region Command Execution
-    protected override SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteCommand(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
+    protected override SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteCommand(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType, System.Int32 Timeout)
     {
       const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.Oracle.Connector.ExecuteCommand";
 
@@ -223,7 +223,7 @@ namespace SoftmakeAll.SDK.DataAccess.Oracle
 
       return Result;
     }
-    protected override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteCommandAsync(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
+    protected override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteCommandAsync(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType, System.Int32 Timeout)
     {
       const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.Oracle.Connector.ExecuteCommandAsync";
 

@@ -130,7 +130,7 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
     #endregion
 
     #region Command Execution
-    protected override SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteCommand(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
+    protected override SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ExecuteCommand(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType, System.Int32 Timeout)
     {
       const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.MySQL.Connector.ExecuteCommand";
 
@@ -203,7 +203,7 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
 
       return Result;
     }
-    protected override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteCommandAsync(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
+    protected override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Data.DataSet>> ExecuteCommandAsync(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType, System.Int32 Timeout)
     {
       const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.MySQL.Connector.ExecuteCommandAsync";
 
@@ -276,14 +276,14 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
       return Result;
     }
 
-    protected override SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ExecuteCommandForJSON(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
+    protected override SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ExecuteCommandForJSON(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType, System.Int32 Timeout)
     {
       const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.MySQL.Connector.ExecuteCommandForJSON";
 
       SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> Result = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
       if (base.ShowPlan)
       {
-        SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ShowPlanResult = this.ExecuteCommand(ProcedureNameOrCommandText, Parameters, CommandType);
+        SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ShowPlanResult = this.ExecuteCommand(ProcedureNameOrCommandText, Parameters, CommandType, Timeout);
 
         Result.ExitCode = ShowPlanResult.ExitCode;
         Result.Message = ShowPlanResult.Message;
@@ -369,14 +369,14 @@ namespace SoftmakeAll.SDK.DataAccess.MySQL
 
       return Result;
     }
-    protected override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> ExecuteCommandForJSONAsync(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType)
+    protected override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> ExecuteCommandForJSONAsync(System.String ProcedureNameOrCommandText, System.Collections.Generic.List<System.Data.Common.DbParameter> Parameters, System.Data.CommandType CommandType, System.Int32 Timeout)
     {
       const System.String ThisProcedureName = "SoftmakeAll.SDK.DataAccess.MySQL.Connector.ExecuteCommandForJSONAsync";
 
       SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> Result = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
       if (base.ShowPlan)
       {
-        SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ShowPlanResult = await this.ExecuteCommandAsync(ProcedureNameOrCommandText, Parameters, CommandType);
+        SoftmakeAll.SDK.OperationResult<System.Data.DataSet> ShowPlanResult = await this.ExecuteCommandAsync(ProcedureNameOrCommandText, Parameters, CommandType, Timeout);
         Result.ExitCode = ShowPlanResult.ExitCode;
         Result.Message = ShowPlanResult.Message;
         Result.ID = ShowPlanResult.ID;
