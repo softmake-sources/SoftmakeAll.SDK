@@ -1,17 +1,14 @@
-﻿namespace SoftmakeAll.SDK.Communication
+﻿namespace SoftmakeAll.SDK.Networking
 {
-  public static class FileMappings
+  public static class MIMETypes
   {
     #region Methods
-    public static string GetMimeType(System.String FileExtension)
+    public static string GetMIMEType(System.String FileExtension)
     {
       if (FileExtension == null)
-        throw new System.ArgumentNullException("extension");
+        throw new System.ArgumentNullException("FileExtension");
 
-      if (!FileExtension.StartsWith("."))
-        FileExtension = $".{FileExtension}";
-
-      return SoftmakeAll.SDK.Communication.FileMappings.Mappings.TryGetValue(FileExtension, out System.String MIMEType) ? MIMEType : "application/octet-stream";
+      return SoftmakeAll.SDK.Networking.MIMETypes.Mappings.TryGetValue((FileExtension.StartsWith(".") ? FileExtension : $".{FileExtension}"), out System.String MIMEType) ? MIMEType : "application/octet-stream";
     }
     #endregion
 
