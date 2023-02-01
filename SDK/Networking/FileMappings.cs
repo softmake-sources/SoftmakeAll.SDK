@@ -5,8 +5,8 @@
     #region Methods
     public static string GetMIMEType(System.String FileExtension)
     {
-      if (FileExtension == null)
-        throw new System.ArgumentNullException("FileExtension");
+      if (System.String.IsNullOrWhiteSpace(FileExtension))
+        return "application/octet-stream";
 
       return SoftmakeAll.SDK.Networking.MIMETypes.Mappings.TryGetValue((FileExtension.StartsWith(".") ? FileExtension : $".{FileExtension}"), out System.String MIMEType) ? MIMEType : "application/octet-stream";
     }

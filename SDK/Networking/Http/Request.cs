@@ -1,6 +1,6 @@
 ﻿using SoftmakeAll.SDK.Helpers.JSON.Extensions;
-using SoftmakeAll.SDK.Helpers.String.Extensions;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace SoftmakeAll.SDK.Networking.Http
 {
@@ -83,8 +83,16 @@ namespace SoftmakeAll.SDK.Networking.Http
     public System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<System.String, System.String>> GetQueryParameters() => this.GetAllQueryParameters();
     public void RemoveQueryParameter(System.String Key)
     {
-      if (!(System.String.IsNullOrWhiteSpace(Key)))
-        this._UserQueryParameters.RemoveAll(p => p.Key == Key);
+      if (System.String.IsNullOrWhiteSpace(Key))
+        return;
+
+      this._URLQueryParameters.RemoveAll(p => p.Key == Key);
+      this._UserQueryParameters.RemoveAll(p => p.Key == Key);
+    }
+    public void ClearQueryParameter()
+    {
+      this._URLQueryParameters.Clear();
+      this._UserQueryParameters.Clear();
     }
     public System.String GetQueryString()
     {
@@ -103,6 +111,14 @@ namespace SoftmakeAll.SDK.Networking.Http
       base.AddHeader("Connection", "keep-alive", Overwrite);
       base.AddHeader("Softmake-Request-Token", System.Guid.NewGuid().ToString().ToLower(), Overwrite);
       base.AddHeader("User-Agent", $"SoftmakeSDK/{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}", Overwrite);
+    }
+
+    public override void AddCookie(System.String Name, System.String Value)
+    {
+      if (System.String.IsNullOrWhiteSpace(Name))
+        return;
+
+      base.AddCookie(new System.Net.Cookie(Name, Value));
     }
 
     public void SetBodyText(System.String Body) => this.SetBodyText(System.String.IsNullOrWhiteSpace(Body) ? default : System.Text.Encoding.UTF8.GetBytes(Body));
@@ -142,17 +158,23 @@ namespace SoftmakeAll.SDK.Networking.Http
       base.SetBody(Body, "text/html");
     }
 
-    // TODO: Fazer
-    public void SetBodyXML(System.String Body) => this.SetBodyXML(System.String.IsNullOrWhiteSpace(Body) ? default : Body.ToJsonElement());
-    public void SetBodyXML(System.Byte[] Body) => this.SetBodyXML(((Body == null) || (Body.Length < 2)) ? default : System.Text.Encoding.UTF8.GetString(Body).ToJsonElement());
-    public void SetBodyXML(System.Text.Json.JsonElement Body)
+    private System.Xml.Linq.XElement ToXML(System.String Body)
     {
-      if (Body.ValueKind == System.Text.Json.JsonValueKind.Undefined)
-        throw new System.FormatException("Invalid xml format.");
+      if (System.String.IsNullOrWhiteSpace(Body))
+        return null;
 
-      base.SetBody(Body.Serialize(), "application/xml");
+      try { return System.Xml.Linq.XElement.Parse(Body); } catch { }
+      return null;
     }
-    // TODO: Fazer
+    public void SetBodyXML(System.String Body) => this.SetBodyXML(System.String.IsNullOrWhiteSpace(Body) ? null : this.ToXML(Body));
+    public void SetBodyXML(System.Byte[] Body) => this.SetBodyXML(((Body == null) || (Body.Length < 2)) ? null : this.ToXML(System.Text.Encoding.UTF8.GetString(Body)));
+    public void SetBodyXML(System.Xml.Linq.XElement Body)
+    {
+      if (Body == null)
+        throw new System.FormatException("Invalid XML format.");
+
+      base.SetBody(Body.ToString(), "application/xml");
+    }
 
     public void AddFormUrlEncodedParameter(System.String Key, System.String Value) => this.AddFormUrlEncodedParameter(Key, Value, false);
     public void AddFormUrlEncodedParameter(System.String Key, System.String Value, System.Boolean Overwrite)
@@ -178,6 +200,7 @@ namespace SoftmakeAll.SDK.Networking.Http
       if (!(System.String.IsNullOrWhiteSpace(Key)))
         this._UserFormUrlEncodedParameters.RemoveAll(p => p.Key == Key);
     }
+    public void ClearFormUrlEncodedParameter() => this._UserFormUrlEncodedParameters.Clear();
     public void SetBodyFormUrlEncoded()
     {
       base.ClearBody();
@@ -201,7 +224,8 @@ namespace SoftmakeAll.SDK.Networking.Http
     public System.String GetMultipartFormDataParameter(System.String Key, System.String Separator)
     {
       System.Collections.Generic.List<SoftmakeAll.SDK.Networking.Http.MultipartFormDataParameter> MultipartFormDataParameters = this.GetMultipartFormDataParameter(Key);
-      return MultipartFormDataParameters == null ? null : System.String.Join(Separator, MultipartFormDataParameters.Select(p => $"{p.FileNameOrValue}")); // TODO: Verificar
+      //return MultipartFormDataParameters == null ? null : System.String.Join(Separator, MultipartFormDataParameters.Select(p => $"{p.FileNameOrValue}")); // TODO: Verificar
+      return MultipartFormDataParameters == null ? null : System.String.Join(Separator, MultipartFormDataParameters.Select(p => p.FileNameOrValue));
     }
     public SoftmakeAll.SDK.Networking.Http.MultipartFormDataParameter GetMultipartFormDataParameterValue(System.String Key) => this.GetMultipartFormDataParameter(Key)?.FirstOrDefault();
     public System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<System.String, SoftmakeAll.SDK.Networking.Http.MultipartFormDataParameter>> GetMultipartFormDataParameters() => this._UserMultipartFormDataParameters;
@@ -210,6 +234,7 @@ namespace SoftmakeAll.SDK.Networking.Http
       if (!(System.String.IsNullOrWhiteSpace(Key)))
         this._UserMultipartFormDataParameters.RemoveAll(p => p.Key == Key);
     }
+    public void ClearMultipartFormDataParameter() => this._UserMultipartFormDataParameters.Clear();
     public void SetBodyMultipartFormData()
     {
       foreach (System.Collections.Generic.KeyValuePair<System.String, SoftmakeAll.SDK.Networking.Http.MultipartFormDataParameter> BodyMultipartFormDataParameter in this._UserMultipartFormDataParameters)
@@ -219,6 +244,34 @@ namespace SoftmakeAll.SDK.Networking.Http
       base.ClearBody();
       base.SetBody(new System.Byte[] { }, "multipart/form-data");
     }
+
+    #region Static Methods
+    public static SoftmakeAll.SDK.Networking.Http.Request CreateGetRequest(System.String URL) => SoftmakeAll.SDK.Networking.Http.Request.CreateRequest(System.Net.Http.HttpMethod.Get, URL, null, true, null, null);
+    public static SoftmakeAll.SDK.Networking.Http.Request CreateGetRequest(System.String URL, System.String AuthorizationHeader) => SoftmakeAll.SDK.Networking.Http.Request.CreateRequest(System.Net.Http.HttpMethod.Get, URL, AuthorizationHeader, true, null, null);
+    public static SoftmakeAll.SDK.Networking.Http.Request CreateGetRequest(System.String URL, System.Boolean AddDefaultHeaders) => SoftmakeAll.SDK.Networking.Http.Request.CreateRequest(System.Net.Http.HttpMethod.Get, URL, null, AddDefaultHeaders, null, null);
+    public static SoftmakeAll.SDK.Networking.Http.Request CreateGetRequest(System.String URL, System.String AuthorizationHeader, System.Boolean AddDefaultHeaders) => SoftmakeAll.SDK.Networking.Http.Request.CreateRequest(System.Net.Http.HttpMethod.Get, URL, AuthorizationHeader, AddDefaultHeaders, null, null);
+    public static SoftmakeAll.SDK.Networking.Http.Request CreateJsonRequest(System.Net.Http.HttpMethod Method, System.String URL, System.Text.Json.JsonElement Body) => SoftmakeAll.SDK.Networking.Http.Request.CreateRequest(Method, URL, null, true, Body.ToRawText(), "application/json");
+    public static SoftmakeAll.SDK.Networking.Http.Request CreateJsonRequest(System.Net.Http.HttpMethod Method, System.String URL, System.String AuthorizationHeader, System.Text.Json.JsonElement Body) => SoftmakeAll.SDK.Networking.Http.Request.CreateRequest(Method, URL, AuthorizationHeader, true, Body.ToRawText(), "application/json");
+    public static SoftmakeAll.SDK.Networking.Http.Request CreateJsonRequest(System.Net.Http.HttpMethod Method, System.String URL, System.Boolean AddDefaultHeaders, System.Text.Json.JsonElement Body) => SoftmakeAll.SDK.Networking.Http.Request.CreateRequest(Method, URL, null, AddDefaultHeaders, Body.ToRawText(), "application/json");
+    public static SoftmakeAll.SDK.Networking.Http.Request CreateJsonRequest(System.Net.Http.HttpMethod Method, System.String URL, System.String AuthorizationHeader, System.Boolean AddDefaultHeaders, System.Text.Json.JsonElement Body) => SoftmakeAll.SDK.Networking.Http.Request.CreateRequest(Method, URL, AuthorizationHeader, AddDefaultHeaders, Body.ToRawText(), "application/json");
+    public static SoftmakeAll.SDK.Networking.Http.Request CreateRequest(System.Net.Http.HttpMethod Method, System.String URL, System.String Body, System.String ContentType) => SoftmakeAll.SDK.Networking.Http.Request.CreateRequest(Method, URL, null, true, null, null);
+    public static SoftmakeAll.SDK.Networking.Http.Request CreateRequest(System.Net.Http.HttpMethod Method, System.String URL, System.String AuthorizationHeader, System.String Body, System.String ContentType) => SoftmakeAll.SDK.Networking.Http.Request.CreateRequest(Method, URL, AuthorizationHeader, true, null, null);
+    public static SoftmakeAll.SDK.Networking.Http.Request CreateRequest(System.Net.Http.HttpMethod Method, System.String URL, System.Boolean AddDefaultHeaders, System.String Body, System.String ContentType) => SoftmakeAll.SDK.Networking.Http.Request.CreateRequest(Method, URL, null, AddDefaultHeaders, null, null);
+    public static SoftmakeAll.SDK.Networking.Http.Request CreateRequest(System.Net.Http.HttpMethod Method, System.String URL, System.String AuthorizationHeader, System.Boolean AddDefaultHeaders, System.String Body, System.String ContentType)
+    {
+      SoftmakeAll.SDK.Networking.Http.Request Request = new SoftmakeAll.SDK.Networking.Http.Request(URL) { Method = Method };
+
+      if (AddDefaultHeaders)
+        Request.AddDefaultHeaders();
+
+      if (!(System.String.IsNullOrWhiteSpace(AuthorizationHeader)))
+        Request.AddHeader("Authorization", AuthorizationHeader, true);
+
+      Request.SetBody(Body, ContentType);
+
+      return Request;
+    }
+    #endregion
     #endregion
   }
 }
