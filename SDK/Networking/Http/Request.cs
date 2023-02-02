@@ -1,6 +1,6 @@
 ﻿using SoftmakeAll.SDK.Helpers.JSON.Extensions;
+using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace SoftmakeAll.SDK.Networking.Http
 {
@@ -22,25 +22,50 @@ namespace SoftmakeAll.SDK.Networking.Http
       this._UserMultipartFormDataParameters = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<System.String, SoftmakeAll.SDK.Networking.Http.MultipartFormDataParameter>>();
 
       this.Method = System.Net.Http.HttpMethod.Get;
-      this.URL = null;
+      this.URI = null;
     }
-    public Request(System.Uri URL) : this() => this.URL = URL;
-    public Request(System.String URL) : this(new System.Uri(URL)) { }
+    public Request(System.String URI) : this() => this.URI = URI;
+    public Request(System.Uri URI) : this(URI.OriginalString) { }
     #endregion
 
     #region Properties
     public System.Net.Http.HttpMethod Method { get; set; }
 
-    private System.Uri _URL;
-    public System.Uri URL
+    private System.String _URI;
+    public System.String URI
     {
-      get => this._URL;
+      get => this._URI;
       set
       {
-        if (this._URL == value)
+        if (this._URI == value)
           return;
 
-        this._URL = value;
+        this._URI = value;
+
+        this._URLQueryParameters.Clear();
+
+        System.Uri ValidURI = null;
+        if ((!(System.Uri.TryCreate(value, System.UriKind.Absolute, out ValidURI))) || (ValidURI == null) || (System.String.IsNullOrWhiteSpace(ValidURI.Query)))
+          return;
+
+        System.Collections.Specialized.NameValueCollection QueryString = System.Web.HttpUtility.ParseQueryString(ValidURI.Query);
+        foreach (var QueryParameter in QueryString.AllKeys.SelectMany(QueryString.GetValues, (Key, Value) => new { Key, Value }))
+          if (QueryParameter.Key != null)
+            this._URLQueryParameters.Add(new System.Collections.Generic.KeyValuePair<System.String, System.String>(QueryParameter.Key, QueryParameter.Value));
+      }
+    }
+
+    /*
+    private System.Uri _URI;
+    public System.Uri URI
+    {
+      get => this._URI;
+      set
+      {
+        if (this._URI == value)
+          return;
+
+        this._URI = value;
         this._URLQueryParameters.Clear();
 
         if ((value == null) || (System.String.IsNullOrWhiteSpace(value.Query)))
@@ -52,6 +77,7 @@ namespace SoftmakeAll.SDK.Networking.Http
             this._URLQueryParameters.Add(new System.Collections.Generic.KeyValuePair<System.String, System.String>(QueryParameter.Key, QueryParameter.Value));
       }
     }
+    */
     #endregion
 
     #region Methods

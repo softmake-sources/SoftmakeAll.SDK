@@ -1,16 +1,13 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Xml.Linq;
+﻿using System.Linq;
 
 namespace SoftmakeAll.SDK.Networking.Http
 {
   public static class Client
   {
     #region Methods
-    //public static SoftmakeAll.SDK.Networking.Http.Response Send(SoftmakeAll.SDK.Networking.Http.Request Request) => SoftmakeAll.SDK.Networking.Http.Client.Send(Request);
+    public static SoftmakeAll.SDK.Networking.Http.Response Send(SoftmakeAll.SDK.Networking.Http.Request Request) => SoftmakeAll.SDK.Networking.Http.Client.SendAsync(Request, System.TimeSpan.FromSeconds(100.0D), System.Threading.CancellationToken.None).Result;
+    public static SoftmakeAll.SDK.Networking.Http.Response Send(SoftmakeAll.SDK.Networking.Http.Request Request, System.TimeSpan Timeout) => SoftmakeAll.SDK.Networking.Http.Client.SendAsync(Request, Timeout, System.Threading.CancellationToken.None).Result;
+
     public static async System.Threading.Tasks.Task<SoftmakeAll.SDK.Networking.Http.Response> SendAsync(SoftmakeAll.SDK.Networking.Http.Request Request) => await SoftmakeAll.SDK.Networking.Http.Client.SendAsync(Request, System.TimeSpan.FromSeconds(100.0D), System.Threading.CancellationToken.None);
     public static async System.Threading.Tasks.Task<SoftmakeAll.SDK.Networking.Http.Response> SendAsync(SoftmakeAll.SDK.Networking.Http.Request Request, System.TimeSpan Timeout) => await SoftmakeAll.SDK.Networking.Http.Client.SendAsync(Request, Timeout, System.Threading.CancellationToken.None);
     public static async System.Threading.Tasks.Task<SoftmakeAll.SDK.Networking.Http.Response> SendAsync(SoftmakeAll.SDK.Networking.Http.Request Request, System.Threading.CancellationToken CancellationToken) => await SoftmakeAll.SDK.Networking.Http.Client.SendAsync(Request, System.TimeSpan.FromSeconds(100.0D), System.Threading.CancellationToken.None);
@@ -23,14 +20,17 @@ namespace SoftmakeAll.SDK.Networking.Http
       if (Request == null)
         throw new System.ArgumentNullException("Request");
 
-      if (Request.URL == null)
-        throw new System.ArgumentNullException("Request.URL");
+      if (System.String.IsNullOrWhiteSpace(Request.URI))
+        throw new System.ArgumentNullException("Request.URI");
 
       // Request QueryParameters
-      System.Uri RequestURL = Request.URL;
+      System.Uri RequestURL;
+      if (!(System.Uri.TryCreate(Request.URI, System.UriKind.Absolute, out RequestURL)))
+        throw new System.UriFormatException("Request.URI");
+
       System.String QueryString = Request.GetQueryString();
       if (!(System.String.IsNullOrWhiteSpace(QueryString)))
-        RequestURL = new System.Uri($"{Request.URL.OriginalString[0..(Request.URL.OriginalString.IndexOf('?'))]}{QueryString}");
+        RequestURL = new System.Uri($"{Request.URI[0..(Request.URI.IndexOf('?'))]}{QueryString}");
 
       if (CancellationToken.IsCancellationRequested)
         return null;

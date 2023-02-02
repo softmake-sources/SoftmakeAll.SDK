@@ -1,4 +1,5 @@
 ﻿using SoftmakeAll.SDK.Helpers.JSON.Extensions;
+using System.IO.Pipelines;
 using System.Linq;
 
 namespace SoftmakeAll.SDK.Fluent
@@ -373,6 +374,91 @@ namespace SoftmakeAll.SDK.Fluent
 
       return Result;
     }
+
+
+    #region New Methods
+    /// <summary>
+    /// Perform the HTTP Request based on REST object information.
+    /// </summary>
+    /// <param name="REST">REST object that contains the HTTP Request information.</param>
+    /// <param name="SkipAuthorizationHeader">Removes the Authentication Header before sending. The default value is false.</param>
+    /// <returns>A OperationResult with JSON property Data.</returns>
+    public static SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> PerformRESTRequest(SoftmakeAll.SDK.Networking.Http.Request Request, System.Boolean SkipAuthorizationHeader = false) => SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequestAsync(Request, SkipAuthorizationHeader).Result;
+
+    /// <summary>
+    /// Perform the HTTP Request based on REST object information.
+    /// </summary>
+    /// <param name="REST">REST object that contains the HTTP Request information.</param>
+    /// <param name="SkipAuthorizationHeader">Removes the Authentication Header before sending. The default value is false.</param>
+    /// <returns>A OperationResult with JSON property Data.</returns>
+    public static async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> PerformRESTRequestAsync(SoftmakeAll.SDK.Networking.Http.Request Request, System.Boolean SkipAuthorizationHeader = false)
+    {
+      if (Request == null)
+        return null;
+
+      System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.List<System.String>> Headers = Request.GetHeaders();
+
+      System.Boolean RemoveAuthorization = false;
+      if ((!(SkipAuthorizationHeader)) && (!(Headers.ContainsKey("Authorization"))))
+        try
+        {
+          await SoftmakeAll.SDK.Fluent.SDKContext.AuthenticateAsync();
+          Request.AddHeader("Authorization", SoftmakeAll.SDK.Fluent.SDKContext.InMemoryCredentials.Authorization);
+          RemoveAuthorization = true;
+        }
+        catch { }
+      else if ((SkipAuthorizationHeader) && (Headers.ContainsKey("Authorization")))
+        Request.RemoveHeader("Authorization");
+
+      Request.URI = $"{SoftmakeAll.SDK.Fluent.SDKContext.APIBaseAddress}/API/{Request.URI}";
+      SoftmakeAll.SDK.Networking.Http.Response RESTResult = await SoftmakeAll.SDK.Networking.Http.Client.SendAsync(Request);
+
+      if (RemoveAuthorization)
+        Request.RemoveHeader("Authorization");
+
+      return SoftmakeAll.SDK.Fluent.SDKContext.ProcessRESTRequestResult(RESTResult);
+    }
+
+    /// <summary>
+    /// Creates a OperationResult object based on HTTP Request.
+    /// </summary>
+    /// <param name="Response">REST object that contains the HTTP Request information.</param>
+    /// <param name="RESTResult">The output of Send method.</param>
+    /// <returns>A OperationResult with JSON property Data.</returns>
+    private static SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> ProcessRESTRequestResult(SoftmakeAll.SDK.Networking.Http.Response Response)
+    {
+      SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> Result = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
+      if (Response == null)
+      {
+        Result.ExitCode = 500;
+        SoftmakeAll.SDK.Fluent.SDKContext.LastOperationResult.ExitCode = 500;
+        SoftmakeAll.SDK.Fluent.SDKContext.LastOperationResult.Message = null;
+        SoftmakeAll.SDK.Fluent.SDKContext.LastOperationResult.Count = 0;
+        SoftmakeAll.SDK.Fluent.SDKContext.LastOperationResult.ID = null;
+
+        return Result;
+      }
+
+      System.Text.Json.JsonElement RESTResult = Response.ReadBodyAsJSON();
+
+      if (RESTResult.IsValid())
+      {
+        Result.ExitCode = RESTResult.GetInt32("ExitCode");
+        Result.Message = RESTResult.GetString("Message");
+        Result.ID = RESTResult.GetString("ID");
+        Result.Count = RESTResult.GetInt32("Count");
+        Result.Data = RESTResult.GetJsonElement("Data").ToObject<System.Text.Json.JsonElement>();
+      }
+
+      SoftmakeAll.SDK.Fluent.SDKContext.LastOperationResult.ExitCode = Result.ExitCode;
+      SoftmakeAll.SDK.Fluent.SDKContext.LastOperationResult.Message = Result.Message;
+      SoftmakeAll.SDK.Fluent.SDKContext.LastOperationResult.Count = Result.Count;
+      SoftmakeAll.SDK.Fluent.SDKContext.LastOperationResult.ID = Result.ID;
+
+      return Result;
+    }
+    #endregion
+
 
     /// <summary>
     /// Gets the current authorization header.
