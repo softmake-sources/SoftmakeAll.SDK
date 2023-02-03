@@ -375,7 +375,6 @@ namespace SoftmakeAll.SDK.Fluent
       return Result;
     }
 
-
     #region New Methods
     /// <summary>
     /// Perform the HTTP Request based on REST object information.
@@ -480,23 +479,13 @@ namespace SoftmakeAll.SDK.Fluent
     /// Gets the all environments of current user.
     /// </summary>
     /// <returns>The json array containing the Environments.</returns>
-    public static System.Text.Json.JsonElement GetEnvironments()
-    {
-      SoftmakeAll.SDK.Communication.REST REST = new SoftmakeAll.SDK.Communication.REST();
-      REST.URL = "v1/core/EnvironmentsOfLoggedEnvironmentSystemAccount?fields=EnvironmentUniqueID,EnvironmentName,IsDefaultEnvironment,EnvironmentSystemAccountsID,SystemAccountFullName,SystemAccountEmail,SystemAccountsID";
-      return SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequest(REST).Data.GetJsonElement("Result");
-    }
+    public static System.Text.Json.JsonElement GetEnvironments() => SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequest(SoftmakeAll.SDK.Networking.Http.Request.CreateGetRequest("v1/core/EnvironmentsOfLoggedEnvironmentSystemAccount?fields=EnvironmentUniqueID,EnvironmentName,IsDefaultEnvironment,EnvironmentSystemAccountsID,SystemAccountFullName,SystemAccountEmail,SystemAccountsID")).Data.GetJsonElement("Result");
 
     /// <summary>
     /// Gets the all environments of current user.
     /// </summary>
     /// <returns>The json array containing the Environments.</returns>
-    public static async System.Threading.Tasks.Task<System.Text.Json.JsonElement> GetEnvironmentsAsync()
-    {
-      SoftmakeAll.SDK.Communication.REST REST = new SoftmakeAll.SDK.Communication.REST();
-      REST.URL = "v1/core/EnvironmentsOfLoggedEnvironmentSystemAccount?fields=EnvironmentUniqueID,EnvironmentName,IsDefaultEnvironment,EnvironmentSystemAccountsID,SystemAccountFullName,SystemAccountEmail,SystemAccountsID";
-      return (await SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequestAsync(REST)).Data.GetJsonElement("Result");
-    }
+    public static async System.Threading.Tasks.Task<System.Text.Json.JsonElement> GetEnvironmentsAsync() => (await SoftmakeAll.SDK.Fluent.SDKContext.PerformRESTRequestAsync(SoftmakeAll.SDK.Networking.Http.Request.CreateGetRequest("v1/core/EnvironmentsOfLoggedEnvironmentSystemAccount?fields=EnvironmentUniqueID,EnvironmentName,IsDefaultEnvironment,EnvironmentSystemAccountsID,SystemAccountFullName,SystemAccountEmail,SystemAccountsID"))).Data.GetJsonElement("Result");
 
     /// <summary>
     /// Clears the authentication objects and cache data.

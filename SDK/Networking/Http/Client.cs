@@ -29,8 +29,9 @@ namespace SoftmakeAll.SDK.Networking.Http
         throw new System.UriFormatException("Request.URI");
 
       System.String QueryString = Request.GetQueryString();
-      if (!(System.String.IsNullOrWhiteSpace(QueryString)))
-        RequestURL = new System.Uri($"{Request.URI[0..(Request.URI.IndexOf('?'))]}{QueryString}");
+      System.Int32 IndexOfURIQueryString = Request.URI.IndexOf('?');
+      if ((!(System.String.IsNullOrWhiteSpace(QueryString))) && (IndexOfURIQueryString > -1))
+        RequestURL = new System.Uri($"{Request.URI[0..IndexOfURIQueryString]}{QueryString}");
 
       if (CancellationToken.IsCancellationRequested)
         return null;
@@ -50,7 +51,7 @@ namespace SoftmakeAll.SDK.Networking.Http
 
           // Ignore Request Body for these Methods
           HttpRequestMessage.Content = null;
-          if ((!(new System.String[] { "GET", "HEAD", "CONNECT", "OPTIONS", "DELETE" }.Any(i => i == Request.Method.Method.ToUpper()))) && (Request.Body != null))
+          if ((!(new System.String[] { "CONNECT", "GET", "HEAD", "OPTIONS" }.Any(i => i == Request.Method.Method.ToUpper()))) && (Request.Body != null))
           {
             System.String ContentType = (Request.GetHeaderValue("Content-Type") ?? "").ToLower();
 
