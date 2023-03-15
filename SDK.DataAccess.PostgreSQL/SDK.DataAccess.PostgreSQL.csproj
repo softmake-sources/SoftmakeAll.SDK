@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
 
@@ -14,16 +14,16 @@
     <RepositoryUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</RepositoryUrl>
     <RepositoryType>Public C# (.NET Standard) Repository</RepositoryType>
     <PackageIcon>Cubes.png</PackageIcon>
-    <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2021</Copyright>
+    <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2023</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Este pacote é parte do pacote SoftmakeAll.SDK
 
 . Este pacote fornece apoio para acesso à dados quando o banco de dados é Postgre SQL.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-    <AssemblyVersion>1.0.3.0</AssemblyVersion>
-    <FileVersion>1.0.3.0</FileVersion>
-    <Version>1.0.3</Version>
+    <AssemblyVersion>1.0.4.0</AssemblyVersion>
+    <FileVersion>1.0.4.0</FileVersion>
+    <Version>1.0.4</Version>
     <PackageReleaseNotes>Atualização das dependências e alteração do Root Namespace.</PackageReleaseNotes>
     <AssemblyName>SoftmakeAll.SDK.DataAccess.PostgreSQL</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK.DataAccess.PostgreSQL</RootNamespace>
@@ -42,7 +42,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Npgsql" Version="6.0.4" />
+    <PackageReference Include="Npgsql" Version="7.0.2" />
   </ItemGroup>
 
   <ItemGroup>

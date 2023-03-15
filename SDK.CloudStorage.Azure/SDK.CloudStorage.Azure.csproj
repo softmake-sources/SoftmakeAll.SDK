@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
 
@@ -15,16 +15,16 @@
     <RepositoryUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</RepositoryUrl>
     <RepositoryType>Public C# (.NET Standard) Repository</RepositoryType>
     <PackageIcon>Cubes.png</PackageIcon>
-    <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2021</Copyright>
+    <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2023</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Este pacote é parte do pacote SoftmakeAll.SDK
 
 . Este pacote fornece apoio para administração de arquivos no Azure Blob Storage e Azure Files Share.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-    <AssemblyVersion>1.0.9.0</AssemblyVersion>
-    <FileVersion>1.0.9.0</FileVersion>
-    <Version>1.0.9</Version>
+    <AssemblyVersion>1.0.10.0</AssemblyVersion>
+    <FileVersion>1.0.10.0</FileVersion>
+    <Version>1.0.10</Version>
     <PackageReleaseNotes></PackageReleaseNotes>
     <AssemblyName>SoftmakeAll.SDK.CloudStorage.Azure</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK.CloudStorage.Azure</RootNamespace>
@@ -43,8 +43,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.13.0" />
-    <PackageReference Include="Azure.Storage.Files.Shares" Version="12.9.0" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.15.0" />
+    <PackageReference Include="Azure.Storage.Files.Shares" Version="12.13.0" />
   </ItemGroup>
 
   <ItemGroup>

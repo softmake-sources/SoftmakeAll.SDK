@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
 
@@ -14,15 +14,15 @@
     <RepositoryUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</RepositoryUrl>
     <RepositoryType>Public C# (.NET Standard) Repository</RepositoryType>
     <PackageIcon>Cubes.png</PackageIcon>
-    <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2021</Copyright>
+    <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2023</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Este pacote é parte do pacote SoftmakeAll.SDK
 
 Este pacote fornece apoio para serviços de envio de e-mail utilizando Twilio SendGrid como provedor.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <AssemblyVersion>1.0.6.0</AssemblyVersion>
-    <FileVersion>1.0.6.0</FileVersion>
-    <Version>1.0.6</Version>
+    <AssemblyVersion>1.0.7.0</AssemblyVersion>
+    <FileVersion>1.0.7.0</FileVersion>
+    <Version>1.0.7</Version>
 
     <PackageReleaseNotes>Atualização das dependências.</PackageReleaseNotes>
 
@@ -45,7 +45,7 @@ Este pacote fornece apoio para serviços de envio de e-mail utilizando Twilio Se
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SendGrid" Version="9.27.0" />
+    <PackageReference Include="SendGrid" Version="9.28.1" />
   </ItemGroup>
 
   <ItemGroup>

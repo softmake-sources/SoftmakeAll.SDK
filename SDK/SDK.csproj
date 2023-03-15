@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
     
@@ -17,7 +17,7 @@ Principais funcionalidades implementadas:
 - Comunicação entre cliente e servidor via WebSockets
 - Compressão de arquivos em memória
 - Escrita e Leitura de arquivos com tamanho de colunas delimitados
-- Helpers para as bibliotecas, como System.Text.Json
+- Extensões para bibliotecas System.String e System.Text.Json.
 
 Não deixe de consultar os pacotes adicionais.</Description>
     <PackageTags>SoftmakeAll SDK REST WebSocket File Compression JSON CSV</PackageTags>
@@ -28,13 +28,13 @@ Não deixe de consultar os pacotes adicionais.</Description>
     <RepositoryUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</RepositoryUrl>
     <RepositoryType>Public C# (.NET Standard) Repository</RepositoryType>
     <PackageIcon>Cubes.png</PackageIcon>
-    <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2022</Copyright>
+    <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2023</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <AssemblyVersion>1.0.21.0</AssemblyVersion>
-    <FileVersion>1.0.21.0</FileVersion>
-    <Version>1.0.21</Version>
+    <AssemblyVersion>1.0.24.0</AssemblyVersion>
+    <FileVersion>1.0.24.0</FileVersion>
+    <Version>1.0.24</Version>
     <PackageReleaseNotes></PackageReleaseNotes>
     <AssemblyName>SoftmakeAll.SDK</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK</RootNamespace>
@@ -52,11 +52,6 @@ Não deixe de consultar os pacotes adicionais.</Description>
     <Optimize>true</Optimize>
     <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Text.Encodings.Web" Version="6.0.0" />
-    <PackageReference Include="System.Text.Json" Version="6.0.4" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\Cubes.png">

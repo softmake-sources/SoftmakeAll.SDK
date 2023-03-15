@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
 
@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</RepositoryUrl>
     <PackageIcon>Cubes.png</PackageIcon>
     <RepositoryType>Public C# (.NET Standard) Repository</RepositoryType>
-    <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2021</Copyright>
+    <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2023</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Este pacote é parte do pacote SoftmakeAll.SDK
 
@@ -23,9 +23,9 @@ Este pacote fornece apoio para a construção de APIs de serviços que serão co
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
     <PackageReleaseNotes></PackageReleaseNotes>
-    <AssemblyVersion>1.0.19.0</AssemblyVersion>
-    <FileVersion>1.0.19.0</FileVersion>
-    <Version>1.0.19</Version>
+    <AssemblyVersion>1.0.22.0</AssemblyVersion>
+    <FileVersion>1.0.22.0</FileVersion>
+    <Version>1.0.22</Version>
     <AssemblyName>SoftmakeAll.SDK.WebAPI</AssemblyName>
     <RootNamespace>SoftmakeAll.SDK.WebAPI</RootNamespace>
     <PackageProjectUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</PackageProjectUrl>

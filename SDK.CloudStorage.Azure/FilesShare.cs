@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Azure.Storage.Blobs;
+using System.Linq;
 
 namespace SoftmakeAll.SDK.CloudStorage.Azure
 {
@@ -48,11 +49,11 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
       return null;
     }
 
-    public override SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> Upload(System.String ShareName, System.String EntryName, System.IO.Stream Contents)
+    public override SoftmakeAll.SDK.OperationResult<System.Byte[]> Upload(System.String ShareName, System.String EntryName, System.IO.Stream Contents)
     {
       SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate(this.ScopedConnectionString);
 
-      SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> OperationResult = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
+      SoftmakeAll.SDK.OperationResult<System.Byte[]> OperationResult = new SoftmakeAll.SDK.OperationResult<System.Byte[]>() { ExitCode = 400 };
 
       if (SoftmakeAll.SDK.Helpers.String.Extensions.StringExtensions.IsNullOrWhiteSpace(ShareName, EntryName))
       {
@@ -66,15 +67,29 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
         global::Azure.Storage.Files.Shares.ShareDirectoryClient ShareDirectoryClient = ShareClient.GetRootDirectoryClient();
         global::Azure.Storage.Files.Shares.ShareFileClient ShareFileClient = ShareDirectoryClient.GetFileClient(EntryName);
         ShareFileClient.Create(Contents.Length);
-        ShareFileClient.Upload(Contents);
+        global::Azure.Response<global::Azure.Storage.Files.Shares.Models.ShareFileUploadInfo> AzureResponse = ShareFileClient.Upload(Contents);
+
+        if (AzureResponse == null)
+          throw new System.Exception("AzureResponse is NULL.");
+
+        if (AzureResponse.Value == null)
+          throw new System.Exception("AzureResponse.Value is NULL.");
+
+        if (AzureResponse.Value.ContentHash == null)
+          throw new System.Exception("AzureResponse.Value.ContentHash is NULL.");
+
+        if (AzureResponse.Value.ContentHash.Length == 0)
+          throw new System.Exception("AzureResponse.Value.ContentHash.Length = 0.");
+
+        OperationResult.ExitCode = 0;
+        OperationResult.Data = AzureResponse.Value.ContentHash;
       }
       catch (System.Exception ex)
       {
+        OperationResult.ExitCode = 500;
         OperationResult.Message = ex.Message;
-        return OperationResult;
       }
 
-      OperationResult.ExitCode = 0;
       return OperationResult;
     }
     public override SoftmakeAll.SDK.OperationResult Download(System.String ShareName, System.Collections.Generic.Dictionary<System.String, System.String> EntriesNames, System.IO.Stream Destination)
@@ -262,11 +277,11 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
     }
 
     #region Async Methods
-    public override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> UploadAsync(System.String ShareName, System.String EntryName, System.IO.Stream Contents)
+    public override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Byte[]>> UploadAsync(System.String ShareName, System.String EntryName, System.IO.Stream Contents)
     {
       SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate(this.ScopedConnectionString);
 
-      SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> OperationResult = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
+      SoftmakeAll.SDK.OperationResult<System.Byte[]> OperationResult = new SoftmakeAll.SDK.OperationResult<System.Byte[]>() { ExitCode = 400 };
 
       if (SoftmakeAll.SDK.Helpers.String.Extensions.StringExtensions.IsNullOrWhiteSpace(ShareName, EntryName))
       {
@@ -280,15 +295,29 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
         global::Azure.Storage.Files.Shares.ShareDirectoryClient ShareDirectoryClient = ShareClient.GetRootDirectoryClient();
         global::Azure.Storage.Files.Shares.ShareFileClient ShareFileClient = ShareDirectoryClient.GetFileClient(EntryName);
         await ShareFileClient.CreateAsync(Contents.Length);
-        await ShareFileClient.UploadAsync(Contents);
+        global::Azure.Response<global::Azure.Storage.Files.Shares.Models.ShareFileUploadInfo> AzureResponse = await ShareFileClient.UploadAsync(Contents);
+
+        if (AzureResponse == null)
+          throw new System.Exception("AzureResponse is NULL.");
+
+        if (AzureResponse.Value == null)
+          throw new System.Exception("AzureResponse.Value is NULL.");
+
+        if (AzureResponse.Value.ContentHash == null)
+          throw new System.Exception("AzureResponse.Value.ContentHash is NULL.");
+
+        if (AzureResponse.Value.ContentHash.Length == 0)
+          throw new System.Exception("AzureResponse.Value.ContentHash.Length = 0.");
+
+        OperationResult.ExitCode = 0;
+        OperationResult.Data = AzureResponse.Value.ContentHash;
       }
       catch (System.Exception ex)
       {
+        OperationResult.ExitCode = 500;
         OperationResult.Message = ex.Message;
-        return OperationResult;
       }
 
-      OperationResult.ExitCode = 0;
       return OperationResult;
     }
     public override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> DownloadAsync(System.String ShareName, System.Collections.Generic.Dictionary<System.String, System.String> EntriesNames, System.IO.Stream Destination)

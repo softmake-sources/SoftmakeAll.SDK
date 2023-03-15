@@ -33,11 +33,11 @@ namespace SoftmakeAll.SDK.CloudStorage.AWS
       return null;
     }
 
-    public override SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> Upload(System.String BucketName, System.String EntryName, System.IO.Stream Contents)
+    public override SoftmakeAll.SDK.OperationResult<System.Byte[]> Upload(System.String BucketName, System.String EntryName, System.IO.Stream Contents)
     {
       SoftmakeAll.SDK.CloudStorage.AWS.Environment.Validate(this.ScopedS3Client);
 
-      SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> OperationResult = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
+      SoftmakeAll.SDK.OperationResult<System.Byte[]> OperationResult = new SoftmakeAll.SDK.OperationResult<System.Byte[]>() { ExitCode = 400 };
 
       if (SoftmakeAll.SDK.Helpers.String.Extensions.StringExtensions.IsNullOrWhiteSpace(BucketName, EntryName))
       {
@@ -49,14 +49,15 @@ namespace SoftmakeAll.SDK.CloudStorage.AWS
       {
         using (Amazon.S3.Transfer.TransferUtility TransferUtility = new Amazon.S3.Transfer.TransferUtility(this.ScopedS3Client))
           TransferUtility.Upload(Contents, BucketName, EntryName);
+
+        OperationResult.ExitCode = 0;
       }
       catch (System.Exception ex)
       {
+        OperationResult.ExitCode = 500;
         OperationResult.Message = ex.Message;
-        return OperationResult;
       }
 
-      OperationResult.ExitCode = 0;
       return OperationResult;
     }
     public override SoftmakeAll.SDK.OperationResult Download(System.String BucketName, System.Collections.Generic.Dictionary<System.String, System.String> EntriesNames, System.IO.Stream Destination)
@@ -211,11 +212,11 @@ namespace SoftmakeAll.SDK.CloudStorage.AWS
     }
 
     #region Async Methods
-    public override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> UploadAsync(System.String BucketName, System.String EntryName, System.IO.Stream Contents)
+    public override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Byte[]>> UploadAsync(System.String BucketName, System.String EntryName, System.IO.Stream Contents)
     {
       SoftmakeAll.SDK.CloudStorage.AWS.Environment.Validate(this.ScopedS3Client);
 
-      SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> OperationResult = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
+      SoftmakeAll.SDK.OperationResult<System.Byte[]> OperationResult = new SoftmakeAll.SDK.OperationResult<System.Byte[]>() { ExitCode = 400 };
 
       if (SoftmakeAll.SDK.Helpers.String.Extensions.StringExtensions.IsNullOrWhiteSpace(BucketName, EntryName))
       {
@@ -227,14 +228,15 @@ namespace SoftmakeAll.SDK.CloudStorage.AWS
       {
         using (Amazon.S3.Transfer.TransferUtility TransferUtility = new Amazon.S3.Transfer.TransferUtility(this.ScopedS3Client))
           await TransferUtility.UploadAsync(Contents, BucketName, EntryName);
+
+        OperationResult.ExitCode = 0;
       }
       catch (System.Exception ex)
       {
+        OperationResult.ExitCode = 500;
         OperationResult.Message = ex.Message;
-        return OperationResult;
       }
 
-      OperationResult.ExitCode = 0;
       return OperationResult;
     }
     public override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> DownloadAsync(System.String BucketName, System.Collections.Generic.Dictionary<System.String, System.String> EntriesNames, System.IO.Stream Destination)

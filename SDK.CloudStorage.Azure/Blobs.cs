@@ -48,11 +48,11 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
       return null;
     }
 
-    public override SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> Upload(System.String ContainerName, System.String EntryName, System.IO.Stream Contents)
+    public override SoftmakeAll.SDK.OperationResult<System.Byte[]> Upload(System.String ContainerName, System.String EntryName, System.IO.Stream Contents)
     {
       SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate(this.ScopedConnectionString);
 
-      SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> OperationResult = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
+      SoftmakeAll.SDK.OperationResult<System.Byte[]> OperationResult = new SoftmakeAll.SDK.OperationResult<System.Byte[]>() { ExitCode = 400 };
 
       if (SoftmakeAll.SDK.Helpers.String.Extensions.StringExtensions.IsNullOrWhiteSpace(ContainerName, EntryName))
       {
@@ -65,15 +65,29 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
         global::Azure.Storage.Blobs.BlobContainerClient BlobContainerClient = new global::Azure.Storage.Blobs.BlobContainerClient(this.ScopedConnectionString, ContainerName);
         BlobContainerClient.CreateIfNotExists();
         global::Azure.Storage.Blobs.BlobClient BlobClient = BlobContainerClient.GetBlobClient(EntryName);
-        BlobClient.Upload(Contents, true);
+        global::Azure.Response<global::Azure.Storage.Blobs.Models.BlobContentInfo> AzureResponse = BlobClient.Upload(Contents, true);
+
+        if (AzureResponse == null)
+          throw new System.Exception("AzureResponse is NULL.");
+
+        if (AzureResponse.Value == null)
+          throw new System.Exception("AzureResponse.Value is NULL.");
+
+        if (AzureResponse.Value.ContentHash == null)
+          throw new System.Exception("AzureResponse.Value.ContentHash is NULL.");
+
+        if (AzureResponse.Value.ContentHash.Length == 0)
+          throw new System.Exception("AzureResponse.Value.ContentHash.Length = 0.");
+
+        OperationResult.ExitCode = 0;
+        OperationResult.Data = AzureResponse.Value.ContentHash;
       }
       catch (System.Exception ex)
       {
+        OperationResult.ExitCode = 500;
         OperationResult.Message = ex.Message;
-        return OperationResult;
       }
 
-      OperationResult.ExitCode = 0;
       return OperationResult;
     }
     public override SoftmakeAll.SDK.OperationResult Download(System.String ContainerName, System.Collections.Generic.Dictionary<System.String, System.String> EntriesNames, System.IO.Stream Destination)
@@ -252,11 +266,11 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
     }
 
     #region Async Methods
-    public override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> UploadAsync(System.String ContainerName, System.String EntryName, System.IO.Stream Contents)
+    public override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Byte[]>> UploadAsync(System.String ContainerName, System.String EntryName, System.IO.Stream Contents)
     {
       SoftmakeAll.SDK.CloudStorage.Azure.Environment.Validate(this.ScopedConnectionString);
 
-      SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> OperationResult = new SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>();
+      SoftmakeAll.SDK.OperationResult<System.Byte[]> OperationResult = new SoftmakeAll.SDK.OperationResult<System.Byte[]>() { ExitCode = 400 };
 
       if (SoftmakeAll.SDK.Helpers.String.Extensions.StringExtensions.IsNullOrWhiteSpace(ContainerName, EntryName))
       {
@@ -269,15 +283,29 @@ namespace SoftmakeAll.SDK.CloudStorage.Azure
         global::Azure.Storage.Blobs.BlobContainerClient BlobContainerClient = new global::Azure.Storage.Blobs.BlobContainerClient(this.ScopedConnectionString, ContainerName);
         await BlobContainerClient.CreateIfNotExistsAsync();
         global::Azure.Storage.Blobs.BlobClient BlobClient = BlobContainerClient.GetBlobClient(EntryName);
-        await BlobClient.UploadAsync(Contents, true);
+        global::Azure.Response<global::Azure.Storage.Blobs.Models.BlobContentInfo> AzureResponse = await BlobClient.UploadAsync(Contents, true);
+
+        if (AzureResponse == null)
+          throw new System.Exception("AzureResponse is NULL.");
+
+        if (AzureResponse.Value == null)
+          throw new System.Exception("AzureResponse.Value is NULL.");
+
+        if (AzureResponse.Value.ContentHash == null)
+          throw new System.Exception("AzureResponse.Value.ContentHash is NULL.");
+
+        if (AzureResponse.Value.ContentHash.Length == 0)
+          throw new System.Exception("AzureResponse.Value.ContentHash.Length = 0.");
+
+        OperationResult.ExitCode = 0;
+        OperationResult.Data = AzureResponse.Value.ContentHash;
       }
       catch (System.Exception ex)
       {
+        OperationResult.ExitCode = 500;
         OperationResult.Message = ex.Message;
-        return OperationResult;
       }
 
-      OperationResult.ExitCode = 0;
       return OperationResult;
     }
     public override async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> DownloadAsync(System.String ContainerName, System.Collections.Generic.Dictionary<System.String, System.String> EntriesNames, System.IO.Stream Destination)

@@ -11,7 +11,7 @@ namespace SoftmakeAll.SDK.CloudStorage
     #region Methods
     #region Virtual Methods
     public virtual System.String GenerateDownloadURL(System.String RepositoryName, System.String EntryName, System.String OriginalName) => this.GenerateDownloadURL(RepositoryName, EntryName, OriginalName, System.DateTimeOffset.UtcNow.AddMinutes(5));
-    public virtual SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> Upload(System.String RepositoryName, System.String EntryName, System.Byte[] Contents)
+    public virtual SoftmakeAll.SDK.OperationResult<System.Byte[]> Upload(System.String RepositoryName, System.String EntryName, System.Byte[] Contents)
     {
       using (System.IO.MemoryStream MemoryStream = new System.IO.MemoryStream())
       {
@@ -48,7 +48,7 @@ namespace SoftmakeAll.SDK.CloudStorage
 
     #region Abstract Methods
     public abstract System.String GenerateDownloadURL(System.String RepositoryName, System.String EntryName, System.String OriginalName, System.DateTimeOffset ExpirationDateTime);
-    public abstract SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement> Upload(System.String RepositoryName, System.String EntryName, System.IO.Stream Contents);
+    public abstract SoftmakeAll.SDK.OperationResult<System.Byte[]> Upload(System.String RepositoryName, System.String EntryName, System.IO.Stream Contents);
     public abstract SoftmakeAll.SDK.OperationResult Download(System.String RepositoryName, System.Collections.Generic.Dictionary<System.String, System.String> EntriesNames, System.IO.Stream Destination);
     public abstract SoftmakeAll.SDK.OperationResult Delete(System.String RepositoryName, System.String[] EntriesNames);
     public abstract SoftmakeAll.SDK.OperationResult Copy(System.String SourceRepositoryName, System.String[] SourceEntriesNames, System.String TargetRepositoryName, System.String[] TargetEntriesNames, System.Boolean Overwrite);
@@ -56,7 +56,7 @@ namespace SoftmakeAll.SDK.CloudStorage
 
     #region Async Methods
     #region Virtual Methods
-    public virtual async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> UploadAsync(System.String RepositoryName, System.String EntryName, System.Byte[] Contents)
+    public virtual async System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Byte[]>> UploadAsync(System.String RepositoryName, System.String EntryName, System.Byte[] Contents)
     {
       using (System.IO.MemoryStream MemoryStream = new System.IO.MemoryStream())
       {
@@ -92,7 +92,7 @@ namespace SoftmakeAll.SDK.CloudStorage
     #endregion
 
     #region Abstract Methods
-    public abstract System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Text.Json.JsonElement>> UploadAsync(System.String RepositoryName, System.String EntryName, System.IO.Stream Contents);
+    public abstract System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult<System.Byte[]>> UploadAsync(System.String RepositoryName, System.String EntryName, System.IO.Stream Contents);
     public abstract System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> DownloadAsync(System.String RepositoryName, System.Collections.Generic.Dictionary<System.String, System.String> EntriesNames, System.IO.Stream Destination);
     public abstract System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> DeleteAsync(System.String RepositoryName, System.String[] EntriesNames);
     public abstract System.Threading.Tasks.Task<SoftmakeAll.SDK.OperationResult> CopyAsync(System.String SourceRepositoryName, System.String[] SourceEntriesNames, System.String TargetRepositoryName, System.String[] TargetEntriesNames, System.Boolean Overwrite);

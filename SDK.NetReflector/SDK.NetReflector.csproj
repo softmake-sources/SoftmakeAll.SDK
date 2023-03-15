@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</RepositoryUrl>
     <PackageIcon>Cubes.png</PackageIcon>
     <RepositoryType>Public C# (.NET Standard) Repository</RepositoryType>
-    <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2021</Copyright>
+    <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2023</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Este pacote é parte do pacote SoftmakeAll.SDK
 
@@ -22,9 +22,9 @@
 Este pacote fornece apoio para Reflection e compilação de código dinâmico de bibliotecas .NET Standard.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-    <AssemblyVersion>1.0.8.0</AssemblyVersion>
-    <FileVersion>1.0.8.0</FileVersion>
-    <Version>1.0.8</Version>
+    <AssemblyVersion>1.0.9.0</AssemblyVersion>
+    <FileVersion>1.0.9.0</FileVersion>
+    <Version>1.0.9</Version>
     <PackageReleaseNotes>Compiler:
 Foram removidas as referências que eram carregadas junto com este pacote e foi adicionada uma propriedade chamada DefaultReferencesDirectoryPath, para que seja indicado o diretório das DLLs a serem utilizadas na construção do Assembly a partir do código.
 

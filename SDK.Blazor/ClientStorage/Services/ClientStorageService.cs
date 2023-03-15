@@ -2,7 +2,7 @@
 
 namespace SoftmakeAll.SDK.Blazor.ClientStorage.Services
 {
-  public abstract class ClientStorageService : SoftmakeAll.SDK.Blazor.ClientStorage.Services.IAsyncClientStorageService, SoftmakeAll.SDK.Blazor.ClientStorage.Services.ISyncClientStorageService
+  public abstract class ClientStorageService : SoftmakeAll.SDK.Blazor.ClientStorage.Services.IClientStorageService
   {
     #region Fields
     private readonly Microsoft.JSInterop.IJSRuntime JSRuntime;
@@ -22,9 +22,9 @@ namespace SoftmakeAll.SDK.Blazor.ClientStorage.Services
     public event System.EventHandler<SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangedEventArgs> OnChanged;
     #endregion
 
-    #region Properties
+    #region Private Properties
     private System.String StorageTypeName = "";
-    protected SoftmakeAll.SDK.Blazor.ClientStorage.StorageTypes StorageType
+    protected internal SoftmakeAll.SDK.Blazor.ClientStorage.StorageTypes StorageType
     {
       get
       {
@@ -46,13 +46,13 @@ namespace SoftmakeAll.SDK.Blazor.ClientStorage.Services
       }
     }
     private System.String SuffixName => "Item";
-    private System.String SetItemAction => StorageTypeName + "set" + SuffixName;
-    private System.String GetItemAction => StorageTypeName + "get" + SuffixName;
-    private System.String RemoveItemAction => StorageTypeName + "remove" + SuffixName;
-    private System.String ClearAction => StorageTypeName + "clear";
-    private System.String ContainsKeyProperty => StorageTypeName + "hasOwnProperty";
-    private System.String KeyProperty => StorageTypeName + "key";
-    private System.String LengthProperty => StorageTypeName + "length";
+    private System.String SetItemAction => $"{this.StorageTypeName}set{this.SuffixName}";
+    private System.String GetItemAction => $"{this.StorageTypeName}get{this.SuffixName}";
+    private System.String RemoveItemAction => $"{this.StorageTypeName}remove{this.SuffixName}";
+    private System.String ClearAction => $"{this.StorageTypeName}clear";
+    private System.String ContainsKeyProperty => $"{this.StorageTypeName}hasOwnProperty";
+    private System.String KeyProperty => $"{this.StorageTypeName}key";
+    private System.String CountProperty => $"{this.StorageTypeName}length";
     #endregion
 
     #region Methods
@@ -61,7 +61,7 @@ namespace SoftmakeAll.SDK.Blazor.ClientStorage.Services
       if (System.String.IsNullOrWhiteSpace(SerializedValue))
         return default;
 
-      return (T)(System.Object)SerializedValue;
+      return (T)((System.Object)SerializedValue);
     }
     private void RaiseOnChanged(System.String Key, System.Object OldValue, System.Object NewValue)
     {
@@ -73,38 +73,38 @@ namespace SoftmakeAll.SDK.Blazor.ClientStorage.Services
     }
 
     #region IAsyncClientStorageService
-    private void ValidateJSRuntime() { if (this.JSRuntime == null) throw new System.InvalidOperationException("JSRuntime not available."); }
+    private void ValidateJSRuntime() { if (this.JSRuntime == null) throw new System.InvalidOperationException("JSRuntime is not available."); }
     private void ValidateJSRuntime(System.String Key) { this.ValidateJSRuntime(); if (System.String.IsNullOrWhiteSpace(Key)) throw new System.ArgumentNullException("The Key parameter cannot be null or empty."); }
-    private async System.Threading.Tasks.Task<SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangingEventArgs> RaiseOnChangingAsync(System.String Key, System.Object Value)
+    private async System.Threading.Tasks.Task<SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangingEventArgs> RaiseOnChangingAsync(System.String Key, System.Object Value, System.Threading.CancellationToken CancellationToken = default)
     {
       SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangingEventArgs ChangingEventArgs = new SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangingEventArgs();
       ChangingEventArgs.Key = Key;
-      ChangingEventArgs.OldValue = await this.GetItemAsync<System.Object>(Key);
+      ChangingEventArgs.OldValue = await this.GetItemAsync<System.Object>(Key, CancellationToken);
       ChangingEventArgs.NewValue = Value;
       this.OnChanging?.Invoke(this, ChangingEventArgs);
       return ChangingEventArgs;
     }
-    public async System.Threading.Tasks.Task SetItemAsync<T>(System.String Key, T Value)
+    public async System.Threading.Tasks.Task SetItemAsync<T>(System.String Key, T Value, System.Threading.CancellationToken CancellationToken = default)
     {
       this.ValidateJSRuntime(Key);
 
-      SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangingEventArgs ChangingEventArgs = await this.RaiseOnChangingAsync(Key, Value);
+      SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangingEventArgs ChangingEventArgs = await this.RaiseOnChangingAsync(Key, Value, CancellationToken);
       if (ChangingEventArgs.Cancel) return;
 
-      await this.JSRuntime.InvokeVoidAsync(SetItemAction, Key, Value);
+      await this.JSRuntime.InvokeVoidAsync(this.SetItemAction, CancellationToken, Key, Value);
 
       this.RaiseOnChanged(Key, ChangingEventArgs.OldValue, Value);
     }
-    public async System.Threading.Tasks.Task<T> GetItemAsync<T>(System.String Key) { this.ValidateJSRuntime(Key); return this.ConvertSerializedValue<T>(await this.JSRuntime.InvokeAsync<System.String>(GetItemAction, Key)); }
-    public async System.Threading.Tasks.Task RemoveItemAsync(System.String Key) { this.ValidateJSRuntime(Key); await this.JSRuntime.InvokeVoidAsync(RemoveItemAction, Key); }
-    public async System.Threading.Tasks.Task ClearAsync() => await this.JSRuntime.InvokeVoidAsync(ClearAction);
-    public async System.Threading.Tasks.Task<System.Boolean> ContainsKeyAsync(System.String Key) => await this.JSRuntime.InvokeAsync<System.Boolean>(ContainsKeyProperty, Key);
-    public async System.Threading.Tasks.Task<System.String> KeyAsync(System.Int32 Index) => await this.JSRuntime.InvokeAsync<System.String>(KeyProperty, Index);
-    public async System.Threading.Tasks.Task<System.Int32> LengthAsync() => await this.JSRuntime.InvokeAsync<System.Int32>("eval", LengthProperty);
+    public async System.Threading.Tasks.Task<T> GetItemAsync<T>(System.String Key, System.Threading.CancellationToken CancellationToken = default) { this.ValidateJSRuntime(Key); return this.ConvertSerializedValue<T>(await this.JSRuntime.InvokeAsync<System.String>(this.GetItemAction, CancellationToken, Key)); }
+    public async System.Threading.Tasks.Task RemoveItemAsync(System.String Key, System.Threading.CancellationToken CancellationToken = default) { this.ValidateJSRuntime(Key); await this.JSRuntime.InvokeVoidAsync(this.RemoveItemAction, CancellationToken, Key); }
+    public async System.Threading.Tasks.Task ClearAsync(System.Threading.CancellationToken CancellationToken = default) => await this.JSRuntime.InvokeVoidAsync(this.ClearAction, CancellationToken, null);
+    public async System.Threading.Tasks.Task<System.Boolean> ContainsKeyAsync(System.String Key, System.Threading.CancellationToken CancellationToken = default) => await this.JSRuntime.InvokeAsync<System.Boolean>(this.ContainsKeyProperty, CancellationToken, Key);
+    public async System.Threading.Tasks.Task<System.String> KeyAsync(System.Int32 Index, System.Threading.CancellationToken CancellationToken = default) => await this.JSRuntime.InvokeAsync<System.String>(this.KeyProperty, CancellationToken, Index);
+    public async System.Threading.Tasks.Task<System.Int32> CountAsync(System.Threading.CancellationToken CancellationToken = default) => await this.JSRuntime.InvokeAsync<System.Int32>("eval", CancellationToken, this.CountProperty);
     #endregion
 
     #region ISyncClientStorageService
-    private void ValidateJSInProcessRuntime() { if (this.JSInProcessRuntime == null) throw new System.InvalidOperationException("JSInProcessRuntime not available."); }
+    private void ValidateJSInProcessRuntime() { if (this.JSInProcessRuntime == null) throw new System.InvalidOperationException("JSInProcessRuntime is not available."); }
     private void ValidateJSInProcessRuntime(System.String Key) { this.ValidateJSInProcessRuntime(); if (System.String.IsNullOrWhiteSpace(Key)) throw new System.ArgumentNullException("The Key parameter cannot be null or empty."); }
     private SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangingEventArgs RaiseOnChanging(System.String Key, System.Object Value)
     {
@@ -122,27 +122,27 @@ namespace SoftmakeAll.SDK.Blazor.ClientStorage.Services
       SoftmakeAll.SDK.Blazor.ClientStorage.EventArgs.ChangingEventArgs ChangingEventArgs = this.RaiseOnChanging(Key, Value);
       if (ChangingEventArgs.Cancel) return;
 
-      this.JSInProcessRuntime.InvokeVoid(SetItemAction, Key, Value);
+      this.JSInProcessRuntime.InvokeVoid(this.SetItemAction, Key, Value);
 
       this.RaiseOnChanged(Key, ChangingEventArgs.OldValue, Value);
     }
-    public T GetItem<T>(System.String Key) { this.ValidateJSInProcessRuntime(Key); return this.ConvertSerializedValue<T>(this.JSInProcessRuntime.Invoke<System.String>(GetItemAction, Key)); }
-    public void RemoveItem(System.String Key) { this.ValidateJSInProcessRuntime(Key); this.JSInProcessRuntime.InvokeVoid(RemoveItemAction, Key); }
-    public void Clear() { this.ValidateJSInProcessRuntime(); this.JSInProcessRuntime.InvokeVoid(ClearAction); }
-    public System.Boolean ContainsKey(System.String Key) { this.ValidateJSInProcessRuntime(Key); return this.JSInProcessRuntime.Invoke<System.Boolean>(ContainsKeyProperty, Key); }
-    public System.String Key(System.Int32 Index) { this.ValidateJSInProcessRuntime(); return this.JSInProcessRuntime.Invoke<System.String>(KeyProperty, Index); }
-    public System.Int32 Length() { this.ValidateJSInProcessRuntime(); return this.JSInProcessRuntime.Invoke<System.Int32>("eval", LengthProperty); }
+    public T GetItem<T>(System.String Key) { this.ValidateJSInProcessRuntime(Key); return this.ConvertSerializedValue<T>(this.JSInProcessRuntime.Invoke<System.String>(this.GetItemAction, Key)); }
+    public void RemoveItem(System.String Key) { this.ValidateJSInProcessRuntime(Key); this.JSInProcessRuntime.InvokeVoid(this.RemoveItemAction, Key); }
+    public void Clear() { this.ValidateJSInProcessRuntime(); this.JSInProcessRuntime.InvokeVoid(this.ClearAction); }
+    public System.Boolean ContainsKey(System.String Key) { this.ValidateJSInProcessRuntime(Key); return this.JSInProcessRuntime.Invoke<System.Boolean>(this.ContainsKeyProperty, Key); }
+    public System.String Key(System.Int32 Index) { this.ValidateJSInProcessRuntime(); return this.JSInProcessRuntime.Invoke<System.String>(this.KeyProperty, Index); }
+    public System.Int32 Count() { this.ValidateJSInProcessRuntime(); return this.JSInProcessRuntime.Invoke<System.Int32>("eval", this.CountProperty); }
     #endregion
     #endregion
   }
-  public class LocalStorageService : SoftmakeAll.SDK.Blazor.ClientStorage.Services.ClientStorageService, SoftmakeAll.SDK.Blazor.ClientStorage.Services.IAsyncLocalStorageService, SoftmakeAll.SDK.Blazor.ClientStorage.Services.ISyncLocalStorageService
+  public class LocalStorageService : SoftmakeAll.SDK.Blazor.ClientStorage.Services.ClientStorageService, SoftmakeAll.SDK.Blazor.ClientStorage.Services.ILocalStorageService
   {
     public LocalStorageService(Microsoft.JSInterop.IJSRuntime JSRuntimeContext) : base(JSRuntimeContext)
     {
       base.StorageType = SoftmakeAll.SDK.Blazor.ClientStorage.StorageTypes.LocalStorage;
     }
   }
-  public class SessionStorageService : SoftmakeAll.SDK.Blazor.ClientStorage.Services.ClientStorageService, SoftmakeAll.SDK.Blazor.ClientStorage.Services.IAsyncSessionStorageService, SoftmakeAll.SDK.Blazor.ClientStorage.Services.ISyncSessionStorageService
+  public class SessionStorageService : SoftmakeAll.SDK.Blazor.ClientStorage.Services.ClientStorageService, SoftmakeAll.SDK.Blazor.ClientStorage.Services.ISessionStorageService
   {
     public SessionStorageService(Microsoft.JSInterop.IJSRuntime JSRuntimeContext) : base(JSRuntimeContext)
     {

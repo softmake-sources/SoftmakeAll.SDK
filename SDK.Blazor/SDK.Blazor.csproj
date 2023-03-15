@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
 
@@ -11,20 +11,21 @@
     <RepositoryUrl>https://github.com/softmake-sources/SoftmakeAll.SDK</RepositoryUrl>
     <PackageIcon>Cubes.png</PackageIcon>
     <RepositoryType>Public C# (.NET Standard) Repository</RepositoryType>
-    <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2021</Copyright>
+    <Copyright>All rights reserved - Softmake - Software &amp; Automação © 2010 - 2023</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Este pacote é parte do pacote SoftmakeAll.SDK
 
 
 Este pacote fornece apoio para:
 
-- Escrita/leitura de dados locais a partir do navegador;
+- Escrita/leitura de dados locais (LocalStorage e SessionStorage) a partir do navegador;
+- Classe base para components Razor.
 </Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-    <AssemblyVersion>1.0.4.0</AssemblyVersion>
-    <FileVersion>1.0.4.0</FileVersion>
-    <Version>1.0.4</Version>
+    <AssemblyVersion>1.0.5.0</AssemblyVersion>
+    <FileVersion>1.0.5.0</FileVersion>
+    <Version>1.0.5</Version>
     <PackageTags>SoftmakeAll SDK Blazor ClientStorage</PackageTags>
     <PackageId>SoftmakeAll.SDK.Blazor</PackageId>
     <AssemblyName>SoftmakeAll.SDK.Blazor</AssemblyName>
@@ -51,12 +52,6 @@ Este pacote fornece apoio para:
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\SDK\SDK.csproj" />
   </ItemGroup>
 
@@ -65,6 +60,10 @@ Este pacote fornece apoio para:
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.3" />
   </ItemGroup>
 
 </Project>
